@@ -42,6 +42,8 @@
     "@types/hard-source-webpack-plugin": "1.0.1",
     "@types/isomorphic-fetch": "^0.0.35",
     "@types/jquery": "3.5.5",
+    "@types/koa": "2.13.1",
+    "@types/koa-static": "4.0.1",
     "@types/prettier": "^2.2.3",
     "@types/qrcode.react": "^1.0.1",
     "@types/react": "17.0.1",
