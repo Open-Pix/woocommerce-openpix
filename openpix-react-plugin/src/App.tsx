@@ -1,16 +1,8 @@
 import { useEffect, useState } from 'react';
 
-import styled from 'styled-components';
-import { Flex } from 'rebass';
 import { v4 as uuidv4 } from 'uuid';
-import { space } from 'styled-system';
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 
 import { useOpenPix } from './useOpenPix';
-
-const Button = styled.button`
-  ${space}
-`;
 
 export const getDefaultTransactionId = () =>
   uuidv4().toString().replace(/-/g, '');
@@ -37,19 +29,6 @@ const App = ({ onSuccess, value, description, customer, appID }: AppProps) => {
 
   useOpenPix(appID);
 
-  const onClick = () => {
-    window.$openpix.push([
-      'pix',
-      {
-        correlationID,
-        value,
-        description,
-        customer,
-        closeOnSuccess: true,
-      },
-    ]);
-  };
-
   const isOpenPixLoaded = !!window.$openpix?.addEventListener;
 
   useEffect(() => {
@@ -57,9 +36,11 @@ const App = ({ onSuccess, value, description, customer, appID }: AppProps) => {
       window.$openpix.push([
         'pix',
         {
-          value: 1,
           correlationID,
-          description: 'OpenPix Demo',
+          value,
+          description,
+          customer,
+          closeOnSuccess: true,
         },
       ]);
 
@@ -85,25 +66,7 @@ const App = ({ onSuccess, value, description, customer, appID }: AppProps) => {
     }
   }, [isOpenPixLoaded]);
 
-  return (
-    <Flex
-      mt='80px'
-      mb='80px'
-      alignItems='center'
-      justifyContent='center'
-      flexDirection='column'
-      minHeight='250px'
-    >
-      <Button
-        variant='outlined'
-        color='primary'
-        onClick={onClick}
-        endIcon={<ShoppingCartIcon />}
-      >
-        Pay with Pix ok
-      </Button>
-    </Flex>
-  );
+  return null;
 };
 
 export default App;

@@ -96,8 +96,11 @@ function woocommerce_openpix_init()
                     true
                 );
 
+                $name = get_bloginfo('name');
+
                 wp_localize_script('openpix-checkout', 'wcOpenpixParams', [
                     'appID' => $this->appID,
+                    'storeName' => $name,
                 ]);
             }
         }
@@ -131,7 +134,11 @@ function woocommerce_openpix_init()
                 echo wp_kses_post(wpautop(wptexturize($description)));
             }
 
-            echo '<div></div>';
+            $cart_total = $this->get_order_total();
+
+            echo '<div id="openpix-checkout-params" ';
+            echo 'data-total="' . esc_attr($cart_total * 100) . '" ';
+            echo '></div>';
         }
 
         public function process_payment($order_id)
