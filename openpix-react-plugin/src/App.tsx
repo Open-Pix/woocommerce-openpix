@@ -16,29 +16,26 @@ export const getDefaultTransactionId = () =>
   uuidv4().toString().replace(/-/g, '');
 
 type Customer = {
-  name: string,
-  email: string,
-  taxID: string,
-  phone: string,
-}
+  name: string;
+  email: string;
+  taxID: string;
+  phone: string;
+};
 export type AppProps = {
   onSuccess: (correlationID: string) => void;
-  value: number,
-  description?: string,
-  customer?: Customer,
+  value: number;
+  description?: string;
+  customer?: Customer;
+  appID: string;
 };
-const App = ({
-               onSuccess,
-  value,
-  description,
-  customer,
-}: AppProps) => {
+const App = ({ onSuccess, value, description, customer, appID }: AppProps) => {
   // generate a new transactionID on mount
+  // eslint-disable-next-line
   const [correlationID, setCorrelationID] = useState(() =>
     getDefaultTransactionId(),
   );
 
-  useOpenPix();
+  useOpenPix(appID);
 
   const onClick = () => {
     window.$openpix.push([
@@ -74,9 +71,7 @@ const App = ({
           if (e.data.status === 'COMPLETED') {
             // setCorrelationID(getDefaultTransactionId());
 
-            window.$openpix.push([
-              'close',
-            ]);
+            window.$openpix.push(['close']);
             onSuccess && onSuccess(correlationID);
           }
         }

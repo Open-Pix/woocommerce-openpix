@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
 import { useScript } from './useScript';
-import config from './config';
+import { config } from './config';
 
 export type IOpenPixApi = {
   generateStatic: (options: any) => any;
@@ -15,11 +15,11 @@ declare global {
   }
 }
 
-export const useOpenPix = () => {
+export const useOpenPix = (appID: string) => {
   useEffect(() => {
     window.$openpix = [];
-    window.$openpix.push(['config', { appID: config.OPEN_PIX_APP_ID }]);
-  }, []);
+    window.$openpix.push(['config', { appID }]);
+  }, [appID]);
 
   const scriptURL = config.OPENPIX_PLUGIN_URL;
 

@@ -1585,7 +1585,7 @@
   dependencies:
     "@types/koa" "*"
 
-"@types/koa-static@*":
+"@types/koa-static@*", "@types/koa-static@4.0.1":
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/@types/koa-static/-/koa-static-4.0.1.tgz#b740d80a549b0a0a7a3b38918daecde88a7a50ec"
   integrity sha512-SSpct5fEcAeRkBHa3RiwCIRfDHcD1cZRhwRF///ZfvRt8KhoqRrhK6wpDlYPk/vWHVFE9hPGqh68bhzsHkir4w==
@@ -1593,7 +1593,7 @@
     "@types/koa" "*"
     "@types/koa-send" "*"
 
-"@types/koa@*":
+"@types/koa@*", "@types/koa@2.13.1":
   version "2.13.1"
   resolved "https://registry.yarnpkg.com/@types/koa/-/koa-2.13.1.tgz#e29877a6b5ad3744ab1024f6ec75b8cbf6ec45db"
   integrity sha512-Qbno7FWom9nNqu0yHZ6A0+RWt4mrYBhw3wpBAQ3+IuzGcLlfeYkzZrnMq5wsxulN2np8M4KKeUpTodsOsSad5Q==

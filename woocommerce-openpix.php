@@ -10,7 +10,7 @@
  * @package WooCommerce_OpenPix
  */
 
-if (!defined("ABSPATH")) {
+if (!defined('ABSPATH')) {
     exit(); // show nothing if someone open this file directly
 }
 
@@ -19,30 +19,33 @@ if (!defined("ABSPATH")) {
  **/
 if (
     in_array(
-        "woocommerce/woocommerce.php",
-        apply_filters("active_plugins", get_option("active_plugins"))
+        'woocommerce/woocommerce.php',
+        apply_filters('active_plugins', get_option('active_plugins'))
     )
 ) {
-    define("WOOCOMMERCE_OPENPIX_PLUGIN", untrailingslashit(plugin_dir_path(__FILE__)));
-    define("WOOCOMMERCE_OPENPIX_PLUGIN_ARQUIVO", __FILE__);
+    define(
+        'WOOCOMMERCE_OPENPIX_PLUGIN',
+        untrailingslashit(plugin_dir_path(__FILE__))
+    );
+    define('WOOCOMMERCE_OPENPIX_PLUGIN_ARQUIVO', __FILE__);
 
     // init plugin
-    add_action("plugins_loaded", "woocommerce_openpix_init", 0);
+    add_action('plugins_loaded', 'woocommerce_openpix_init', 0);
 }
 
 function get_templates_path()
 {
-    return plugin_dir_path(__FILE__) . "templates/";
+    return plugin_dir_path(__FILE__) . 'templates/';
 }
-
 
 function woocommerce_openpix_init()
 {
-    function debug($message) {
+    function debug($message)
+    {
         $logger = wc_get_logger();
-        $context = array(
-            'source'  => 'woocommerce_openpix',
-        );
+        $context = [
+            'source' => 'woocommerce_openpix',
+        ];
         $logger->debug($message, $context);
     }
 
@@ -52,26 +55,29 @@ function woocommerce_openpix_init()
 
         public function __construct()
         {
-            $this->id = "woocommerce_openpix";
-            $this->method_title = "Pagar com OpenPix";
-            $this->method_description = "WooCommerce OpenPix Payment Gateway";
-            $this->title = "Pagar com OpenPix";
-            $this->order_button_text = "Pagar com OpenPix";
+            $this->id = 'woocommerce_openpix';
+            $this->method_title = 'Pagar com OpenPix';
+            $this->method_description = 'WooCommerce OpenPix Payment Gateway';
+            $this->title = 'Pagar com OpenPix';
+            $this->order_button_text = 'Pagar com OpenPix';
 
             $this->has_fields = true; // direct payment
 
-            $this->supports = ["products"];
+            $this->supports = ['products'];
 
             $this->init_form_fields();
             $this->init_settings();
 
+            // Define user set variables.
+            $this->appID = $this->get_option('appID');
+
             add_action(
-                "woocommerce_update_options_payment_gateways_" . $this->id,
-                [$this, "process_admin_options"]
+                'woocommerce_update_options_payment_gateways_' . $this->id,
+                [$this, 'process_admin_options']
             );
 
             // inject openpix react
-            add_action("wp_enqueue_scripts", [$this, "checkout_scripts"]);
+            add_action('wp_enqueue_scripts', [$this, 'checkout_scripts']);
         }
 
         public function checkout_scripts()
@@ -79,39 +85,44 @@ function woocommerce_openpix_init()
             if (is_checkout()) {
                 $reactDirectory = join(DIRECTORY_SEPARATOR, [
                     plugin_dir_url(__FILE__),
-                    "build",
+                    'build',
                 ]);
 
-                                wp_enqueue_script(
-                                    "openpix-checkout2",
-                                    $reactDirectory . "/main.js",
-                                    array( 'jquery', 'jquery-blockui'),
-                                    WC_OpenPix_Gateway::VERSION,
-                                    true,
-                                );
+                wp_enqueue_script(
+                    'openpix-checkout',
+                    $reactDirectory . '/main.js',
+                    ['jquery', 'jquery-blockui'],
+                    WC_OpenPix_Gateway::VERSION,
+                    true
+                );
 
-//                wp_enqueue_script(
-//                    "openpix-checkout",
-//                    plugin_dir_url(__FILE__) . "assets/js/checkout.js",
-//                    ["jquery"],
-//                    "1.0.0",
-//                    true
-//                );
-//                debug('enqueue reeact scripts');
-//                debug($reactDirectory . "/main.js");
+                wp_localize_script('openpix-checkout', 'wcOpenpixParams', [
+                    'appID' => $this->appID,
+                ]);
             }
         }
 
         public function init_form_fields()
         {
             $this->form_fields = [
-                "AppID" => [
-                    "title" => "AppID OpenPix",
-                    "type" => "text",
-                    "description" => "AppID OpenPix",
-                    "default" => "",
+                'enabled' => [
+                    'title' => __('Enable/Disable', 'woocommerce-openpix'),
+                    'type' => 'checkbox',
+                    'label' => __('Enable OpenPix', 'woocommerce-openpix'),
+                    'default' => 'no',
+                ],
+                'appID' => [
+                    'title' => 'AppID OpenPix',
+                    'type' => 'text',
+                    'description' => 'AppID OpenPix',
+                    'default' => '',
                 ],
             ];
+        }
+
+        public function is_available()
+        {
+            return parent::is_available() && !empty($this->appID);
         }
 
         public function payment_fields()
@@ -125,36 +136,33 @@ function woocommerce_openpix_init()
 
         public function process_payment($order_id)
         {
-            wc_add_notice( 'not implemented', 'error' );
+            wc_add_notice('not implemented', 'error');
 
-            return array(
+            return [
                 'result' => 'fail',
-            );
+            ];
 
             global $woocommerce;
 
-            $order = wc_get_order( $order_id );
+            $order = wc_get_order($order_id);
 
             debug('process payment');
             debug(print_r($order, true));
 
             $woocommerce->cart->empty_cart();
 
-            return array(
+            return [
                 'result' => 'success',
-                'redirect' => $this->get_return_url( $order )
-            );
+                'redirect' => $this->get_return_url($order),
+            ];
         }
     }
 
     //cria o gateway
     function woocommerce_add_openpix($methods)
     {
-        $methods[] = "WC_OpenPix_Gateway";
+        $methods[] = 'WC_OpenPix_Gateway';
         return $methods;
     }
-    add_filter(
-        "woocommerce_payment_gateways",
-        "woocommerce_add_openpix"
-    );
+    add_filter('woocommerce_payment_gateways', 'woocommerce_add_openpix');
 }
