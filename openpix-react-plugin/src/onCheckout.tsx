@@ -9,6 +9,7 @@ import App, { AppProps } from './App';
 
 type WCOpenPixParams = {
   appID: string;
+  storeName: string;
 };
 
 declare global {
@@ -46,12 +47,21 @@ export const onCheckout = () => {
   // value
   // description
 
+  const form = $('form.checkout, form#order_review');
+  const inlineData = $('#openpix-checkout-params', form);
+
   const { wcOpenpixParams } = window;
+
+  // eslint-disable-next-line
+  console.log({
+    wcOpenpixParams,
+    total: inlineData.data('total'),
+  });
 
   const props: AppProps = {
     onSuccess,
-    value: 1,
-    description: 'Woocommerce',
+    value: inlineData.data('total'),
+    description: wcOpenpixParams.storeName,
     customer: null,
     appID: wcOpenpixParams.appID,
   };
