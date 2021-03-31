@@ -44,6 +44,8 @@ function woo_openpix_plugin_init()
 
     class Woo_OpenPix_Gateway extends WC_Payment_Gateway
     {
+        const VERSION = '1.0.0';
+
         public function __construct()
         {
             $this->id = "woo_openpix_plugin";
@@ -80,7 +82,9 @@ function woo_openpix_plugin_init()
                                 wp_enqueue_script(
                                     "openpix-checkout2",
                                     $reactDirectory . "/main.js",
-                                    [], null
+                                    array( 'jquery', 'jquery-blockui'),
+                                    Woo_OpenPix_Gateway::VERSION,
+                                    true,
                                 );
 
 //                wp_enqueue_script(
@@ -90,8 +94,8 @@ function woo_openpix_plugin_init()
 //                    "1.0.0",
 //                    true
 //                );
-                debug('enqueue reeact scripts');
-                debug($reactDirectory . "/main.js");
+//                debug('enqueue reeact scripts');
+//                debug($reactDirectory . "/main.js");
             }
         }
 
@@ -113,21 +117,23 @@ function woo_openpix_plugin_init()
                 echo wp_kses_post(wpautop(wptexturize($description)));
             }
 
-            debug('payment fields');
-            debug(print_r($description));
-            debug(print_r($this->get_description()));
+            echo '<div></div>';
         }
 
         public function process_payment($order_id)
         {
+            wc_add_notice( 'not implemented', 'error' );
+
+            return array(
+                'result' => 'fail',
+            );
+
             global $woocommerce;
-            $order2 = new WC_Order( $order_id );
 
             $order = wc_get_order( $order_id );
 
             debug('process payment');
             debug(print_r($order, true));
-            debug(print_r($order2, true));
 
             $woocommerce->cart->empty_cart();
 
