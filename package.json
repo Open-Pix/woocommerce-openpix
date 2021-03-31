@@ -1,21 +1,21 @@
 {
-  "name": "openpix-plugin-wp",
+  "name": "woocommerce_openpix",
   "version": "1.0.0",
-  "main": "index.js",
-  "license": "MIT",
   "dependencies": {
     "@material-ui/core": "4.11.3",
     "@material-ui/icons": "4.11.2",
     "@material-ui/styles": "4.11.3",
     "core-js": "^3.9.1",
     "isomorphic-fetch": "^3.0.0",
+    "jquery": "3.6.0",
+    "koa": "2.13.1",
+    "koa-static": "5.0.0",
     "qrcode.react": "^1.0.1",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "rebass": "^4.0.7",
     "styled-components": "^5.2.1",
-    "styled-system": "^5.1.5",
-    "jquery": "3.6.0"
+    "styled-system": "^5.1.5"
   },
   "devDependencies": {
     "@babel/cli": "7.13.0",
@@ -37,6 +37,8 @@
     "@types/core-js": "^2.5.4",
     "@types/dotenv-safe": "^8.1.1",
     "@types/dotenv-webpack": "^5.0.0",
+    "@types/eslint": "6.8.0",
+    "@types/eslint-plugin-prettier": "^3.1.0",
     "@types/hard-source-webpack-plugin": "1.0.1",
     "@types/isomorphic-fetch": "^0.0.35",
     "@types/jquery": "3.5.5",
@@ -51,19 +53,44 @@
     "@types/unused-files-webpack-plugin": "3.4.0",
     "@types/webpack-dev-server": "3.11.1",
     "@types/webpack-plugin-serve": "1.2.0",
+    "@typescript-eslint/eslint-plugin": "3.10.1",
+    "@typescript-eslint/parser": "3.10.1",
     "@webpack-cli/serve": "1.3.0",
     "autodll-webpack-plugin": "^0.4.2",
     "babel-loader": "8.2.2",
     "cache-loader": "4.1.0",
+    "cross-env": "7.0.3",
     "css-loader": "^5.1.1",
     "dotenv-safe": "^8.2.0",
     "dotenv-webpack": "^6.0.2",
+    "eslint": "6.8.0",
+    "eslint-config-airbnb": "17.1.0",
+    "eslint-config-okonet": "7.0.2",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-config-shellscape": "3.0.0",
+    "eslint-import-resolver-lerna": "^2.0.0",
+    "eslint-import-resolver-typescript": "2.3.0",
+    "eslint-import-resolver-webpack": "0.13.0",
+    "eslint-plugin-cypress": "2.2.1",
+    "eslint-plugin-flowtype": "4.7.0",
+    "eslint-plugin-import": "2.22.1",
+    "eslint-plugin-jsx-a11y": "6.4.1",
+    "eslint-plugin-no-only-tests": "2.4.0",
+    "eslint-plugin-node": "11.1.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "eslint-plugin-react": "7.22.0",
+    "eslint-plugin-react-hooks": "4.2.0",
+    "eslint-plugin-relay": "1.8.1",
+    "eslint-plugin-typescript": "0.14.0",
     "hard-source-webpack-plugin": "0.13.1",
     "html-webpack-plugin": "5.2.0",
+    "husky": "^6.0.0",
+    "lint-staged": "10.5.4",
     "prettier": "^2.2.1",
     "react-refresh": "0.9.0",
     "style-loader": "2.0.0",
     "terser-webpack-plugin": "5.1.1",
+    "typescript": "^4.2.3",
     "unused-files-webpack-plugin": "3.4.0",
     "webpack": "5.24.2",
     "webpack-cli": "4.5.0",
@@ -71,8 +98,27 @@
     "webpack-merge": "5.7.3",
     "webpack-plugin-serve": "1.3.0"
   },
+  "license": "MIT",
+  "lint-staged": {
+    "*.{js,ts,tsx}": [
+      "yarn prettier",
+      "eslint --fix"
+    ],
+    "*.yml": [
+      "prettier --write"
+    ],
+    "*.php": [
+      "prettier --write"
+    ]
+  },
+  "main": "index.js",
   "scripts": {
-    "start": "webpack serve --hot --config webpack.config.js --progress",
-    "prettier": "prettier --write"
+    "build:prod": "cross-env NODE_ENV=production webpack --config webpack.prod.config.js --progress",
+    "build:staging": "cross-env NODE_ENV=production webpack --config webpack.staging.config.js --progress",
+    "lint": "eslint --ext .ts --ext .tsx 'openpix-react-plugin/src/**'",
+    "prepare": "husky install",
+    "prettier": "prettier --write",
+    "serve": "node server.js",
+    "start": "webpack serve --hot --config webpack.config.js --progress"
   }
 }

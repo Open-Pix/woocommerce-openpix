@@ -1,9 +1,13 @@
 <?php
-
-/*
- * Plugin Name: Woocommerce OpenPix Plugin
- * Description: Woocommerce OpenPix Plugin
+/**
+ * Plugin Name: OpenPix for WooCommerce
+ * Description: Gateway de pagamento OpenPix para WooCommerce
+ * Author: OpenPix
+ * Author URI: https://openpix.com.br/
  * Version: 1.0.0
+ * Text Domain: woocommerce-openpix
+ *
+ * @package WooCommerce_OpenPix
  */
 
 if (!defined("ABSPATH")) {
@@ -19,11 +23,11 @@ if (
         apply_filters("active_plugins", get_option("active_plugins"))
     )
 ) {
-    define("WOO_OPENPIX_PLUGIN", untrailingslashit(plugin_dir_path(__FILE__)));
-    define("WOO_OPENPIX_PLUGIN_ARQUIVO", __FILE__);
+    define("WOOCOMMERCE_OPENPIX_PLUGIN", untrailingslashit(plugin_dir_path(__FILE__)));
+    define("WOOCOMMERCE_OPENPIX_PLUGIN_ARQUIVO", __FILE__);
 
     // init plugin
-    add_action("plugins_loaded", "woo_openpix_plugin_init", 0);
+    add_action("plugins_loaded", "woocommerce_openpix_init", 0);
 }
 
 function get_templates_path()
@@ -32,23 +36,23 @@ function get_templates_path()
 }
 
 
-function woo_openpix_plugin_init()
+function woocommerce_openpix_init()
 {
     function debug($message) {
         $logger = wc_get_logger();
         $context = array(
-            'source'  => 'wc_openpix',
+            'source'  => 'woocommerce_openpix',
         );
         $logger->debug($message, $context);
     }
 
-    class Woo_OpenPix_Gateway extends WC_Payment_Gateway
+    class WC_OpenPix_Gateway extends WC_Payment_Gateway
     {
         const VERSION = '1.0.0';
 
         public function __construct()
         {
-            $this->id = "woo_openpix_plugin";
+            $this->id = "woocommerce_openpix";
             $this->method_title = "Pagar com OpenPix";
             $this->method_description = "WooCommerce OpenPix Payment Gateway";
             $this->title = "Pagar com OpenPix";
@@ -75,7 +79,6 @@ function woo_openpix_plugin_init()
             if (is_checkout()) {
                 $reactDirectory = join(DIRECTORY_SEPARATOR, [
                     plugin_dir_url(__FILE__),
-                    "openpix-react-plugin",
                     "build",
                 ]);
 
@@ -83,7 +86,7 @@ function woo_openpix_plugin_init()
                                     "openpix-checkout2",
                                     $reactDirectory . "/main.js",
                                     array( 'jquery', 'jquery-blockui'),
-                                    Woo_OpenPix_Gateway::VERSION,
+                                    WC_OpenPix_Gateway::VERSION,
                                     true,
                                 );
 
@@ -145,13 +148,13 @@ function woo_openpix_plugin_init()
     }
 
     //cria o gateway
-    function woocommerce_add_woo_openpix_plugin($methods)
+    function woocommerce_add_openpix($methods)
     {
-        $methods[] = "Woo_OpenPix_Gateway";
+        $methods[] = "WC_OpenPix_Gateway";
         return $methods;
     }
     add_filter(
         "woocommerce_payment_gateways",
-        "woocommerce_add_woo_openpix_plugin"
+        "woocommerce_add_openpix"
     );
 }

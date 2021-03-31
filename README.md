@@ -1,4 +1,4 @@
-## OpenPix Woocommerce Plugin
+## OpenPix for WooCommerce
 
 ## LocalWP
 You can run your Wordpress in many ways
@@ -23,6 +23,5 @@ It has a `woo-openpix-plugin.php` file that will render a basic html template an
 ## How to run
 Start webpack and enjoy hot reload with fast refresh
 ```jsx
-cd openpix-react-plugin
 yarn start
 ````

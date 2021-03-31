@@ -1,9 +1,10 @@
 import { StrictMode } from 'react';
 import { render } from 'react-dom';
+
 // import * as $ from "jquery";
 import $ from './jquery';
 
-import App, {AppProps} from './App';
+import App, { AppProps } from './App';
 import { getHostNode } from './getHostNode';
 // import {hijackClickReact} from "./hijackClickReact";
 import { hijackClickJQuery } from './hijackClickJQuery';

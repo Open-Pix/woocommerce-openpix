@@ -2,9 +2,11 @@
 import $ from './jquery';
 import * as formSubmit from './formSubmit';
 
+const paymentMethodID = 'woocommerce_openpix';
+
 // validate if openpix method is selected
 const isOpenPixMethod = (): boolean => {
-  return $('#payment_method_woo_openpix_plugin').is(':checked');
+  return $(`#payment_method_${paymentMethodID}`).is(':checked');
 };
 
 export const hijackClickJQuery = (onClick: () => boolean) => {
@@ -33,8 +35,6 @@ export const hijackClickJQuery = (onClick: () => boolean) => {
 
       return false;
     }
-
-    const paymentMethodID = 'woo_openpix_plugin';
 
     $('form.checkout').on('click', '#place_order', function (evt) {
       if (isCheckoutInvalid()) {

@@ -92,16 +92,16 @@ const App = ({
 
   return (
     <Flex
-      mt="80px"
-      mb="80px"
-      alignItems="center"
-      justifyContent="center"
-      flexDirection="column"
-      minHeight="250px"
+      mt='80px'
+      mb='80px'
+      alignItems='center'
+      justifyContent='center'
+      flexDirection='column'
+      minHeight='250px'
     >
       <Button
-        variant="outlined"
-        color="primary"
+        variant='outlined'
+        color='primary'
         onClick={onClick}
         endIcon={<ShoppingCartIcon />}
       >
