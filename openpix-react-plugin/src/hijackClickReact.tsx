@@ -1,6 +1,6 @@
-import HijackClick from "./HijackClick";
-import {render} from "react-dom";
-import {getHostNode} from "./getHostNode";
+import HijackClick from './HijackClick';
+import { render } from 'react-dom';
+import { getHostNode } from './getHostNode';
 import { StrictMode } from 'react';
 
 export const hijackClickReact = (onClick) => {
@@ -9,11 +9,11 @@ export const hijackClickReact = (onClick) => {
   render(
     <StrictMode>
       <HijackClick
-        selector='form.checkout #place_order'
+        selector="form.checkout #place_order"
         onClick={onClick}
-        event='click'
-        />
+        event="click"
+      />
     </StrictMode>,
     host,
-  )
-}
+  );
+};

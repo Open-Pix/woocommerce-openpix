@@ -15,10 +15,24 @@ const Button = styled.button`
 export const getDefaultTransactionId = () =>
   uuidv4().toString().replace(/-/g, '');
 
-export type AppProps = {
-  onSuccess: () => void,
+type Customer = {
+  name: string,
+  email: string,
+  taxID: string,
+  phone: string,
 }
-const App = ({ onSuccess }: AppProps) => {
+export type AppProps = {
+  onSuccess: (correlationID: string) => void;
+  value: number,
+  description?: string,
+  customer?: Customer,
+};
+const App = ({
+               onSuccess,
+  value,
+  description,
+  customer,
+}: AppProps) => {
   // generate a new transactionID on mount
   const [correlationID, setCorrelationID] = useState(() =>
     getDefaultTransactionId(),
@@ -30,9 +44,11 @@ const App = ({ onSuccess }: AppProps) => {
     window.$openpix.push([
       'pix',
       {
-        value: 1,
         correlationID,
-        description: 'OpenPix Demo',
+        value,
+        description,
+        customer,
+        closeOnSuccess: true,
       },
     ]);
   };
@@ -56,9 +72,12 @@ const App = ({ onSuccess }: AppProps) => {
 
         if (e.type === 'PAYMENT_STATUS') {
           if (e.data.status === 'COMPLETED') {
-            setCorrelationID(getDefaultTransactionId());
+            // setCorrelationID(getDefaultTransactionId());
 
-            onSuccess && onSuccess();
+            window.$openpix.push([
+              'close',
+            ]);
+            onSuccess && onSuccess(correlationID);
           }
         }
       };
@@ -73,16 +92,16 @@ const App = ({ onSuccess }: AppProps) => {
 
   return (
     <Flex
-      mt='80px'
-      mb='80px'
-      alignItems='center'
-      justifyContent='center'
-      flexDirection='column'
-      minHeight='250px'
+      mt="80px"
+      mb="80px"
+      alignItems="center"
+      justifyContent="center"
+      flexDirection="column"
+      minHeight="250px"
     >
       <Button
-        variant='outlined'
-        color='primary'
+        variant="outlined"
+        color="primary"
         onClick={onClick}
         endIcon={<ShoppingCartIcon />}
       >

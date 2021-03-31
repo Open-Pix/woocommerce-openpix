@@ -5,8 +5,8 @@ export const getHostNode = (id: string) => {
     return hostNodes[0];
   }
 
-  const hostDiv = document.createElement("div");
-  hostDiv.setAttribute("id", id);
+  const hostDiv = document.createElement('div');
+  hostDiv.setAttribute('id', id);
 
   document.documentElement.appendChild(hostDiv);
 
