@@ -15,9 +15,9 @@ if (!defined('ABSPATH')) {
 }
 
 // change this to work in development, staging or production
-define(OPENPIX_ENV, 'development');
-//define(OPENPIX_ENV, 'staging');
-//define(OPENPIX_ENV, 'production');
+define('OPENPIX_ENV', 'development');
+//define('OPENPIX_ENV', 'staging');
+//define('OPENPIX_ENV', 'production');
 
 /**
  * Check if WooCommerce is active
@@ -39,11 +39,13 @@ function get_templates_path()
 
 function woocommerce_openpix_init()
 {
-    if ( !class_exists( 'WC_Payment_Gateway' ) ) return;
+    if (!class_exists('WC_Payment_Gateway')) {
+        return;
+    }
 
     // WooCommerce exist
-    if ( !class_exists( 'WC_OpenPix_Gateway' ) ) {
-        include_once dirname( __FILE__ ) . '/includes/class-wc-openpix.php';
+    if (!class_exists('WC_OpenPix_Gateway')) {
+        include_once dirname(__FILE__) . '/includes/class-wc-openpix.php';
     }
 
     //cria o gateway
