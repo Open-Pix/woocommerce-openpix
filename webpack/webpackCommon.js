@@ -5,7 +5,7 @@ const { merge } = require('webpack-merge');
 const webpack = require('webpack');
 
 const cwd = process.cwd();
-const outputPath = path.join(cwd, 'build');
+const outputPath = path.join(cwd, 'assets/js');
 
 const now = new Date();
 const buildTimeStamp = now.toISOString();
@@ -13,7 +13,7 @@ const buildTimeStamp = now.toISOString();
 const common = {
   mode: 'production',
   context: path.resolve(cwd, './'),
-  entry: ['./openpix-react-plugin/src/index.tsx'],
+  entry: ['./checkout/src/index.tsx'],
   output: {
     path: outputPath,
     publicPath: '/',

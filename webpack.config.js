@@ -13,7 +13,7 @@ module.exports = {
   mode: 'development',
   devtool: 'cheap-module-source-map',
   context: path.resolve(cwd, './'),
-  entry: ['./openpix-react-plugin/src/index.tsx'],
+  entry: ['./checkout/src/index.tsx'],
   output: {
     path: outputPath,
     publicPath: '/',
