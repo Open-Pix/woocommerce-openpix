@@ -1,3 +1,5 @@
+// import * as $ from 'jquery';
+
 declare global {
   interface Window {
     jQuery: JQueryStatic;
