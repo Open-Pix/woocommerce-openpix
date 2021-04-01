@@ -7,7 +7,7 @@ import { useOpenPix } from './useOpenPix';
 export const getDefaultTransactionId = () =>
   uuidv4().toString().replace(/-/g, '');
 
-type Customer = {
+export type Customer = {
   name: string;
   email: string;
   taxID: string;
@@ -20,7 +20,13 @@ export type AppProps = {
   customer?: Customer;
   appID: string;
 };
-const App = ({ onSuccess, value, description, customer, appID }: AppProps) => {
+const Checkout = ({
+  onSuccess,
+  value,
+  description,
+  customer,
+  appID,
+}: AppProps) => {
   // generate a new transactionID on mount
   // eslint-disable-next-line
   const [correlationID, setCorrelationID] = useState(() =>
@@ -69,4 +75,4 @@ const App = ({ onSuccess, value, description, customer, appID }: AppProps) => {
   return null;
 };
 
-export default App;
+export default Checkout;
