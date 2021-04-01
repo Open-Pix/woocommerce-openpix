@@ -55,3 +55,7 @@ lerna-debug.log
 
 .cache
 .webpack
+
+# discuss about saving generated assets on git
+assets/js/*.js
+assets/js/*.txt
