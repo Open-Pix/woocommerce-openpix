@@ -37,6 +37,9 @@ class WC_OpenPix_Gateway extends WC_Payment_Gateway
         $this->title = $this->get_option('title');
         $this->order_button_text = $this->get_option('order_button_text');
         $this->appID = $this->get_option('appID');
+        $this->webhookAuthorization = $this->get_option(
+            'webhook_authorization'
+        );
 
         add_action('woocommerce_update_options_payment_gateways_' . $this->id, [
             $this,
@@ -45,6 +48,170 @@ class WC_OpenPix_Gateway extends WC_Payment_Gateway
 
         // inject openpix react
         add_action('wp_enqueue_scripts', [$this, 'checkout_scripts']);
+        add_action('woocommerce_api_wc_openpix_gateway', [
+            $this,
+            'ipn_handler',
+        ]);
+
+        //        $ipn = str_replace(
+        //            'https:',
+        //            'http:',
+        //            add_query_arg('wc-api', 'WC_OpenPix_Gateway', home_url('/'))
+        //        );
+        //        debug('ipn: ' . $ipn);
+        //
+        //        $correlationID = '8d6df0db26ed49f9a6953c89aaabdea4';
+        //        $url =
+        //            $this->getOpenPixApiUrl() .
+        //            '/api/openpix/v1/charge/' .
+        //            $correlationID;
+        //        debug('url');
+        //        debug($url);
+        //        debug('api: ' . WC()->api_request_url(get_class($this)));
+        //        debug('awesome');
+
+        //        $params = [
+        //            'timeout' => 60,
+        //            'headers' => [
+        //                'Accept' => 'application/json',
+        //                'Content-Type' => 'application/json',
+        //                'Authorization' => $this->appID,
+        //            ],
+        //        ];
+
+        //        $response = wp_safe_remote_get($url, $params);
+        //        $response = wp_remote_get($url, $params);
+        //        $data = json_decode( $response['body'], true );
+        //
+        //        $body = wp_remote_retrieve_body($response);
+        //
+        //        debug($body);
+        //        debug(print_r($data));
+        //        debug($data['charge']['status']);
+    }
+
+    public function isValidTestWebhookPayload($data)
+    {
+        if (isset($data['evento'])) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function isValidWebhookPayload($data)
+    {
+        if (!isset($data['charge'])) {
+            return false;
+        }
+
+        if (!isset($data['pix'])) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function getAuthorization()
+    {
+        if (array_key_exists('HTTP_AUTHORIZATION', $_SERVER)) {
+            return $_SERVER['HTTP_AUTHORIZATION'];
+        }
+
+        if (array_key_exists('Authorization', $_SERVER)) {
+            return $_SERVER['Authorization'];
+        }
+
+        return '';
+    }
+
+    public function ipn_handler()
+    {
+        @ob_clean();
+
+        $body = file_get_contents('php://input', true);
+        $data = json_decode($body, true);
+
+        $authorization = $this->getAuthorization();
+
+        if ($authorization !== $this->webhookAuthorization) {
+            header('HTTP/1.2 400 Bad Request');
+            $response = [
+                'error' => 'Invalid Webhook Authorization',
+            ];
+            echo json_encode($response);
+            exit();
+        }
+
+        if ($this->isValidTestWebhookPayload($data)) {
+            header('HTTP/1.1 200 OK');
+
+            $response = [
+                'message' => 'success',
+            ];
+            echo json_encode($response);
+            exit();
+        }
+
+        if (!$this->isValidWebhookPayload($data)) {
+            header('HTTP/1.2 400 Bad Request');
+            $response = [
+                'error' => 'Invalid Webhook Payload',
+            ];
+            echo json_encode($response);
+            exit();
+        }
+
+        global $wpdb;
+        $correlationID = $data['charge']['correlationID'];
+        $status = $data['charge']['status'];
+
+        $orders = wc_get_orders([
+            'openpix_correlation_id' => $correlationID,
+        ]);
+
+        if (count($orders) === 0) {
+            header('HTTP/1.2 400 Bad Request');
+            $response = [
+                'error' => 'Order not found',
+            ];
+            echo json_encode($response);
+            exit();
+        }
+
+        $order = $orders[0];
+        $order_id = $order->id;
+
+        if ($order) {
+            if ($status === 'COMPLETED') {
+                if (
+                    !in_array(
+                        $order->get_status(),
+                        ['processing', 'completed'],
+                        true
+                    )
+                ) {
+                    $order->add_order_note(
+                        __('OpenPix: Transaction paid', 'woocommerce-openpix')
+                    );
+                }
+
+                // Changing the order for processing and reduces the stock.
+                $order->payment_complete();
+            }
+        }
+
+        header('HTTP/1.1 200 OK');
+
+        $response = [
+            'message' => 'success',
+            'order_id' => $order_id,
+            'correlationId' => $correlationID,
+            'status' => $status,
+        ];
+
+        echo json_encode($response);
+        exit();
     }
 
     public function get_checkout_js_url()
@@ -103,24 +270,34 @@ class WC_OpenPix_Gateway extends WC_Payment_Gateway
                 'default' => '',
             ],
             'title' => [
-                'title' => __('Title', 'woocommerce_openpix'),
+                'title' => __('Title', 'woocommerce-openpix'),
                 'type' => 'text',
                 'description' => __(
                     'This controls the title which the user sees during checkout.',
-                    'woocommerce_openpix'
+                    'woocommerce-openpix'
                 ),
                 'desc_tip' => true,
-                'default' => __('Pay with Pix', 'woocommerce_openpix'),
+                'default' => __('Pay with Pix', 'woocommerce-openpix'),
             ],
             'order_button_text' => [
-                'title' => __('Order Button Text', 'woocommerce_openpix'),
+                'title' => __('Order Button Text', 'woocommerce-openpix'),
                 'type' => 'text',
                 'description' => __(
                     'This controls the order button payment label.',
-                    'woocommerce_openpix'
+                    'woocommerce-openpix'
                 ),
                 'desc_tip' => true,
-                'default' => __('Pay with Pix', 'woocommerce_openpix'),
+                'default' => __('Pay with Pix', 'woocommerce-openpix'),
+            ],
+            'webhook_authorization' => [
+                'title' => __('Webhook Authorization', 'woocommerce-openpix'),
+                'type' => 'text',
+                'description' => __(
+                    'This will be used to validate Webhook/IPN request calls to approve payments',
+                    'woocommerce-openpix'
+                ),
+                'desc_tip' => true,
+                'default' => '',
             ],
         ];
     }
@@ -163,14 +340,25 @@ class WC_OpenPix_Gateway extends WC_Payment_Gateway
             $this->getOpenPixApiUrl() .
             '/api/openpix/v1/charge/' .
             $correlationID;
-        debug('url: ', $url);
-        //        $response = wp_safe_remote_get($url);
-        //
-        //        $data = json_decode( $response['body'], true );
-        //
-        //        debug('correlation get ' . $correlationID);
-        //        debug(print_r($response));
-        //        debug(print_r($data));
+
+        $params = [
+            'timeout' => 60,
+            'headers' => [
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json',
+                'Authorization' => $this->appID,
+            ],
+        ];
+
+        if (OPENPIX_ENV === 'development') {
+            $response = wp_remote_get($url, $params);
+        } else {
+            $response = wp_safe_remote_get($url, $params);
+        }
+        //        $body = wp_remote_retrieve_body($response);
+        $data = json_decode($response['body'], true);
+
+        // check if correlationID is valid, check if the payment was paid
     }
 
     public function process_payment($order_id)
@@ -181,12 +369,6 @@ class WC_OpenPix_Gateway extends WC_Payment_Gateway
 
         $correlationID = $_POST['openpix_correlation_id'];
         $orderNumber = $order->get_order_number();
-
-        debug(print_r($_POST));
-
-        debug(print_r($order));
-        debug($order_id);
-        debug($orderNumber);
 
         if (empty($correlationID)) {
             wc_add_notice(
@@ -213,15 +395,14 @@ class WC_OpenPix_Gateway extends WC_Payment_Gateway
             $order->save();
         }
 
-        if (
-            !in_array($order->get_status(), ['processing', 'completed'], true)
-        ) {
-            $order->add_order_note(
-                __('OpenPix: Transaction paid.', 'woocommerce-openpix')
-            );
-        }
-        // payment was made using pix instant payment
-        $order->payment_complete($correlationID);
+        // let transaction in hold
+        $order->update_status(
+            'on-hold',
+            __(
+                'OpenPix: The Pix was emitted but not paied yet.',
+                'woocommerce-openpix'
+            )
+        );
 
         // Empty the cart.
         WC()->cart->empty_cart();
