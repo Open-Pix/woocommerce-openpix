@@ -19,6 +19,15 @@ define('OPENPIX_ENV', 'development');
 //define('OPENPIX_ENV', 'staging');
 //define('OPENPIX_ENV', 'production');
 
+function debug($message)
+{
+    $logger = wc_get_logger();
+    $context = [
+        'source' => 'woocommerce_openpix',
+    ];
+    $logger->debug($message, $context);
+}
+
 /**
  * Check if WooCommerce is active
  **/
@@ -32,32 +41,98 @@ if (
     add_action('plugins_loaded', 'woocommerce_openpix_init', 0);
 }
 
-function get_templates_path()
+function get_openpix_templates_path()
 {
     return plugin_dir_path(__FILE__) . 'templates/';
 }
 
 function woocommerce_openpix_init()
 {
-    if (!class_exists('WC_Payment_Gateway')) {
-        return;
+    WC_OpenPix::get_instance();
+}
+
+class WC_OpenPix
+{
+    const VERSION = '1.0.0';
+    const OPENPIX_ENV = 'development';
+    //    const OPENPIX_ENV = 'staging';
+    //    const OPENPIX_ENV = 'production';
+
+    protected static $instance = null;
+
+    private function __construct()
+    {
+        // Check if WooCommerce exist
+        if (!class_exists('WC_Payment_Gateway')) {
+            return;
+        }
+
+        $this->includes();
+
+        add_filter('woocommerce_payment_gateways', [$this, 'add_gateway']);
+        add_action('wp_enqueue_scripts', [$this, 'load_plugin_assets']);
     }
 
-    // WooCommerce exist
-    // disable experimental plugin
-    //    if (!class_exists('WC_OpenPix_Gateway')) {
-    //        include_once dirname(__FILE__) . '/includes/class-wc-openpix.php';
-    //    }
+    public static function get_instance()
+    {
+        // If the single instance hasn't been set, set it now.
+        if (null == self::$instance) {
+            self::$instance = new self();
+        }
 
-    if (!class_exists('WC_OpenPix_Pix_Gateway')) {
+        return self::$instance;
+    }
+
+    private function includes()
+    {
         include_once dirname(__FILE__) . '/includes/class-wc-openpix-pix.php';
     }
 
-    function woocommerce_add_openpix($methods)
+    public function add_gateway($methods)
     {
-        //        $methods[] = 'WC_OpenPix_Gateway';
         $methods[] = 'WC_OpenPix_Pix_Gateway';
+
         return $methods;
     }
-    add_filter('woocommerce_payment_gateways', 'woocommerce_add_openpix');
+
+    public static function get_plugin_path()
+    {
+        return plugin_dir_path(__FILE__);
+    }
+
+    public static function get_templates_path()
+    {
+        return self::get_plugin_path() . 'templates/';
+    }
+
+    function get_assets_url()
+    {
+        return plugin_dir_url(dirname(__FILE__)) . 'assets/';
+    }
+
+    // load javascript and css
+    public function load_plugin_assets()
+    {
+        debug('load assets');
+        debug(wc_openpix_assets_url() . 'thankyou.js');
+
+        wp_register_script(
+            'openpix_frontend_js',
+            wc_openpix_assets_url() . 'thankyou.js',
+            ['jquery'],
+            '1.0',
+            false
+        );
+        wp_register_style(
+            'openpix_frontend_css',
+            wc_openpix_assets_url() . 'thankyou.css',
+            '',
+            '1.0',
+            false
+        );
+
+        // add script and style to screen
+        wp_enqueue_script('openpix_frontend_js');
+        wp_enqueue_style('openpix_frontend_css');
+    }
 }
