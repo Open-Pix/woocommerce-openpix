@@ -44,14 +44,19 @@ function woocommerce_openpix_init()
     }
 
     // WooCommerce exist
-    if (!class_exists('WC_OpenPix_Gateway')) {
-        include_once dirname(__FILE__) . '/includes/class-wc-openpix.php';
+    // disable experimental plugin
+    //    if (!class_exists('WC_OpenPix_Gateway')) {
+    //        include_once dirname(__FILE__) . '/includes/class-wc-openpix.php';
+    //    }
+
+    if (!class_exists('WC_OpenPix_Pix_Gateway')) {
+        include_once dirname(__FILE__) . '/includes/class-wc-openpix-pix.php';
     }
 
-    //cria o gateway
     function woocommerce_add_openpix($methods)
     {
-        $methods[] = 'WC_OpenPix_Gateway';
+        //        $methods[] = 'WC_OpenPix_Gateway';
+        $methods[] = 'WC_OpenPix_Pix_Gateway';
         return $methods;
     }
     add_filter('woocommerce_payment_gateways', 'woocommerce_add_openpix');

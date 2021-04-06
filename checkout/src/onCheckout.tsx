@@ -113,7 +113,7 @@ export const getCustomerFromWoocommerce = (
 
   return {
     name: `${data.billing_first_name} ${data.billing_last_name}`,
-    taxID: data.billing_cpf,
+    taxID,
     phone:
       normalizePhoneNumber(data.billing_cellphone) ||
       normalizePhoneNumber(data.billing_phone),
