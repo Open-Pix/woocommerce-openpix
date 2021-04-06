@@ -16,8 +16,6 @@ function debug($message)
 // experimental plugin that pay before creating order
 class WC_OpenPix_Gateway extends WC_Payment_Gateway
 {
-    const VERSION = '1.0.0';
-
     public function __construct()
     {
         $this->id = 'woocommerce_openpix';
@@ -217,11 +215,11 @@ class WC_OpenPix_Gateway extends WC_Payment_Gateway
 
     public function get_checkout_js_url()
     {
-        if (OPENPIX_ENV === 'development') {
+        if (WC_OpenPix::OPENPIX_ENV === 'development') {
             return plugins_url('build/main.js', plugin_dir_path(__FILE__));
         }
 
-        if (OPENPIX_ENV === 'staging') {
+        if (WC_OpenPix::OPENPIX_ENV === 'staging') {
             return plugins_url(
                 'assets/js/woo-openpix-dev.js',
                 plugin_dir_path(__FILE__)
@@ -242,7 +240,7 @@ class WC_OpenPix_Gateway extends WC_Payment_Gateway
                 'openpix-checkout',
                 $this->get_checkout_js_url(),
                 ['jquery', 'jquery-blockui'],
-                WC_OpenPix_Gateway::VERSION,
+                WC_OpenPix::VERSION,
                 true
             );
 
@@ -323,11 +321,11 @@ class WC_OpenPix_Gateway extends WC_Payment_Gateway
 
     public function getOpenPixApiUrl()
     {
-        if (OPENPIX_ENV === 'development') {
+        if (WC_OpenPix::OPENPIX_ENV === 'development') {
             return 'http://localhost:5001';
         }
 
-        if (OPENPIX_ENV === 'staging') {
+        if (WC_OpenPix::OPENPIX_ENV === 'staging') {
             return 'https://api.openpix.dev';
         }
 
@@ -351,7 +349,7 @@ class WC_OpenPix_Gateway extends WC_Payment_Gateway
             ],
         ];
 
-        if (OPENPIX_ENV === 'development') {
+        if (WC_OpenPix::OPENPIX_ENV === 'development') {
             $response = wp_remote_get($url, $params);
         } else {
             $response = wp_safe_remote_get($url, $params);
