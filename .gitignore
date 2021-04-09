@@ -63,4 +63,4 @@ assets/js/*.txt
 # composer "node_modules"
 vendor
 
-woocommerce-openpix.zip
+woocommerce-openpix*.zip
