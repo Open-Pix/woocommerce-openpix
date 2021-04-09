@@ -14,12 +14,7 @@ if (!defined('ABSPATH')) {
     exit(); // show nothing if someone open this file directly
 }
 
-// change this to work in development, staging or production
-define('OPENPIX_ENV', 'development');
-//define('OPENPIX_ENV', 'staging');
-//define('OPENPIX_ENV', 'production');
-
-function debug($message)
+function openpix_debug($message)
 {
     $logger = wc_get_logger();
     $context = [
@@ -41,11 +36,6 @@ if (
     add_action('plugins_loaded', 'woocommerce_openpix_init', 0);
 }
 
-function get_openpix_templates_path()
-{
-    return plugin_dir_path(__FILE__) . 'templates/';
-}
-
 function woocommerce_openpix_init()
 {
     WC_OpenPix::get_instance();
@@ -54,6 +44,7 @@ function woocommerce_openpix_init()
 class WC_OpenPix
 {
     const VERSION = '1.0.0';
+    // change this to work in development, staging or production
     const OPENPIX_ENV = 'development';
     //    const OPENPIX_ENV = 'staging';
     //    const OPENPIX_ENV = 'production';
@@ -113,9 +104,6 @@ class WC_OpenPix
     // load javascript and css
     public function load_plugin_assets()
     {
-        debug('load assets');
-        debug(wc_openpix_assets_url() . 'thankyou.js');
-
         wp_register_script(
             'openpix_frontend_js',
             wc_openpix_assets_url() . 'thankyou.js',

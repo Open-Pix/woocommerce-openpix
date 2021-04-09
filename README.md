@@ -25,3 +25,9 @@ Start webpack and enjoy hot reload with fast refresh
 ```jsx
 yarn start
 ````
+
+## How to generate a new .zip version?
+
+```shell
+./pack.sh
+```

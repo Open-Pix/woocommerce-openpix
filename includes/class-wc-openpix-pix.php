@@ -78,9 +78,6 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         ]);
 
         $checkout = $this->get_checkout_js_url();
-
-        debug('checkout');
-        debug($checkout);
     }
 
     public function get_checkout_js_url()
@@ -323,9 +320,6 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
         $correlationID = uuid_v4();
 
-        // create charge based on correlation ID
-        debug(print_r($_POST));
-
         $url = $this->getOpenPixApiUrl() . '/api/openpix/v1/charge';
 
         $cart_total = $this->get_order_total();
@@ -373,8 +367,6 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             'data_format' => 'body',
         ];
 
-        debug(print_r($params));
-
         if (WC_OpenPix::OPENPIX_ENV === 'development') {
             $response = wp_remote_post($url, $params);
         } else {
@@ -389,7 +381,6 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         }
 
         $data = json_decode($response['body'], true);
-        debug(print_r($response));
 
         $meta_data = [
             'openpix_correlation_id' => $correlationID,
