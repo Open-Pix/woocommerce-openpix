@@ -1,5 +1,5 @@
 {
-  "name": "woocommerce_openpix",
+  "name": "woocommerce-openpix",
   "version": "1.0.0",
   "dependencies": {
     "@material-ui/core": "4.11.3",

@@ -4,15 +4,6 @@ if (!defined('ABSPATH')) {
     exit();
 }
 
-function debug($message)
-{
-    $logger = wc_get_logger();
-    $context = [
-        'source' => 'woocommerce_openpix',
-    ];
-    $logger->debug($message, $context);
-}
-
 // experimental plugin that pay before creating order
 class WC_OpenPix_Gateway extends WC_Payment_Gateway
 {
@@ -57,17 +48,17 @@ class WC_OpenPix_Gateway extends WC_Payment_Gateway
         //            'http:',
         //            add_query_arg('wc-api', 'WC_OpenPix_Gateway', home_url('/'))
         //        );
-        //        debug('ipn: ' . $ipn);
+        //        openpix_debug('ipn: ' . $ipn);
         //
         //        $correlationID = '8d6df0db26ed49f9a6953c89aaabdea4';
         //        $url =
         //            $this->getOpenPixApiUrl() .
         //            '/api/openpix/v1/charge/' .
         //            $correlationID;
-        //        debug('url');
-        //        debug($url);
-        //        debug('api: ' . WC()->api_request_url(get_class($this)));
-        //        debug('awesome');
+        //        openpix_debug('url');
+        //        openpix_debug($url);
+        //        openpix_debug('api: ' . WC()->api_request_url(get_class($this)));
+        //        openpix_debug('awesome');
 
         //        $params = [
         //            'timeout' => 60,
@@ -84,9 +75,9 @@ class WC_OpenPix_Gateway extends WC_Payment_Gateway
         //
         //        $body = wp_remote_retrieve_body($response);
         //
-        //        debug($body);
-        //        debug(print_r($data));
-        //        debug($data['charge']['status']);
+        //        openpix_debug($body);
+        //        openpix_debug(print_r($data));
+        //        openpix_debug($data['charge']['status']);
     }
 
     public function isValidTestWebhookPayload($data)
