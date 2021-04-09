@@ -122,6 +122,12 @@
     "*.yml": [
       "prettier --write"
     ],
+    "*.html": [
+      "prettier --write"
+    ],
+    "*.css": [
+      "prettier --write"
+    ],
     "*.php": [
       "prettier --write"
     ]
