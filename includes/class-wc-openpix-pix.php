@@ -380,6 +380,21 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             ];
         }
 
+        if ($response['response']['code'] === 401) {
+            wc_add_notice(__('Invalid AppID', 'woocommerce-openpix'));
+            return [
+                'result' => 'fail',
+            ];
+        }
+
+        if ($response['response']['code'] !== 200) {
+            wc_add_notice(__('Error creating Pix', 'woocommerce-openpix'));
+            wc_add_notice($response['body']);
+            return [
+                'result' => 'fail',
+            ];
+        }
+
         $data = json_decode($response['body'], true);
 
         $meta_data = [
