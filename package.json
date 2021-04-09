@@ -16,7 +16,8 @@
     "react-dom": "17.0.1",
     "rebass": "^4.0.7",
     "styled-components": "^5.2.1",
-    "styled-system": "^5.1.5"
+    "styled-system": "^5.1.5",
+    "vite": "2.1.5"
   },
   "devDependencies": {
     "@babel/cli": "7.13.0",
@@ -27,6 +28,7 @@
     "@babel/plugin-proposal-nullish-coalescing-operator": "7.13.8",
     "@babel/plugin-proposal-optional-chaining": "7.13.8",
     "@babel/plugin-transform-react-jsx-source": "7.12.13",
+    "@babel/plugin-transform-runtime": "^7.13.10",
     "@babel/plugin-transform-typescript": "7.13.0",
     "@babel/preset-env": "7.13.8",
     "@babel/preset-react": "7.12.13",
@@ -68,7 +70,6 @@
     "autodll-webpack-plugin": "^0.4.2",
     "babel-jest": "^26.6.3",
     "babel-loader": "8.2.2",
-    "@babel/plugin-transform-runtime": "^7.13.10",
     "cache-loader": "4.1.0",
     "cross-env": "7.0.3",
     "css-loader": "^5.1.1",
@@ -130,6 +131,7 @@
     "build:prod": "cross-env NODE_ENV=production webpack --config webpack.prod.config.js --progress",
     "build:staging": "cross-env NODE_ENV=production webpack --config webpack.staging.config.js --progress",
     "lint": "eslint --ext .ts --ext .tsx 'checkout/src/**'",
+    "order": "vite order",
     "prepare": "husky install",
     "prettier": "prettier --write",
     "serve": "node server.js",
