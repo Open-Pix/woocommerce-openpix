@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: OpenPix for WooCommerce\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-01 19:50+0000\n"
-"PO-Revision-Date: 2021-04-01 19:54+0000\n"
+"PO-Revision-Date: 2021-04-09 19:40+0000\n"
 "Last-Translator: \n"
 "Language-Team: Portuguese (Brazil)\n"
 "Language: pt_BR\n"
@@ -15,43 +15,92 @@ msgstr ""
 "X-Loco-Version: 2.5.2; wp-5.7\n"
 "X-Domain: woocommerce-openpix"
 
-#: includes/class-wc-openpix.php:96
+#: includes/class-wc-openpix.php:257 includes/class-wc-openpix-pix.php:244
 msgid "AppID OpenPix"
 msgstr ""
 
-#: includes/class-wc-openpix.php:92
-msgid "Enable OpenPix"
-msgstr ""
+#: includes/class-wc-openpix-pix.php:260
+msgid "Description"
+msgstr "Descrição"
 
-#: includes/class-wc-openpix.php:90
+#: includes/class-wc-openpix.php:253 includes/class-wc-openpix-pix.php:240
+msgid "Enable OpenPix"
+msgstr "Habilitar OpenPix"
+
+#: includes/class-wc-openpix.php:251 includes/class-wc-openpix-pix.php:238
 msgid "Enable/Disable"
-msgstr ""
+msgstr "Habilitar/Desabilitar"
+
+#: includes/class-wc-openpix-pix.php:377
+msgid "Error creating Pix"
+msgstr "Erro ao criar Pix"
 
 #. Description of the plugin
 msgid "Gateway de pagamento OpenPix para WooCommerce"
-msgstr ""
+msgstr "Gateway de pagamento OpenPix para WooCommerce"
 
 #. Author URI of the plugin
 msgid "https://openpix.com.br/"
-msgstr ""
+msgstr "https://openpix.com.br/"
 
-#: includes/class-wc-openpix.php:177
+#: includes/class-wc-openpix.php:365
 msgid "Missing OpenPix payment information"
-msgstr ""
+msgstr "Informações de pagamento OpenPix ausentes"
 
 #. Author of the plugin
-#: includes/class-wc-openpix.php:23
+#: includes/class-wc-openpix.php:13 includes/class-wc-openpix-pix.php:46
 msgid "OpenPix"
-msgstr ""
+msgstr "OpenPix"
 
 #. Name of the plugin
 msgid "OpenPix for WooCommerce"
-msgstr ""
+msgstr "OpenPix para WooCommerce"
 
-#: includes/class-wc-openpix.php:196
-msgid "OpenPix: Transaction paid."
-msgstr ""
+#: includes/class-wc-openpix.php:391 includes/class-wc-openpix-pix.php:410
+msgid "OpenPix: The Pix was emitted but not paied yet."
+msgstr "OpenPix: O Pix foi emitido, mas ainda não foi pago."
 
-#: includes/class-wc-openpix.php:24
+#: includes/class-wc-openpix.php:185 includes/class-wc-openpix-pix.php:211
+msgid "OpenPix: Transaction paid"
+msgstr "OpenPix: transação paga"
+
+#: includes/class-wc-openpix.php:273 includes/class-wc-openpix-pix.php:270
+msgid "Order Button Text"
+msgstr "Texto do botão de pedido"
+
+#: includes/class-wc-openpix.php:270 includes/class-wc-openpix.php:280
+#: includes/class-wc-openpix-pix.php:257 includes/class-wc-openpix-pix.php:267
+#: includes/class-wc-openpix-pix.php:277
+msgid "Pay with Pix"
+msgstr "Pague com Pix"
+
+#: includes/class-wc-openpix-pix.php:262
+msgid "This controls the description which the user sees during checkout."
+msgstr "Isso controla a descrição que o usuário vê durante o checkout."
+
+#: includes/class-wc-openpix.php:275 includes/class-wc-openpix-pix.php:272
+msgid "This controls the order button payment label."
+msgstr "Isso controla a etiqueta de pagamento do botão de pedido."
+
+#: includes/class-wc-openpix.php:265 includes/class-wc-openpix-pix.php:252
+msgid "This controls the title which the user sees during checkout."
+msgstr "Isso controla o título que o usuário vê durante o checkout."
+
+#: includes/class-wc-openpix.php:285 includes/class-wc-openpix-pix.php:282
+msgid ""
+"This will be used to validate Webhook/IPN request calls to approve payments"
+msgstr ""
+"Isso será usado para validar as chamadas de solicitação de Webhook / IPN "
+"para aprovar o pagamento"
+
+#: includes/class-wc-openpix.php:263 includes/class-wc-openpix-pix.php:250
+msgid "Title"
+msgstr "Título"
+
+#: includes/class-wc-openpix.php:283 includes/class-wc-openpix-pix.php:280
+msgid "Webhook Authorization"
+msgstr "Autorização de webhook"
+
+#: includes/class-wc-openpix.php:14 includes/class-wc-openpix-pix.php:47
 msgid "WooCommerce OpenPix Payment Gateway"
-msgstr ""
+msgstr "Gateway de pagamento OpenPix para WooCommerce"
