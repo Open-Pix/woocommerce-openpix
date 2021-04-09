@@ -76,33 +76,6 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             $this,
             'thankyou_page',
         ]);
-
-        $checkout = $this->get_checkout_js_url();
-    }
-
-    public function get_checkout_js_url()
-    {
-        return plugins_url(
-            'assets/js/woo-openpix-dev.js',
-            plugin_dir_path(__FILE__)
-        );
-
-        if (WC_OpenPix::OPENPIX_ENV === 'development') {
-            return plugins_url('build/main.js', plugin_dir_path(__FILE__));
-        }
-
-        if (WC_OpenPix::OPENPIX_ENV === 'staging') {
-            return plugins_url(
-                'assets/js/woo-openpix-dev.js',
-                plugin_dir_path(__FILE__)
-            );
-        }
-
-        // production
-        return plugins_url(
-            'assets/js/woo-openpix.js',
-            plugin_dir_path(__FILE__)
-        );
     }
 
     // move ipn to another file
@@ -233,6 +206,12 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
     public function init_form_fields()
     {
+        $webhookUrl = str_replace(
+            'https:',
+            'http:',
+            home_url('/') . 'wc-api/' . 'WC_OpenPix_Pix_Gateway'
+        );
+
         $this->form_fields = [
             'enabled' => [
                 'title' => __('Enable/Disable', 'woocommerce-openpix'),
@@ -279,11 +258,13 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             'webhook_authorization' => [
                 'title' => __('Webhook Authorization', 'woocommerce-openpix'),
                 'type' => 'text',
-                'description' => __(
-                    'This will be used to validate Webhook/IPN request calls to approve payments',
-                    'woocommerce-openpix'
+                'description' => sprintf(
+                    __(
+                        'This will be used to validate Webhook/IPN request calls to approve payments. WooCommerce Webhook URL to be registered at OpenPix: %s',
+                        'woocommerce-openpix'
+                    ),
+                    $webhookUrl
                 ),
-                'desc_tip' => true,
                 'default' => '',
             ],
         ];
