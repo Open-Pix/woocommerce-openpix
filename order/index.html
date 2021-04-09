@@ -6,29 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Order Payment Instructions</title>
   </head>
-  <script>
-    (function () {
-      document.addEventListener("DOMContentLoaded", function(event) {
-        const btnCopyEmv = document.querySelector('#btnCopyEmv');
-
-        btnCopyEmv.addEventListener('click', function () {
-          const textAreaEmv = document.querySelector('#emv');
-
-          textAreaEmv.select();
-          textAreaEmv.setSelectionRange(0, 99999);
-          document.execCommand("copy");
-          document.getSelection().collapseToEnd();
-
-          const originalText = btnCopyEmv.innerHTML;
-          btnCopyEmv.innerHTML = 'Copiado!';
-
-          setTimeout(function () {
-            btnCopyEmv.innerHTML = originalText;
-          }, 10 * 1000);
-        });
-      })
-    })();
-  </script>
   <style></style>
   <body>
     <div style="margin: 0 auto; max-width: 50em">
@@ -77,25 +54,25 @@
         <p style="text-align: center">
           Pagar com Pix copia e cola
           <button
-                  id="btnCopyEmv"
-                  style="
-            border: unset;
-            display: inline-block;
-            padding: 0.25em 0.4em;
-            font-size: 75%;
-            font-weight: 700;
-            line-height: 1;
-            text-align: center;
-            white-space: nowrap;
-            vertical-align: baseline;
-            border-radius: 0.25rem;
-            transition: color 0.15s ease-in-out,
-              background-color 0.15s ease-in-out, border-color 0.15s ease-in-out,
-              box-shadow 0.15s ease-in-out;
-            color: #fff;
-            background-color: #17a2b8;
-            text-transform: uppercase;
-          "
+            id="btnCopyEmv"
+            style="
+              border: unset;
+              display: inline-block;
+              padding: 0.25em 0.4em;
+              font-size: 75%;
+              font-weight: 700;
+              line-height: 1;
+              text-align: center;
+              white-space: nowrap;
+              vertical-align: baseline;
+              border-radius: 0.25rem;
+              transition: color 0.15s ease-in-out,
+                background-color 0.15s ease-in-out,
+                border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+              color: #fff;
+              background-color: #17a2b8;
+              text-transform: uppercase;
+            "
           >
             Copiar
           </button>
@@ -110,7 +87,7 @@
           "
         >
           <textarea
-                  id="emv"
+            id="emv"
             readonly=""
             rows="3"
             style="
@@ -121,7 +98,8 @@
               overflow: hidden;
               pointer-events: none;
             "
-          >000201010212261060014br.gov.bcb.pix2584http://localhost:5001/openpix/testing?transactionID=3976b087b1d640ffbe1a80b1e3384e975204000053039865406119.955802BR5909LOCALHOST6009Sao Paulo622905253976b087b1d640ffbe1a80b1e630417FC</textarea
+          >
+000201010212261060014br.gov.bcb.pix2584http://localhost:5001/openpix/testing?transactionID=3976b087b1d640ffbe1a80b1e3384e975204000053039865406119.955802BR5909LOCALHOST6009Sao Paulo622905253976b087b1d640ffbe1a80b1e630417FC</textarea
           >
         </div>
       </div>
@@ -130,5 +108,6 @@
         pagamento.<br />Você será avisado assim que isso ocorrer!
       </p>
     </div>
+    <script type="module" src="/main.js"></script>
   </body>
 </html>
