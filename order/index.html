@@ -6,30 +6,88 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Order Payment Instructions</title>
   </head>
-  <style></style>
+  <style>
+    .openpix-content {
+      margin: 0 auto;
+      max-width: 50em;
+    }
+    .openpix-text-align-center {
+      text-align: center;
+    }
+    .openpix-container {
+      display: flex;
+      flex-direction: row;
+    }
+    .openpix-qrcode-container {
+      flex-grow: 1;
+      display: flex;
+      margin: 2em 0 4em;
+    }
+    .openpix-qrcode-image {
+      height: auto;
+      max-width: 100%;
+      display: block;
+      border-radius: 3px;
+    }
+    .openpix-instructions {
+      flex-direction: column;
+      justify-content: center;
+      display: flex;
+    }
+    .openpix-copy-paste-container {
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+    }
+    .openpix-copy-button {
+      border: unset;
+      display: inline-block;
+      padding: 0.25em 0.4em;
+      font-size: 75%;
+      font-weight: 700;
+      line-height: 1;
+      text-align: center;
+      white-space: nowrap;
+      vertical-align: baseline;
+      border-radius: 0.25rem;
+      transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+        border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+      color: #fff;
+      background-color: #17a2b8;
+      text-transform: uppercase;
+    }
+    .openpix-textarea-container {
+      background-color: #e2e3e5;
+      border: 1px solid #dee2e6 !important;
+      padding: 0.75rem 1.25rem;
+      margin-bottom: 1rem;
+      border-radius: 0.25rem;
+    }
+    .openpix-copy-textarea {
+      color: #333;
+      width: 100%;
+      background: 0 0;
+      border: none;
+      overflow: hidden;
+      pointer-events: none;
+    }
+  </style>
   <body>
-    <div style="margin: 0 auto; max-width: 50em">
-      <p style="text-align: center">
+    <div class="openpix-content">
+      <p class="openpix-text-align-center">
         Efetue o pagamento Pix usando o <string>QRCode</string> ou usando
         <strong>Pix copia e cola</strong>, se preferir:
       </p>
 
-      <div style="display: flex; flex-direction: row">
-        <div style="flex-grow: 1; display: flex; margin: 2em 0 4em">
+      <div class="openpix-container">
+        <div class="openpix-qrcode-container">
           <img
-            style="
-              height: auto;
-              max-width: 100%;
-              display: block;
-              border-radius: 3px;
-            "
+            class="openpix-qrcode-image"
             src="http://localhost:5001/openpix/charge/brcode/image/0c1ea502-3ab3-4911-a494-17de7e12ae7c.png"
             title="QRCode Pix deste pedido."
           />
         </div>
-        <div
-          style="flex-direction: column; justify-content: center; display: flex"
-        >
+        <div class="openpix-instructions">
           <ul>
             <li>
               <span>
@@ -50,60 +108,18 @@
         </div>
       </div>
 
-      <div style="display: flex; flex-direction: column; cursor: pointer">
-        <p style="text-align: center">
+      <div class="openpix-copy-paste-container">
+        <p class="openpix-text-align-center">
           Pagar com Pix copia e cola
-          <button
-            id="btnCopyEmv"
-            style="
-              border: unset;
-              display: inline-block;
-              padding: 0.25em 0.4em;
-              font-size: 75%;
-              font-weight: 700;
-              line-height: 1;
-              text-align: center;
-              white-space: nowrap;
-              vertical-align: baseline;
-              border-radius: 0.25rem;
-              transition: color 0.15s ease-in-out,
-                background-color 0.15s ease-in-out,
-                border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-              color: #fff;
-              background-color: #17a2b8;
-              text-transform: uppercase;
-            "
-          >
-            Copiar
-          </button>
+          <button id="btnCopyEmv" class="openpix-copy-button">Copiar</button>
         </p>
-        <div
-          style="
-            background-color: #e2e3e5;
-            border: 1px solid #dee2e6 !important;
-            padding: 0.75rem 1.25rem;
-            margin-bottom: 1rem;
-            border-radius: 0.25rem;
-          "
-        >
-          <textarea
-            id="emv"
-            readonly=""
-            rows="3"
-            style="
-              color: #333;
-              width: 100%;
-              background: 0 0;
-              border: none;
-              overflow: hidden;
-              pointer-events: none;
-            "
-          >
+        <div class="openpix-textarea-container">
+          <textarea id="emv" readonly="" rows="3" class="openpix-copy-textarea">
 000201010212261060014br.gov.bcb.pix2584http://localhost:5001/openpix/testing?transactionID=3976b087b1d640ffbe1a80b1e3384e975204000053039865406119.955802BR5909LOCALHOST6009Sao Paulo622905253976b087b1d640ffbe1a80b1e630417FC</textarea
           >
         </div>
       </div>
-      <p style="text-align: center">
+      <p class="openpix-text-align-center">
         Após o pagamento, podemos levar alguns segundos para confirmar o seu
         pagamento.<br />Você será avisado assim que isso ocorrer!
       </p>
