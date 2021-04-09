@@ -18,8 +18,12 @@
         <div class="openpix-qrcode-container">
           <img
             class="openpix-qrcode-image"
-            src="http://localhost:5001/openpix/charge/brcode/image/0c1ea502-3ab3-4911-a494-17de7e12ae7c.png"
             title="QRCode Pix deste pedido."
+            src="http://localhost:5001/openpix/charge/brcode/image/0c1ea502-3ab3-4911-a494-17de7e12ae7c.png"
+            <!--
+            src="<?php echo $qrCodeImage; ?>"
+            --
+          />
           />
         </div>
         <div class="openpix-instructions">
@@ -52,6 +56,7 @@
           <textarea id="emv" readonly="" rows="3" class="openpix-copy-textarea">
 000201010212261060014br.gov.bcb.pix2584http://localhost:5001/openpix/testing?transactionID=3976b087b1d640ffbe1a80b1e3384e975204000053039865406119.955802BR5909LOCALHOST6009Sao Paulo622905253976b087b1d640ffbe1a80b1e630417FC</textarea
           >
+          <!--          <textarea id="emv" readonly="" rows="3" class="openpix-copy-textarea"><?php echo $brCode; ?></textarea>-->
         </div>
       </div>
       <p class="openpix-text-align-center">

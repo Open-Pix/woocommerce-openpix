@@ -1,22 +1,21 @@
-(function ($) {
-  $(function () {
-    function copyEmv() {
-      var brCode = $('#brCode');
-      brCode.trigger('select');
+(function () {
+  document.addEventListener('DOMContentLoaded', function () {
+    const btnCopyEmv = document.querySelector('#btnCopyEmv');
+
+    btnCopyEmv.addEventListener('click', function () {
+      const textAreaEmv = document.querySelector('#emv');
+
+      textAreaEmv.select();
+      textAreaEmv.setSelectionRange(0, 99999);
       document.execCommand('copy');
       document.getSelection().collapseToEnd();
-      let button = document.querySelector('#copyBrCode');
-      let original = button.innerHTML;
-      button.innerHTHML = 'Copiado!';
+
+      const originalText = btnCopyEmv.innerHTML;
+      btnCopyEmv.innerHTML = 'Copiado!';
 
       setTimeout(function () {
-        button.innerHTML = original;
-      }, 2 * 1000);
-    }
-
-    $('#copyBrCode').on('click', function () {
-      copyEmv();
+        btnCopyEmv.innerHTML = originalText;
+      }, 10 * 1000);
     });
   });
-  // eslint-disable-next-line
-})(jQuery);
+})();
