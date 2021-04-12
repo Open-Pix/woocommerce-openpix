@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: OpenPix for WooCommerce\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-01 19:50+0000\n"
-"PO-Revision-Date: 2021-04-09 21:01+0000\n"
+"PO-Revision-Date: 2021-04-12 13:09+0000\n"
 "Last-Translator: \n"
 "Language-Team: Portuguese (Brazil)\n"
 "Language: pt_BR\n"
@@ -17,7 +17,7 @@ msgstr ""
 
 #: includes/class-wc-openpix.php:257 includes/class-wc-openpix-pix.php:223
 msgid "AppID OpenPix"
-msgstr ""
+msgstr "AppID OpenPix"
 
 #: includes/class-wc-openpix-pix.php:239
 msgid "Description"
