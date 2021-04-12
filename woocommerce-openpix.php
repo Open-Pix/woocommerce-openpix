@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: OpenPix for WooCommerce
- * Description: Gateway de pagamento OpenPix para WooCommerce
+ * Description: WooCommerce OpenPix Payment Gateway
  * Author: OpenPix
  * Author URI: https://openpix.com.br/
  * Version: 1.0.0
