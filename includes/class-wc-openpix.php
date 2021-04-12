@@ -42,42 +42,6 @@ class WC_OpenPix_Gateway extends WC_Payment_Gateway
             $this,
             'ipn_handler',
         ]);
-
-        //        $ipn = str_replace(
-        //            'https:',
-        //            'http:',
-        //            add_query_arg('wc-api', 'WC_OpenPix_Gateway', home_url('/'))
-        //        );
-        //        openpix_debug('ipn: ' . $ipn);
-        //
-        //        $correlationID = '8d6df0db26ed49f9a6953c89aaabdea4';
-        //        $url =
-        //            $this->getOpenPixApiUrl() .
-        //            '/api/openpix/v1/charge/' .
-        //            $correlationID;
-        //        openpix_debug('url');
-        //        openpix_debug($url);
-        //        openpix_debug('api: ' . WC()->api_request_url(get_class($this)));
-        //        openpix_debug('awesome');
-
-        //        $params = [
-        //            'timeout' => 60,
-        //            'headers' => [
-        //                'Accept' => 'application/json',
-        //                'Content-Type' => 'application/json',
-        //                'Authorization' => $this->appID,
-        //            ],
-        //        ];
-
-        //        $response = wp_safe_remote_get($url, $params);
-        //        $response = wp_remote_get($url, $params);
-        //        $data = json_decode( $response['body'], true );
-        //
-        //        $body = wp_remote_retrieve_body($response);
-        //
-        //        openpix_debug($body);
-        //        openpix_debug(print_r($data));
-        //        openpix_debug($data['charge']['status']);
     }
 
     public function isValidTestWebhookPayload($data)
