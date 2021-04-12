@@ -311,16 +311,16 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         if ($hasCustomer) {
             $customer = [
                 'name' =>
-                    $_POST['billing_first_name'] .
+                    sanitize_text_field($_POST['billing_first_name']) .
                     ' ' .
-                    $_POST['billing_last_name'],
-                'email' => '',
+                    sanitize_text_field($_POST['billing_last_name']),
+                'email' => sanitize_email($_POST['billing_email']),
                 'taxID' => isset($_POST['billing_cpf'])
-                    ? $_POST['billing_cpf']
-                    : $_POST['billing_cnpj'],
+                    ? sanitize_text_field($_POST['billing_cpf'])
+                    : sanitize_text_field($_POST['billing_cnpj']),
                 'phone' => isset($_POST['billing_cellphone'])
-                    ? $_POST['billing_cellphone']
-                    : $_POST['billing_phone'],
+                    ? sanitize_text_field($_POST['billing_cellphone'])
+                    : sanitize_text_field($_POST['billing_phone']),
             ];
         } else {
             $customer = [];
