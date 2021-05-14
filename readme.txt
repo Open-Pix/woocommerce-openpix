@@ -11,7 +11,24 @@ Receba pagamentos via Pix usando a OpenPix
 
 == Description ==
 
-A [OpenPix](https://openpix.com.br) é a melhor forma de receber pagamentos via Pix sem sair da sua loja WooCommerce
+A [OpenPix](https://openpix.com.br) é a melhor forma de receber pagamentos via Pix sem sair da sua loja WooCommerce.
+
+Somos uma plataforma de tecnologia com APIs, Webhooks e Plugins focada em Pix.
+Temos integração com todos os bancos e já trabalhamos com grandes clientes, como a maior plataforma de doações do Brasil com mais de 50mil transações Pix mês.
+Na OpenPix você pode ser multi banco e multiconta, lidando com desafios financeiros.
+
+O Pix é um método de pagamento mais seguro e mais barato que boletos e cartões, além da vantagem de ter confirmação de pagamento em até 5 segundos.
+Existem mais de 150 milhões de chave Pix no Brasil, ou seja, todo mundo usa.
+Não fiquei de fora se registre agora [Registrar](https://openpix.com.br/join/)
+
+# Suporte
+
+Para questões relacionadas a integração e plugin, acesse o [Portal do Desenvolver OpenPix](https://developers.openpix.com.br/)
+
+== Screenshots ==
+
+1. Exemplo de configuração do Plugin
+2. Exemplo da Ordem de Pagamento com o QRCode Pix
 
 == Changelog ==
 
