@@ -7,13 +7,15 @@
 }
 .openpix-container {
   display: flex;
-  flex-direction: row;
+  flex-wrap: wrap;
+  justify-contente: center;
 }
 .openpix-qrcode-container {
-  flex-grow: 1;
+  flex: 1 1 250px;
   display: flex;
-  margin: 2em 0 4em;
+  margin: 0 2em;
 }
+
 .openpix-qrcode-image {
   height: auto;
   max-width: 100%;
@@ -24,6 +26,7 @@
   flex-direction: column;
   justify-content: center;
   display: flex;
+  flex: 1 1 250px;
 }
 .openpix-copy-paste-container {
   display: flex;

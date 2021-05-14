@@ -45,7 +45,7 @@ if (!defined('ABSPATH')) {
             <button id="btnCopyEmv" class="openpix-copy-button">Copiar</button>
         </p>
         <div class="openpix-textarea-container">
-                      <textarea id="emv" readonly="" rows="3" class="openpix-copy-textarea"><?php echo $brCode; ?></textarea>
+          <textarea id="emv" readonly="" rows="5" class="openpix-copy-textarea"><?php echo $brCode; ?></textarea>
         </div>
     </div>
     <p class="openpix-text-align-center">
