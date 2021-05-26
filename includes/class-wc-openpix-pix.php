@@ -265,6 +265,13 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         return 'https://api.openpix.com.br';
     }
 
+    public function get_openpix_amount($total)
+    {
+        return absint(
+            wc_format_decimal((float) $total * 100, wc_get_price_decimals())
+        ); // In cents.
+    }
+
     public function process_payment($order_id)
     {
         global $woocommerce;
@@ -275,10 +282,10 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         $url = $this->getOpenPixApiUrl() . '/api/openpix/v1/charge';
 
         $cart_total = $this->get_order_total();
-        $storeName = get_bloginfo('name');
-
-        $hasCustomer =
-            isset($_POST['billing_cpf']) || isset($_POST['billing_cnpj']);
+        $total_cents =
+            $this->get_openpix_amount($cart_total) .
+            ($hasCustomer =
+                isset($_POST['billing_cpf']) || isset($_POST['billing_cnpj']));
         if ($hasCustomer) {
             $customer = [
                 'name' =>
@@ -297,9 +304,11 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             $customer = [];
         }
 
+        $storeName = get_bloginfo('name');
+
         $payload = [
             'correlationID' => $correlationID,
-            'value' => $cart_total * 100,
+            'value' => $total_cents,
             'comment' => $storeName,
         ];
 
