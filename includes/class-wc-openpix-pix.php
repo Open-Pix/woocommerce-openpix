@@ -35,6 +35,8 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             'webhook_authorization'
         );
 
+        $this->status_when_waiting = $this->get_option('status_when_waiting');
+
         add_action('woocommerce_update_options_payment_gateways_' . $this->id, [
             $this,
             'process_admin_options',
@@ -125,6 +127,9 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         global $wpdb;
         $correlationID = $data['charge']['correlationID'];
         $status = $data['charge']['status'];
+        $endToEndId = $data['pix']['endToEndId'];
+
+        $settings = get_option('woocommerce_openpix_settings');
 
         $orders = wc_get_orders([
             'openpix_correlation_id' => $correlationID,
@@ -141,23 +146,48 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
         $order = $orders[0];
         $order_id = $order->id;
+        $order_status = $order->get_status();
 
-        if ($order) {
-            if ($status === 'COMPLETED') {
-                if (
-                    !in_array(
-                        $order->get_status(),
-                        ['processing', 'completed'],
-                        true
-                    )
-                ) {
+        $statuses =
+            strpos($order_status, 'wc-') === false
+                ? ['processing', 'completed']
+                : ['wc-processing', 'wc-completed'];
+        $already_paid = in_array($order_status, $statuses) ? true : false;
+
+        WC_OpenPix::debug('ipn');
+        WC_OpenPix::debug('already paid ' . $already_paid ? 'yes' : 'no');
+        WC_OpenPix::debug('status ' . $status);
+        WC_OpenPix::debug('correlationID ' . $correlationID);
+        WC_OpenPix::debug('endToEndId ' . $endToEndId);
+
+        if (!$already_paid) {
+            if ($order) {
+                if ($status === 'COMPLETED') {
+                    // Changing the order for processing and reduces the stock.
+                    $order->payment_complete();
+
                     $order->add_order_note(
                         __('OpenPix: Transaction paid', 'woocommerce-openpix')
                     );
-                }
 
-                // Changing the order for processing and reduces the stock.
-                $order->payment_complete();
+                    // add endToEndId to meta data order
+                    $meta_data = [
+                        'openpix_endToEndId' => $endToEndId,
+                    ];
+
+                    // WooCommerce 3.0 or later
+                    if (!method_exists($order, 'update_meta_data')) {
+                        foreach ($meta_data as $key => $value) {
+                            update_post_meta($id, $key, $value);
+                        }
+                    } else {
+                        foreach ($meta_data as $key => $value) {
+                            $order->update_meta_data($key, $value);
+                        }
+
+                        $order->save();
+                    }
+                }
             }
         }
 
@@ -175,6 +205,26 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
     }
     // ipn end
 
+    /**
+     * Get a list of Woocommerce status available at the installation
+     *
+     * @return array List of status
+     */
+    public function get_available_status($needle = null)
+    {
+        $order_statuses = wc_get_order_statuses();
+        if ($needle) {
+            foreach ($order_statuses as $key => $value) {
+                if (strpos($key, $needle) !== false) {
+                    return $key;
+                }
+            }
+        }
+        return $needle
+            ? array_shift(array_filter($order_statuses, $needle))
+            : $order_statuses;
+    }
+
     public function init_form_fields()
     {
         $webhookUrl = str_replace(
@@ -183,6 +233,9 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             home_url('/') . 'wc-api/' . 'WC_OpenPix_Pix_Gateway'
         );
 
+        //        https://developers.openpix.com.br/docs/apis/api-getting-started
+        // https://developers.openpix.com.br/docs/ecommerce/woocommerce-plugin/
+
         $this->form_fields = [
             'enabled' => [
                 'title' => __('Enable/Disable', 'woocommerce-openpix'),
@@ -190,11 +243,31 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                 'label' => __('Enable OpenPix', 'woocommerce-openpix'),
                 'default' => 'no',
             ],
+            'api_section' => [
+                'title' => __('OpenPix Integration API', 'woocommerce-openpix'),
+                'type' => 'title',
+                'description' => sprintf(
+                    __(
+                        'Follow documentation to get your OpenPix AppID here %s.',
+                        'woocommerce-openpix'
+                    ),
+                    '<a target="_blank" href="https://developers.openpix.com.br/docs/apis/api-getting-started/">' .
+                        __(
+                            'OpenPix API Getting Started',
+                            'woocommerce-openpix'
+                        ) .
+                        '</a>'
+                ),
+            ],
             'appID' => [
                 'title' => __('AppID OpenPix', 'woocommerce-openpix'),
                 'type' => 'text',
                 'description' => 'AppID OpenPix',
                 'default' => '',
+            ],
+            'label_section' => [
+                'title' => __('Configure labels', 'woocommerce-openpix'),
+                'type' => 'title',
             ],
             'title' => [
                 'title' => __('Title', 'woocommerce-openpix'),
@@ -226,6 +299,25 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                 'desc_tip' => true,
                 'default' => __('Pay with Pix', 'woocommerce-openpix'),
             ],
+            'webhook_section' => [
+                'title' => __(
+                    'Configure Webhook integration',
+                    'woocommerce-openpix'
+                ),
+                'type' => 'title',
+                'description' => sprintf(
+                    __(
+                        'Follow documentation to configure Webhook on OpenPix here %s.',
+                        'woocommerce-openpix'
+                    ),
+                    '<a target="_blank" href="https://developers.openpix.com.br/docs/ecommerce/woocommerce-plugin/">' .
+                        __(
+                            'Woocommerce Plugin Documentation',
+                            'woocommerce-openpix'
+                        ) .
+                        '</a>'
+                ),
+            ],
             'webhook_authorization' => [
                 'title' => __('Webhook Authorization', 'woocommerce-openpix'),
                 'type' => 'text',
@@ -234,9 +326,26 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                         'This will be used to validate Webhook/IPN request calls to approve payments. WooCommerce Webhook URL to be registered at OpenPix: %s',
                         'woocommerce-openpix'
                     ),
-                    $webhookUrl
+                    '<a target="_blank" href="' .
+                        $webhookUrl .
+                        '">' .
+                        $webhookUrl .
+                        '</a>'
                 ),
                 'default' => '',
+            ],
+            'status_section' => [
+                'title' => __('Configure order status', 'woocommerce-openpix'),
+                'type' => 'title',
+            ],
+            'status_when_waiting' => [
+                'title' => __(
+                    'Change status after issuing the pix to',
+                    'woocommerce-openpix'
+                ),
+                'type' => 'select',
+                'options' => $this->get_available_status(),
+                'default' => $this->get_available_status('wc-pending'),
             ],
         ];
     }
@@ -380,9 +489,10 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             $order->save();
         }
 
-        // let transaction in hold
+        WC_OpenPix::debug('correlationID ' . $correlationID);
+
         $order->update_status(
-            'on-hold',
+            $this->status_when_waiting,
             __(
                 'OpenPix: The Pix was emitted but not paied yet.',
                 'woocommerce-openpix'
