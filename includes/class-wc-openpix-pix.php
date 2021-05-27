@@ -391,10 +391,11 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         $url = $this->getOpenPixApiUrl() . '/api/openpix/v1/charge';
 
         $cart_total = $this->get_order_total();
-        $total_cents =
-            $this->get_openpix_amount($cart_total) .
-            ($hasCustomer =
-                isset($_POST['billing_cpf']) || isset($_POST['billing_cnpj']));
+        $total_cents = $this->get_openpix_amount($cart_total);
+
+        $hasCustomer =
+            isset($_POST['billing_cpf']) || isset($_POST['billing_cnpj']);
+
         if ($hasCustomer) {
             $customer = [
                 'name' =>
