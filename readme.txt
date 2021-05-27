@@ -35,7 +35,7 @@ Para questões relacionadas a integração e plugin, acesse o [Portal do Desenvo
 
 == Changelog ==
 
-= 1.1.0 - 2021-05-27 =
+= 1.2.0 - 2021-05-27 =
 
 * Melhoria no Webhook/IPN
 
