@@ -1,3 +1,18 @@
+### 1.2.0 (2021-05-27)
+
+##### New Features
+
+* **readme:**  fix readme (3370ce3d)
+* **webhook:**  safer on webhook handling, fix entria/feedback-server#23116 (fa45d282)
+* **comment:**  remove some comments (5d73b8c7)
+
+##### Bug Fixes
+
+* **checks:**  fix checks (01c76320)
+* **version:**
+  *  fix version (533470ba)
+  *  fix version number on php (c5fd02a3)
+
 ### 1.1.0 (2021-05-27)
 
 ##### New Features
