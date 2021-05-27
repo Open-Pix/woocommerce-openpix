@@ -154,18 +154,20 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         $endToEndId = $data['pix']['endToEndId'];
 
         $order_id = $this->get_order_id_by_correlation_id($correlationID);
-        $order = wc_get_order($order_id);
 
-        $order_correlation_id = get_post_meta(
-            $order->id,
-            'openpix_correlation_id',
-            true
-        );
-        $order_end_to_end_id = get_post_meta(
-            $order->id,
-            'openpix_endToEndId',
-            true
-        );
+        if (!$order_id) {
+            WC_OpenPix::debug(
+                'Cound not find order with correlation ID ' . $correlationID
+            );
+            header('HTTP/1.2 400 Bad Request');
+            $response = [
+                'error' => 'Order not found',
+            ];
+            echo json_encode($response);
+            exit();
+        }
+
+        $order = wc_get_order($order_id);
 
         if (!$order) {
             WC_OpenPix::debug(
@@ -178,6 +180,17 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             echo json_encode($response);
             exit();
         }
+
+        $order_correlation_id = get_post_meta(
+            $order->id,
+            'openpix_correlation_id',
+            true
+        );
+        $order_end_to_end_id = get_post_meta(
+            $order->id,
+            'openpix_endToEndId',
+            true
+        );
 
         if ($order_end_to_end_id) {
             WC_OpenPix::debug('Order already paid ' . $order_id);
