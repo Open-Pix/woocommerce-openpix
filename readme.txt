@@ -3,7 +3,8 @@ Contributors: openpix
 Tags: woocommerce, openpix, payment
 Requires at least: 4.0
 Tested up to: 5.7
-Stable tag: 1.1.0
+Requires PHP: 5.6
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -34,12 +35,18 @@ Para questões relacionadas a integração e plugin, acesse o [Portal do Desenvo
 
 == Changelog ==
 
+= 1.2.0 - 2021-05-27 =
+
+* Melhoria no Webhook/IPN
+
 = 1.1.0 =
-Lógica de centavos mais robusta
-Permite customização no status da ordem baseado no status do Pix
+
+* Lógica de centavos mais robusta
+* Permite customização no status da ordem baseado no status do Pix
 
 = 1.0.1 =
-Melhorias no responsivo.
+
+* Melhorias no responsivo.
 
 = 1.0.0 =
 

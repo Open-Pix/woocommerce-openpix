@@ -87,8 +87,32 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         return '';
     }
 
+    public function get_order_id_by_correlation_id($correlation_id)
+    {
+        global $wpdb;
+
+        if (empty($correlation_id)) {
+            return false;
+        }
+
+        $order_id = $wpdb->get_var(
+            $wpdb->prepare(
+                "SELECT DISTINCT ID FROM $wpdb->posts as posts LEFT JOIN $wpdb->postmeta as meta ON posts.ID = meta.post_id WHERE meta.meta_value = %s AND meta.meta_key = %s",
+                $correlation_id,
+                'openpix_correlation_id'
+            )
+        );
+
+        if (!empty($order_id)) {
+            return $order_id;
+        }
+
+        return false;
+    }
+
     public function ipn_handler()
     {
+        global $wpdb;
         @ob_clean();
 
         $body = file_get_contents('php://input', true);
@@ -129,13 +153,12 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         $status = $data['charge']['status'];
         $endToEndId = $data['pix']['endToEndId'];
 
-        $settings = get_option('woocommerce_openpix_settings');
+        $order_id = $this->get_order_id_by_correlation_id($correlationID);
 
-        $orders = wc_get_orders([
-            'openpix_correlation_id' => $correlationID,
-        ]);
-
-        if (count($orders) === 0) {
+        if (!$order_id) {
+            WC_OpenPix::debug(
+                'Cound not find order with correlation ID ' . $correlationID
+            );
             header('HTTP/1.2 400 Bad Request');
             $response = [
                 'error' => 'Order not found',
@@ -144,8 +167,84 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             exit();
         }
 
-        $order = $orders[0];
-        $order_id = $order->id;
+        $order = wc_get_order($order_id);
+
+        if (!$order) {
+            WC_OpenPix::debug(
+                'Cound not find order with correlation ID ' . $correlationID
+            );
+            header('HTTP/1.2 400 Bad Request');
+            $response = [
+                'error' => 'Order not found',
+            ];
+            echo json_encode($response);
+            exit();
+        }
+
+        $order_correlation_id = get_post_meta(
+            $order->id,
+            'openpix_correlation_id',
+            true
+        );
+        $order_end_to_end_id = get_post_meta(
+            $order->id,
+            'openpix_endToEndId',
+            true
+        );
+
+        if ($order_end_to_end_id) {
+            WC_OpenPix::debug('Order already paid ' . $order_id);
+
+            header('HTTP/1.1 200 OK');
+            $response = [
+                'message' => 'fail',
+                'error' => 'order already with end to end id',
+                'order_id' => $order_id,
+                'correlationId' => $correlationID,
+                'status' => $status,
+            ];
+
+            echo json_encode($response);
+            exit();
+        }
+
+        if (!$order_correlation_id) {
+            WC_OpenPix::debug('Order without correlation id ' . $order_id);
+
+            header('HTTP/1.1 200 OK');
+            $response = [
+                'message' => 'fail',
+                'error' => 'order without correlation id',
+                'order_id' => $order_id,
+                'correlationId' => $correlationID,
+                'status' => $status,
+            ];
+
+            echo json_encode($response);
+            exit();
+        }
+
+        if ($order_correlation_id !== $correlationID) {
+            WC_OpenPix::debug(
+                'Order with different correlation id then webhook correlation id ' .
+                    $order_id
+            );
+
+            header('HTTP/1.1 200 OK');
+            $response = [
+                'message' => 'fail',
+                'error' =>
+                    'order with different correlation id ' .
+                    $order_correlation_id,
+                'order_id' => $order_id,
+                'correlationId' => $correlationID,
+                'status' => $status,
+            ];
+
+            echo json_encode($response);
+            exit();
+        }
+
         $order_status = $order->get_status();
 
         $statuses =
@@ -153,12 +252,6 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                 ? ['processing', 'completed']
                 : ['wc-processing', 'wc-completed'];
         $already_paid = in_array($order_status, $statuses) ? true : false;
-
-        WC_OpenPix::debug('ipn');
-        WC_OpenPix::debug('already paid ' . $already_paid ? 'yes' : 'no');
-        WC_OpenPix::debug('status ' . $status);
-        WC_OpenPix::debug('correlationID ' . $correlationID);
-        WC_OpenPix::debug('endToEndId ' . $endToEndId);
 
         if (!$already_paid) {
             if ($order) {
