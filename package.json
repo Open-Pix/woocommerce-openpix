@@ -1,6 +1,6 @@
 {
   "name": "woocommerce-openpix",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "dependencies": {
     "@material-ui/core": "4.11.3",
     "@material-ui/icons": "4.11.2",
@@ -75,6 +75,7 @@
     "css-loader": "^5.1.1",
     "dotenv-safe": "^8.2.0",
     "dotenv-webpack": "^6.0.2",
+    "esbuild-register": "^2.5.0",
     "eslint": "6.8.0",
     "eslint-config-airbnb": "17.1.0",
     "eslint-config-okonet": "7.0.2",
@@ -100,6 +101,7 @@
     "jest": "^26.6.3",
     "jest-fetch-mock": "^3.0.3",
     "lint-staged": "10.5.4",
+    "moment": "^2.29.1",
     "prettier": "^2.2.1",
     "react-refresh": "0.9.0",
     "regenerator-runtime": "^0.13.7",
@@ -136,10 +138,14 @@
   "scripts": {
     "build:prod": "cross-env NODE_ENV=production webpack --config webpack.prod.config.js --progress",
     "build:staging": "cross-env NODE_ENV=production webpack --config webpack.staging.config.js --progress",
+    "es": "node -r esbuild-register",
     "lint": "eslint --ext .ts --ext .tsx 'checkout/src/**'",
     "order": "vite order",
     "prepare": "husky install",
     "prettier": "prettier --write",
+    "release:major": "yarn es ./scripts/changelog --major",
+    "release:minor": "yarn es ./scripts/changelog --minor",
+    "release:patch": "yarn es ./scripts/changelog --patch",
     "serve": "node server.js",
     "start": "webpack serve --hot --config webpack.config.js --progress",
     "test": "yarn jest",
