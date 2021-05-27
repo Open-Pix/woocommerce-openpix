@@ -159,9 +159,13 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             WC_OpenPix::debug(
                 'Cound not find order with correlation ID ' . $correlationID
             );
-            header('HTTP/1.2 400 Bad Request');
+            header('HTTP/1.1 200 OK');
             $response = [
-                'error' => 'Order not found',
+                'message' => 'fail',
+                'error' => 'order not found',
+                'order_id' => $order_id,
+                'correlationId' => $correlationID,
+                'status' => $status,
             ];
             echo json_encode($response);
             exit();
@@ -173,9 +177,13 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             WC_OpenPix::debug(
                 'Cound not find order with correlation ID ' . $correlationID
             );
-            header('HTTP/1.2 400 Bad Request');
+            header('HTTP/1.1 200 OK');
             $response = [
-                'error' => 'Order not found',
+                'message' => 'fail',
+                'error' => 'order not found',
+                'order_id' => $order_id,
+                'correlationId' => $correlationID,
+                'status' => $status,
             ];
             echo json_encode($response);
             exit();
@@ -252,6 +260,12 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                 ? ['processing', 'completed']
                 : ['wc-processing', 'wc-completed'];
         $already_paid = in_array($order_status, $statuses) ? true : false;
+
+        WC_OpenPix::debug('ipn');
+        WC_OpenPix::debug('already paid ' . $already_paid ? 'yes' : 'no');
+        WC_OpenPix::debug('status ' . $status);
+        WC_OpenPix::debug('correlationID ' . $correlationID);
+        WC_OpenPix::debug('endToEndId ' . $endToEndId);
 
         if (!$already_paid) {
             if ($order) {
