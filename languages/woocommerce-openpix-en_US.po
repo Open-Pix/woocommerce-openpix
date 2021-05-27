@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: OpenPix for WooCommerce\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-01 19:50+0000\n"
-"PO-Revision-Date: 2021-04-01 19:53+0000\n"
+"PO-Revision-Date: 2021-05-27 13:07+0000\n"
 "Last-Translator: \n"
 "Language-Team: English (United States)\n"
 "Language: en_US\n"
@@ -12,46 +12,143 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Loco https://localise.biz/\n"
-"X-Loco-Version: 2.5.2; wp-5.7\n"
+"X-Loco-Version: 2.5.2; wp-5.7.2\n"
 "X-Domain: woocommerce-openpix"
 
-#: includes/class-wc-openpix.php:96
+#: includes/class-wc-openpix.php:221 includes/class-wc-openpix-pix.php:263
 msgid "AppID OpenPix"
 msgstr "AppID OpenPix"
 
-#: includes/class-wc-openpix.php:92
+#: includes/class-wc-openpix-pix.php:342
+msgid "Change status after issuing the pix to"
+msgstr "Change status after issuing the pix to"
+
+#: includes/class-wc-openpix-pix.php:269
+msgid "Configure labels"
+msgstr "Configure labels"
+
+#: includes/class-wc-openpix-pix.php:338
+msgid "Configure order status"
+msgstr "Configure order status"
+
+#: includes/class-wc-openpix-pix.php:303
+msgid "Configure Webhook integration"
+msgstr "Configure Webhook integration"
+
+#: includes/class-wc-openpix-pix.php:283
+msgid "Description"
+msgstr "Description"
+
+#: includes/class-wc-openpix.php:217 includes/class-wc-openpix-pix.php:243
 msgid "Enable OpenPix"
 msgstr "Enable OpenPix"
 
-#: includes/class-wc-openpix.php:90
+#: includes/class-wc-openpix.php:215 includes/class-wc-openpix-pix.php:241
 msgid "Enable/Disable"
 msgstr "Enable/Disable"
 
-#. Description of the plugin
-msgid "Gateway de pagamento OpenPix para WooCommerce"
-msgstr "OpenPix Payment Gateway for WooCommerce"
+#: includes/class-wc-openpix-pix.php:447 includes/class-wc-openpix-pix.php:461
+msgid "Error creating Pix"
+msgstr "Error creating Pix"
+
+#: includes/class-wc-openpix-pix.php:309
+#, php-format
+msgid "Follow documentation to configure Webhook on OpenPix here %s."
+msgstr "Follow documentation to configure Webhook on OpenPix here %s."
+
+#: includes/class-wc-openpix-pix.php:250
+#, php-format
+msgid "Follow documentation to get your OpenPix AppID here %s."
+msgstr "Follow documentation to get your OpenPix AppID here %s."
 
 #. Author URI of the plugin
 msgid "https://openpix.com.br/"
 msgstr "https://openpix.com.br/"
 
-#: includes/class-wc-openpix.php:177
+#: includes/class-wc-openpix-pix.php:454
+msgid "Invalid AppID"
+msgstr "Invalid AppID"
+
+#: includes/class-wc-openpix.php:329
 msgid "Missing OpenPix payment information"
 msgstr "Missing OpenPix payment information"
 
 #. Author of the plugin
-#: includes/class-wc-openpix.php:23
+#: includes/class-wc-openpix.php:13 includes/class-wc-openpix-pix.php:17
 msgid "OpenPix"
 msgstr "OpenPix"
+
+#: includes/class-wc-openpix-pix.php:255
+msgid "OpenPix API Getting Started"
+msgstr "OpenPix API Getting Started"
 
 #. Name of the plugin
 msgid "OpenPix for WooCommerce"
 msgstr "OpenPix for WooCommerce"
 
-#: includes/class-wc-openpix.php:196
-msgid "OpenPix: Transaction paid."
-msgstr "OpenPix: Transaction paid."
+#: includes/class-wc-openpix-pix.php:247
+msgid "OpenPix Integration API"
+msgstr "OpenPix Integration API"
 
-#: includes/class-wc-openpix.php:24
+#: includes/class-wc-openpix.php:355 includes/class-wc-openpix-pix.php:496
+msgid "OpenPix: The Pix was emitted but not paied yet."
+msgstr "OpenPix: The Pix was emitted but not paied yet."
+
+#: includes/class-wc-openpix.php:149 includes/class-wc-openpix-pix.php:170
+#| msgid "OpenPix: Transaction paid."
+msgid "OpenPix: Transaction paid"
+msgstr "OpenPix: Transaction paid"
+
+#: includes/class-wc-openpix.php:237 includes/class-wc-openpix-pix.php:293
+msgid "Order Button Text"
+msgstr "Order Button Text"
+
+#: includes/class-wc-openpix.php:234 includes/class-wc-openpix.php:244
+#: includes/class-wc-openpix-pix.php:280 includes/class-wc-openpix-pix.php:290
+#: includes/class-wc-openpix-pix.php:300
+msgid "Pay with Pix"
+msgstr "Pay with Pix"
+
+#: includes/class-wc-openpix-pix.php:285
+msgid "This controls the description which the user sees during checkout."
+msgstr "This controls the description which the user sees during checkout."
+
+#: includes/class-wc-openpix.php:239 includes/class-wc-openpix-pix.php:295
+msgid "This controls the order button payment label."
+msgstr "This controls the order button payment label."
+
+#: includes/class-wc-openpix.php:229 includes/class-wc-openpix-pix.php:275
+msgid "This controls the title which the user sees during checkout."
+msgstr "This controls the title which the user sees during checkout."
+
+#: includes/class-wc-openpix.php:249
+msgid ""
+"This will be used to validate Webhook/IPN request calls to approve payments"
+msgstr ""
+"This will be used to validate Webhook/IPN request calls to approve payments"
+
+#: includes/class-wc-openpix-pix.php:325
+#, php-format
+msgid ""
+"This will be used to validate Webhook/IPN request calls to approve payments. "
+"WooCommerce Webhook URL to be registered at OpenPix: %s"
+msgstr ""
+"This will be used to validate Webhook/IPN request calls to approve payments. "
+"WooCommerce Webhook URL to be registered at OpenPix: %s"
+
+#: includes/class-wc-openpix.php:227 includes/class-wc-openpix-pix.php:273
+msgid "Title"
+msgstr "Title"
+
+#: includes/class-wc-openpix.php:247 includes/class-wc-openpix-pix.php:322
+msgid "Webhook Authorization"
+msgstr "Webhook Authorization"
+
+#. Description of the plugin
+#: includes/class-wc-openpix.php:14 includes/class-wc-openpix-pix.php:18
 msgid "WooCommerce OpenPix Payment Gateway"
 msgstr "WooCommerce OpenPix Payment Gateway"
+
+#: includes/class-wc-openpix-pix.php:314
+msgid "Woocommerce Plugin Documentation"
+msgstr "Woocommerce Plugin Documentation"
