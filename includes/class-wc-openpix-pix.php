@@ -233,9 +233,6 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             home_url('/') . 'wc-api/' . 'WC_OpenPix_Pix_Gateway'
         );
 
-        //        https://developers.openpix.com.br/docs/apis/api-getting-started
-        // https://developers.openpix.com.br/docs/ecommerce/woocommerce-plugin/
-
         $this->form_fields = [
             'enabled' => [
                 'title' => __('Enable/Disable', 'woocommerce-openpix'),
