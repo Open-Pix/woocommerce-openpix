@@ -110,6 +110,19 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         return false;
     }
 
+    public function isPixDetachedPayload($data): bool
+    {
+        if (!isset($data['pix'])) {
+            return false;
+        }
+
+        if (isset($data['charge']) && isset($data['charge']['correlationID'])) {
+            return false;
+        }
+
+        return true;
+    }
+
     public function ipn_handler()
     {
         global $wpdb;
@@ -134,6 +147,16 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
             $response = [
                 'message' => 'success',
+            ];
+            echo json_encode($response);
+            exit();
+        }
+
+        if ($this->isPixDetachedPayload($data)) {
+            header('HTTP/1.1 200 OK');
+
+            $response = [
+                'message' => 'Pix Detached',
             ];
             echo json_encode($response);
             exit();
