@@ -1,3 +1,15 @@
+#### 1.3.1 (2021-06-30)
+
+##### New Features
+
+* **new:**  v.1.3.0 (9a4903bd)
+* **svn-assets:**  add new imgs (71ce3033)
+* **webhook:**  return 200 to avoid webhook retry (4c057d74)
+
+##### Bug Fixes
+
+* **pix:**  better handling of detached pix, fix entria/feedback-server#23615 (496af3cb)
+
 ### 1.2.0 (2021-05-27)
 
 ##### New Features
