@@ -4,7 +4,7 @@ Tags: woocommerce, openpix, payment
 Requires at least: 4.0
 Tested up to: 5.7
 Requires PHP: 5.6
-Stable tag: 1.3.0
+Stable tag: 1.4.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -20,8 +20,9 @@ Na OpenPix você pode ser multi banco e multiconta, lidando com desafios finance
 
 O Pix é um método de pagamento mais seguro e mais barato que boletos e cartões, além da vantagem de ter confirmação de pagamento em até 5 segundos.
 Existem mais de 150 milhões de chave Pix no Brasil, ou seja, todo mundo usa.
-Não fiquei de fora se registre agora [Registrar](https://openpix.com.br/join/)
 
+Para falar com o time de vendas se cadastre aqui - [Cadastrar](https://openpix.com.br/join)
+Para experimentar gratuitamente se registre aqui - [Registrar](https://openpix.com.br/register)
 A Documentação completa do Plugin se encontra aqui - [Developers](https://developers.openpix.com.br/docs/ecommerce/woocommerce-plugin)
 
 # Suporte
@@ -34,6 +35,10 @@ Para questões relacionadas a integração e plugin, acesse o [Portal do Desenvo
 2. Exemplo da Ordem de Pagamento com o QRCode Pix
 
 == Changelog ==
+
+= 1.4.0 - 2021-07-12 =
+
+* Melhoria no comentário Pix
 
 = 1.3.0 - 2021-06-29 =
 
