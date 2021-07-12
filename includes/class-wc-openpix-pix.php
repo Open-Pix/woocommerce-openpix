@@ -546,7 +546,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         $payload = [
             'correlationID' => $correlationID,
             'value' => $total_cents,
-            'comment' => $storeName,
+            'comment' => substr($storeName, 0, 140),
         ];
 
         if ($hasCustomer) {
