@@ -1,3 +1,14 @@
+### 1.4.0 (2021-07-12)
+
+##### New Features
+
+* **bump:**  1.4.0 (99bd000a)
+* **release:**  improve release process (f208e90c)
+
+##### Bug Fixes
+
+* **comment:**  be more robust on comment at most 140, see entria/feedback-server#24185 (d4cbafea)
+
 #### 1.3.1 (2021-06-30)
 
 ##### New Features
