@@ -518,6 +518,50 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         return '55' . $phoneSafe;
     }
 
+    public function getCustomerData($order) {
+        $order_persontype = $order->get_meta('_billing_persontype');
+        $order_billing_cpf = $order->get_meta('_billing_cpf');
+        $order_billing_cnpj = $order->get_meta('_billing_cnpj');
+
+        $hasCustomer =
+            isset($order_billing_cpf) || isset($order_billing_cnpj);
+
+        if(!$hasCustomer) {
+            return null;
+        }
+
+        $order_data = $order->get_data();
+
+        $order_billing_first_name = $order_data['billing']['first_name'];
+        $order_billing_last_name = $order_data['billing']['last_name'];
+        $order_billing_email = $order_data['billing']['email'];
+        $order_billing_phone = $order_data['billing']['phone'];
+        $order_billing_cellphone = $order->get_meta('_billing_cellphone');
+
+        $name = sanitize_text_field($order_billing_first_name) .
+            ' ' .
+            sanitize_text_field($order_billing_last_name);
+
+        $email = sanitize_email($order_billing_email);
+
+        $taxID = $order_persontype === "1"
+            ? sanitize_text_field($order_billing_cpf)
+            : sanitize_text_field($order_billing_cnpj);
+
+        $phone = isset($order_billing_cellphone)
+            ? sanitize_text_field($order_billing_cellphone)
+            : sanitize_text_field($order_billing_phone);
+
+        $customer = [
+            'name' => $name,
+            'email' => $email,
+            'taxID' => $taxID,
+            'phone' => $this->formatPhone($phone),
+        ];
+
+        return $customer;
+    }
+
     public function process_payment($order_id)
     {
         global $woocommerce;
@@ -530,34 +574,6 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         $cart_total = $this->get_order_total();
         $total_cents = $this->get_openpix_amount($cart_total);
 
-        $hasCustomer =
-            isset($_POST['billing_cpf']) || isset($_POST['billing_cnpj']);
-
-        if ($hasCustomer) {
-            $name = sanitize_text_field($_POST['billing_first_name']) .
-                ' ' .
-                sanitize_text_field($_POST['billing_last_name']);
-
-            $email = sanitize_email($_POST['billing_email']);
-
-            $taxID = $_POST['billing_persontype'] === "1"
-                ? sanitize_text_field($_POST['billing_cpf'])
-                : sanitize_text_field($_POST['billing_cnpj']);
-
-            $phone = isset($_POST['billing_cellphone'])
-                ? sanitize_text_field($_POST['billing_cellphone'])
-                : sanitize_text_field($_POST['billing_phone']);
-
-            $customer = [
-                'name' => $name,
-                'email' => $email,
-                'taxID' => $taxID,
-                'phone' => $this->formatPhone($phone),
-            ];
-        } else {
-            $customer = [];
-        }
-
         $storeName = get_bloginfo('name');
 
         $payload = [
@@ -566,7 +582,9 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             'comment' => substr($storeName, 0, 140),
         ];
 
-        if ($hasCustomer) {
+        $customer = $this->getCustomerData($order);
+
+        if ($customer) {
             $payload['customer'] = $customer;
         }
 
