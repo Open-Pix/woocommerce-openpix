@@ -489,6 +489,8 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
     public function getOpenPixApiUrl()
     {
+//        return "http://localhost:5001";
+        return "https://d791b5d7d57a.ngrok.io";
         if (WC_OpenPix::OPENPIX_ENV === 'development') {
             return 'http://localhost:5001';
         }
@@ -530,7 +532,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                     ' ' .
                     sanitize_text_field($_POST['billing_last_name']),
                 'email' => sanitize_email($_POST['billing_email']),
-                'taxID' => isset($_POST['billing_cpf'])
+                'taxID' => $_POST['billing_persontype'] === "1"
                     ? sanitize_text_field($_POST['billing_cpf'])
                     : sanitize_text_field($_POST['billing_cnpj']),
                 'phone' => isset($_POST['billing_cellphone'])
