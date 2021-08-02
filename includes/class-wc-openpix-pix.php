@@ -548,10 +548,6 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                 ? sanitize_text_field($_POST['billing_cellphone'])
                 : sanitize_text_field($_POST['billing_phone']);
 
-            WC_OpenPix::debug('phone ' . $phone);
-            WC_OpenPix::debug('phone length ' . strlen($phone));
-            WC_OpenPix::debug('phone REPLACE ' . preg_replace('/^0|\D+/', '', $phone));
-
             $customer = [
                 'name' => $name,
                 'email' => $email,
