@@ -489,8 +489,6 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
     public function getOpenPixApiUrl()
     {
-//        return "http://localhost:5001";
-        return "https://d791b5d7d57a.ngrok.io";
         if (WC_OpenPix::OPENPIX_ENV === 'development') {
             return 'http://localhost:5001';
         }
@@ -510,6 +508,16 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         ); // In cents.
     }
 
+    public function formatPhone($phone)
+    {
+        $phoneSafe = preg_replace('/^0|\D+/', '', $phone);
+        if (strlen($phoneSafe) > 11) {
+            return $phoneSafe;
+        }
+
+        return '55' . $phoneSafe;
+    }
+
     public function process_payment($order_id)
     {
         global $woocommerce;
@@ -526,18 +534,29 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             isset($_POST['billing_cpf']) || isset($_POST['billing_cnpj']);
 
         if ($hasCustomer) {
+            $name = sanitize_text_field($_POST['billing_first_name']) .
+                ' ' .
+                sanitize_text_field($_POST['billing_last_name']);
+
+            $email = sanitize_email($_POST['billing_email']);
+
+            $taxID = $_POST['billing_persontype'] === "1"
+                ? sanitize_text_field($_POST['billing_cpf'])
+                : sanitize_text_field($_POST['billing_cnpj']);
+
+            $phone = isset($_POST['billing_cellphone'])
+                ? sanitize_text_field($_POST['billing_cellphone'])
+                : sanitize_text_field($_POST['billing_phone']);
+
+            WC_OpenPix::debug('phone ' . $phone);
+            WC_OpenPix::debug('phone length ' . strlen($phone));
+            WC_OpenPix::debug('phone REPLACE ' . preg_replace('/^0|\D+/', '', $phone));
+
             $customer = [
-                'name' =>
-                    sanitize_text_field($_POST['billing_first_name']) .
-                    ' ' .
-                    sanitize_text_field($_POST['billing_last_name']),
-                'email' => sanitize_email($_POST['billing_email']),
-                'taxID' => $_POST['billing_persontype'] === "1"
-                    ? sanitize_text_field($_POST['billing_cpf'])
-                    : sanitize_text_field($_POST['billing_cnpj']),
-                'phone' => isset($_POST['billing_cellphone'])
-                    ? sanitize_text_field($_POST['billing_cellphone'])
-                    : sanitize_text_field($_POST['billing_phone']),
+                'name' => $name,
+                'email' => $email,
+                'taxID' => $taxID,
+                'phone' => $this->formatPhone($phone),
             ];
         } else {
             $customer = [];
