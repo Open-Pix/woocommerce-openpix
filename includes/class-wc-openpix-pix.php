@@ -518,15 +518,15 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         return '55' . $phoneSafe;
     }
 
-    public function getCustomerData($order) {
+    public function getCustomerData($order)
+    {
         $order_persontype = $order->get_meta('_billing_persontype');
         $order_billing_cpf = $order->get_meta('_billing_cpf');
         $order_billing_cnpj = $order->get_meta('_billing_cnpj');
 
-        $hasCustomer =
-            isset($order_billing_cpf) || isset($order_billing_cnpj);
+        $hasCustomer = isset($order_billing_cpf) || isset($order_billing_cnpj);
 
-        if(!$hasCustomer) {
+        if (!$hasCustomer) {
             return null;
         }
 
@@ -538,13 +538,14 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         $order_billing_phone = $order_data['billing']['phone'];
         $order_billing_cellphone = $order->get_meta('_billing_cellphone');
 
-        $name = sanitize_text_field($order_billing_first_name) .
+        $name =
+            sanitize_text_field($order_billing_first_name) .
             ' ' .
             sanitize_text_field($order_billing_last_name);
 
         $email = sanitize_email($order_billing_email);
 
-        $taxID = $order_persontype === "1"
+        $taxID = isset($order_billing_cpf)
             ? sanitize_text_field($order_billing_cpf)
             : sanitize_text_field($order_billing_cnpj);
 
