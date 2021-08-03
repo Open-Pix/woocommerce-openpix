@@ -543,7 +543,6 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
     public function getCustomerData($order)
     {
-        $order_persontype = $order->get_meta('_billing_persontype');
         $order_billing_cpf = $order->get_meta('_billing_cpf');
         $order_billing_cnpj = $order->get_meta('_billing_cnpj');
 
@@ -554,10 +553,6 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         }
 
         $order_data = $order->get_data();
-
-        WC_OpenPix::debug(
-            'order_persontype ' . $order_data['billing']['persontype']
-        );
 
         $order_billing_first_name = $order_data['billing']['first_name'];
         $order_billing_last_name = $order_data['billing']['last_name'];
@@ -573,10 +568,6 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         $email = sanitize_email($order_billing_email);
 
         $taxID = $this->getTaxID($order);
-
-        //        $taxID = isset($order_billing_cpf)
-        //            ? sanitize_text_field($order_billing_cpf)
-        //            : sanitize_text_field($order_billing_cnpj);
 
         $phone = isset($order_billing_cellphone)
             ? sanitize_text_field($order_billing_cellphone)
