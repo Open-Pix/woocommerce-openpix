@@ -1,3 +1,12 @@
+### 1.6.0 (2021-08-03)
+
+##### New Features
+
+* **bump:**  bump (3b2b815a)
+* **clean:**  some cleanup (cc02abb3)
+* **robust:**  even more robust (75e10038)
+* **safe:**  be safe (5e70e352)
+
 ### 1.5.0 (2021-08-03)
 
 ##### Chores
