@@ -1,3 +1,20 @@
+### 1.5.0 (2021-08-03)
+
+##### Chores
+
+* **debug:**  remove debug lines (c99d3041)
+
+##### New Features
+
+* **readme:**  bump to 1.5.0 and update readme (087b0dfc)
+* **customer:**
+  *  add 55 on phone number (44d636c2)
+  *  person type (b953f561)
+
+##### Bug Fixes
+
+* **customer:**  for new order and reorder (79ab6663)
+
 ### 1.4.0 (2021-07-12)
 
 ##### New Features
