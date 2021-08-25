@@ -1,3 +1,14 @@
+#### 1.6.1 (2021-08-25)
+
+##### New Features
+
+* **header:**  add version and platform headers on plugin, see entria/feedback-server#25205 (1f371f14)
+
+##### Bug Fixes
+
+* **logs:**  remove logs (ccd3e838)
+* **validate:**  improve validate on order data, fix entria/feedback-server#25290 (65bd1c51)
+
 ### 1.6.0 (2021-08-03)
 
 ##### New Features
