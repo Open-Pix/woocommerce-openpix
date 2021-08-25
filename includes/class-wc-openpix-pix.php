@@ -583,6 +583,48 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         return $customer;
     }
 
+    public function validateOrderFields($order)
+    {
+        $birthdate = sanitize_text_field(
+            $order->get_meta('_billing_birthdate')
+        );
+
+        if ($birthdate) {
+            $parts = explode('/', $birthdate);
+
+            if (!isset($parts[2])) {
+                return __('Invalid Birthdate', 'woocommerce-openpix');
+            }
+        }
+
+        $order_data = $order->get_data();
+
+        $order_billing_phone = $order_data['billing']['phone'];
+        $order_billing_cellphone = $order->get_meta('_billing_cellphone');
+
+        $cellphone = sanitize_text_field($order_billing_cellphone);
+
+        if ($cellphone) {
+            $phoneSafe = preg_replace('/^0|\D+/', '', $cellphone);
+
+            if (strlen($phoneSafe) != 11 && strlen($phoneSafe) != 10) {
+                return __('Invalid Cell Phone', 'woocommerce-openpix');
+            }
+        }
+
+        $phone = sanitize_text_field($order_billing_phone);
+
+        if ($phone) {
+            $phoneSafe = preg_replace('/^0|\D+/', '', $phone);
+
+            if (strlen($phoneSafe) != 11 && strlen($phoneSafe) != 10) {
+                return __('Invalid Phone', 'woocommerce-openpix');
+            }
+        }
+
+        return null;
+    }
+
     public function process_payment($order_id)
     {
         global $woocommerce;
@@ -594,6 +636,21 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
         $cart_total = $this->get_order_total();
         $total_cents = $this->get_openpix_amount($cart_total);
+
+        // validate fields
+        $validationError = $this->validateOrderFields($order);
+
+        if ($validationError) {
+            wc_add_notice(
+                __(
+                    'Order with Error: ' . $validationError,
+                    'woocommerce-openpix'
+                )
+            );
+            return [
+                'result' => 'fail',
+            ];
+        }
 
         $storeName = get_bloginfo('name');
 
