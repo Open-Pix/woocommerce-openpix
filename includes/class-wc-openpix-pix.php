@@ -615,6 +615,8 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
                 'Authorization' => $this->appID,
+                'version' => WC_OpenPix::VERSION,
+                'platform' => 'WOOCOMMERCE',
             ],
             'body' => json_encode($payload),
             'method' => 'POST',
