@@ -36,6 +36,10 @@ Para questões relacionadas a integração e plugin, acesse o [Portal do Desenvo
 
 == Changelog ==
 
+= 1.6.1 - 2021-08-25 =
+
+* Melhoria na validação de dados do pedido
+
 = 1.6.0 - 2021-08-03 =
 
 * Melhoria ao lidar com o CPF/CNPJ do cliente
