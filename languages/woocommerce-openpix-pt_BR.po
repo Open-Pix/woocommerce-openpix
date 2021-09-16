@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: OpenPix for WooCommerce\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-01 19:50+0000\n"
-"PO-Revision-Date: 2021-08-25 20:27+0000\n"
+"PO-Revision-Date: 2021-09-16 20:40+0000\n"
 "Last-Translator: \n"
 "Language-Team: Portuguese (Brazil)\n"
 "Language: pt_BR\n"
@@ -113,6 +113,9 @@ msgstr "OpenPix: transação paga"
 #: includes/class-wc-openpix.php:237 includes/class-wc-openpix-pix.php:420
 msgid "Order Button Text"
 msgstr "Texto do botão de pedido"
+
+msgid "Order status after pix charge is paid"
+msgstr "Status do pedido após o pagamento do pix"
 
 #: includes/class-wc-openpix.php:234 includes/class-wc-openpix.php:244
 #: includes/class-wc-openpix-pix.php:407 includes/class-wc-openpix-pix.php:417
