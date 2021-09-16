@@ -36,6 +36,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         );
 
         $this->status_when_waiting = $this->get_option('status_when_waiting');
+        $this->status_when_paid = $this->get_option('status_when_paid');
 
         add_action('woocommerce_update_options_payment_gateways_' . $this->id, [
             $this,
@@ -296,7 +297,8 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                     // Changing the order for processing and reduces the stock.
                     $order->payment_complete();
 
-                    $order->add_order_note(
+                    $order->update_status(
+                        $this->status_when_paid,
                         __('OpenPix: Transaction paid', 'woocommerce-openpix')
                     );
 
@@ -473,6 +475,15 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                 'type' => 'select',
                 'options' => $this->get_available_status(),
                 'default' => $this->get_available_status('wc-pending'),
+            ],
+            'status_when_paid' => [
+                'title' => __(
+                    'Change status after issuing the pix is paid',
+                    'woocommerce-openpix'
+                ),
+                'type' => 'select',
+                'options' => $this->get_available_status(),
+                'default' => $this->get_available_status('wc-processing'),
             ],
         ];
     }
