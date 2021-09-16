@@ -478,7 +478,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             ],
             'status_when_paid' => [
                 'title' => __(
-                    'Change status after issuing the pix is paid',
+                    'Order status after pix charge is paid',
                     'woocommerce-openpix'
                 ),
                 'type' => 'select',
