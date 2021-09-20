@@ -713,7 +713,6 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
         if ($response['response']['code'] !== 200) {
             wc_add_notice(__('Error creating Pix', 'woocommerce-openpix'));
-            wc_add_notice($response['body']);
             return [
                 'result' => 'fail',
             ];
