@@ -1,3 +1,24 @@
+### 1.7.0 (2021-09-21)
+
+##### New Features
+
+* **status:**
+  *  edit title of select (87bdf969)
+  *  add change status when paid (5b30a3a4)
+* **remove:**  remove old approach (41a89a94)
+* **stable:**  stable (2900287c)
+
+##### Bug Fixes
+
+* **logs:**  improve logs of creating pix (058358ad)
+* **error:**  add logs and edit error message (11498e6c)
+* **chargeCreate:**  remove dump of json error (f3dfc5dd)
+
+##### Other Changes
+
+* **pix:**  add i18n of error creating pix (0df0c360)
+* **status:**  add status when paid i18n (031014b9)
+
 #### 1.6.1 (2021-08-25)
 
 ##### New Features
