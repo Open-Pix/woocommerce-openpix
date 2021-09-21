@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: OpenPix for WooCommerce\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-01 19:50+0000\n"
-"PO-Revision-Date: 2021-09-16 20:40+0000\n"
+"PO-Revision-Date: 2021-09-21 17:51+0000\n"
 "Last-Translator: \n"
 "Language-Team: Portuguese (Brazil)\n"
 "Language: pt_BR\n"
@@ -50,6 +50,9 @@ msgstr "Habilitar/Desabilitar"
 #: includes/class-wc-openpix-pix.php:685 includes/class-wc-openpix-pix.php:699
 msgid "Error creating Pix"
 msgstr "Erro ao criar Pix"
+
+msgid "Error creating Pix, try again"
+msgstr "Erro ao gerar cobrança Pix, tente novamente por favor"
 
 #: includes/class-wc-openpix-pix.php:436
 #, php-format
