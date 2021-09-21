@@ -703,12 +703,13 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                 'error'
             );
             WC_OpenPix::debug(
-                json_encode(
-                    $response,
-                    JSON_UNESCAPED_UNICODE |
-                        JSON_UNESCAPED_SLASHES |
-                        JSON_NUMERIC_CHECK
-                )
+                'Error creating pix:' .
+                    json_encode(
+                        $response,
+                        JSON_UNESCAPED_UNICODE |
+                            JSON_UNESCAPED_SLASHES |
+                            JSON_NUMERIC_CHECK
+                    )
             );
             return [
                 'result' => 'fail',
@@ -718,12 +719,13 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         if ($response['response']['code'] === 401) {
             wc_add_notice(__('Invalid AppID', 'woocommerce-openpix'), 'error');
             WC_OpenPix::debug(
-                json_encode(
-                    $response,
-                    JSON_UNESCAPED_UNICODE |
-                        JSON_UNESCAPED_SLASHES |
-                        JSON_NUMERIC_CHECK
-                )
+                'Error creating pix:' .
+                    json_encode(
+                        $response,
+                        JSON_UNESCAPED_UNICODE |
+                            JSON_UNESCAPED_SLASHES |
+                            JSON_NUMERIC_CHECK
+                    )
             );
             return [
                 'result' => 'fail',
@@ -732,12 +734,13 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
         if ($response['response']['code'] !== 200) {
             WC_OpenPix::debug(
-                json_encode(
-                    $response,
-                    JSON_UNESCAPED_UNICODE |
-                        JSON_UNESCAPED_SLASHES |
-                        JSON_NUMERIC_CHECK
-                )
+                'Error creating pix:' .
+                    json_encode(
+                        $response,
+                        JSON_UNESCAPED_UNICODE |
+                            JSON_UNESCAPED_SLASHES |
+                            JSON_NUMERIC_CHECK
+                    )
             );
             wc_add_notice(
                 __('Error creating Pix, try again', 'woocommerce-openpix'),
