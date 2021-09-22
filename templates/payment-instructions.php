@@ -4,7 +4,15 @@ if (!defined('ABSPATH')) {
     exit();
 } ?>
 
-<div style="margin-bottom: 40px">
+<script>
+  window.__initialProps__ = {
+    "correlationID": "<?php echo $correlationID; ?>",
+    "environment": "<?php echo $environment; ?>",
+    "appID": "<?php echo $appID; ?>",
+  }
+</script>
+
+<div id='success-content' class="openpix-success-content" style="margin-bottom: 40px">
     <p class="openpix-text-align-center">
         Efetue o pagamento Pix usando o <string>QRCode</string> ou usando
         <strong>Pix copia e cola</strong>, se preferir:
@@ -52,5 +60,4 @@ if (!defined('ABSPATH')) {
         Após o pagamento, podemos levar alguns segundos para confirmar o seu
         pagamento.<br />Você será avisado assim que isso ocorrer!
     </p>
-</div>
 </div>
