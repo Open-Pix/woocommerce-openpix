@@ -677,9 +677,6 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             $payload['customer'] = $customer;
         }
 
-        WC_OpenPix::debug('url ' . $url);
-        WC_OpenPix::debug('appID ' . $this->appID);
-
         $params = [
             'timeout' => 60,
             'headers' => [
