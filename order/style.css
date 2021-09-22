@@ -65,3 +65,22 @@
   overflow: hidden;
   pointer-events: none;
 }
+
+.openpix-pix-completed {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+  height: 695px;
+  margin: auto;
+}
+
+.openpix-pix-completed .label-completed {
+  color: #008852;
+  text-align: center;
+}
+
+.openpix-pix-completed .label {
+  text-align: center;
+}

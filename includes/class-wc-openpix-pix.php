@@ -797,6 +797,12 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
     {
         $order = wc_get_order($order_id);
         $data = get_post_meta($order_id, 'openpix_transaction', true);
+        $correlationID = get_post_meta(
+            $order_id,
+            'openpix_correlation_id',
+            true
+        );
+        $environment = WC_OpenPix::OPENPIX_ENV;
 
         wc_get_template(
             'payment-instructions.php',
@@ -804,6 +810,9 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                 'paymentLinkUrl' => $data['paymentLinkUrl'],
                 'qrCodeImage' => $data['qrCodeImage'],
                 'brCode' => $data['brCode'],
+                'correlationID' => $correlationID,
+                'environment' => $environment,
+                'appID' => $this->appID,
             ],
             WC_OpenPIx::get_templates_path(),
             WC_OpenPIx::get_templates_path()

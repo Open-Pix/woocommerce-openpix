@@ -36,7 +36,7 @@ class WC_OpenPix
 {
     const VERSION = '1.7.0';
     // change this to work in development, staging or production
-    //            const OPENPIX_ENV = 'development';
+    //     const OPENPIX_ENV = 'development';
     //    const OPENPIX_ENV = 'staging';
     const OPENPIX_ENV = 'production';
 
