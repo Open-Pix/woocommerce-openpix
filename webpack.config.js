@@ -50,20 +50,24 @@ module.exports = {
     ],
   },
   devServer: {
-    contentBase: outputPath,
-    disableHostCheck: true,
+    static: {
+      directory: outputPath,
+    },
+    allowedHosts: 'all',
     historyApiFallback: {
       disableDotRule: true,
     },
     hot: true,
-    hotOnly: false,
     compress: true,
     port: PORT,
-    sockPort: PORT,
     // wordpress related
     liveReload: false,
-    writeToDisk: true,
-    headers: { "Access-Control-Allow-Origin": "*" }
+    headers: { "Access-Control-Allow-Origin": "*" },
+    client: {
+      webSocketURL: {
+        port: PORT,
+      },
+    }
   },
   plugins: [
     new dotEnv({

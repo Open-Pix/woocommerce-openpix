@@ -31,7 +31,8 @@ module.exports = {
     'plugin:import/errors',
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
-    'prettier/@typescript-eslint',
+    'prettier',
+    'plugin:compat/recommended',
   ],
   rules: {
     'comma-dangle': [2, 'always-multiline'],
