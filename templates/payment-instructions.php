@@ -5,11 +5,13 @@ if (!defined('ABSPATH')) {
 } ?>
 
 <script>
-  window.__initialProps__ = {
-    "correlationID": "<?php echo $correlationID; ?>",
-    "environment": "<?php echo $environment; ?>",
-    "appID": "<?php echo $appID; ?>",
-  }
+  window.__initialProps__ = <?php echo json_encode(array(
+    "correlationID" => $correlationID,
+    "environment" => $environment,
+    "appID" => $appID,
+    "pluginUrl" => $pluginUrl,
+    "realtime" => $realtime,
+  )) ?>
 </script>
 
 <div id='success-content' class="openpix-success-content" style="margin-bottom: 40px">
