@@ -36,7 +36,7 @@ class WC_OpenPix
 {
     const VERSION = '1.7.0';
     // change this to work in development, staging or production
-    //     const OPENPIX_ENV = 'development';
+//         const OPENPIX_ENV = 'development';
     //    const OPENPIX_ENV = 'staging';
     const OPENPIX_ENV = 'production';
 
@@ -124,9 +124,9 @@ class WC_OpenPix
         );
     }
 
-    function get_assets_url()
+    public static function get_assets_url()
     {
-        return plugin_dir_url(dirname(__FILE__)) . 'assets/';
+        return plugins_url('', __FILE__);
     }
 
     // load javascript and css

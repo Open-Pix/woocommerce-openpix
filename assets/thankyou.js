@@ -58,13 +58,13 @@
       let data = await result.json();
 
       if (!data.charge) {
-        return null;
+        return;
       }
 
       const { charge } = data;
 
       if (charge.status === 'ACTIVE') {
-        return null;
+        return;
       }
 
       if (charge.status === 'EXPIRED') {
@@ -79,22 +79,28 @@
         `;
 
         shouldPolling = false;
-        return null;
+        return;
       }
 
-      let checkoutSuccessClass = document.getElementById('success-content');
+      if (charge.status === 'COMPLETED') {
+        let checkoutSuccessClass = document.getElementById('success-content');
 
-      checkoutSuccessClass.innerHTML = `
+        const successImg = `${window.__initialProps__.pluginUrl}/assets/images/success.png`;
+
+        checkoutSuccessClass.innerHTML = `
           <div class="openpix-content">
             <div class="openpix-pix-completed">
               <span class="label-completed">Pagamento realizado</span>
               <span class="label">Pix foi realizado com sucesso!</span>
-              <img src="https://i.imgur.com/trayovl.png" alt="check image">
+              <img src="${successImg}" alt="check image">
             </div>
           </div>
         `;
 
-      shouldPolling = false;
+        shouldPolling = false;
+
+        return;
+      }
     }
 
     async function polling() {
@@ -113,6 +119,10 @@
       }
     }
 
-    setTimeout(polling, 2000);
+    if (window.__initialProps__) {
+      if (window.__initialProps__.realtime) {
+        setTimeout(polling, 2000);
+      }
+    }
   });
 })();
