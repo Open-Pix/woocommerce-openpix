@@ -1,3 +1,19 @@
+### 1.8.0 (2021-09-23)
+
+##### Chores
+
+* **stuff:**  stuff (29828c74)
+
+##### New Features
+
+* **realtime:**  realtime flag (889d81bf)
+* **upgrade:**  upgrade (fd49e41c)
+* **order:**  success polling (c68b68ea)
+
+##### Bug Fixes
+
+* **i18n:**  i18n (b8f988f8)
+
 ### 1.7.0 (2021-09-21)
 
 ##### New Features
