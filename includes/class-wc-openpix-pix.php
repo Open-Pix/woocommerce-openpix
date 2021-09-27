@@ -375,10 +375,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                 'default' => 'no',
             ],
             'realtime' => [
-                'title' => __(
-                    'Update UI in realtime',
-                    'woocommerce-openpix'
-                ),
+                'title' => __('Update UI in realtime', 'woocommerce-openpix'),
                 'type' => 'checkbox',
                 'label' => __('Enable realtime', 'woocommerce-openpix'),
                 'default' => 'no',
@@ -770,6 +767,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                 'paymentLinkUrl' => $data['charge']['paymentLinkUrl'],
                 'qrCodeImage' => $data['charge']['qrCodeImage'],
                 'brCode' => $data['charge']['brCode'],
+                'pixKey' => $data['charge']['pixKey'],
             ],
         ];
 
@@ -813,6 +811,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             'openpix_correlation_id',
             true
         );
+
         $environment = WC_OpenPix::OPENPIX_ENV;
 
         wc_get_template(
