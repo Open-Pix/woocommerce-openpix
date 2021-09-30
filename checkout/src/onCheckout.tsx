@@ -12,6 +12,7 @@ import Checkout, { AppProps, Customer } from './Checkout';
 type WCOpenPixParams = {
   appID: string;
   storeName: string;
+  correlationID: string;
 };
 
 declare global {
@@ -157,6 +158,7 @@ export const onCheckout = () => {
     description: wcOpenpixParams.storeName,
     customer,
     appID: wcOpenpixParams.appID,
+    correlationID: wcOpenpixParams.correlationID,
   };
 
   render(

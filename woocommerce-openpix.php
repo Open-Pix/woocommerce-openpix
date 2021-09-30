@@ -68,11 +68,13 @@ class WC_OpenPix
     private function includes()
     {
         include_once dirname(__FILE__) . '/includes/class-wc-openpix-pix.php';
+        include_once dirname(__FILE__) . '/includes/class-wc-openpix.php';
     }
 
     public function add_gateway($methods)
     {
         $methods[] = 'WC_OpenPix_Pix_Gateway';
+        $methods[] = 'WC_OpenPix_Installment_Gateway';
 
         return $methods;
     }
