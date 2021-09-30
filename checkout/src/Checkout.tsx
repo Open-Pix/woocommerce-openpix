@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import { v4 as uuidv4 } from 'uuid';
 
@@ -14,11 +14,13 @@ export type Customer = {
   phone: string;
 };
 export type AppProps = {
+  // eslint-disable-next-line
   onSuccess: (correlationID: string) => void;
   value: number;
   description?: string;
   customer?: Customer;
   appID: string;
+  correlationID: string;
 };
 const Checkout = ({
   onSuccess,
@@ -26,13 +28,8 @@ const Checkout = ({
   description,
   customer,
   appID,
+  correlationID,
 }: AppProps) => {
-  // generate a new transactionID on mount
-  // eslint-disable-next-line
-  const [correlationID, setCorrelationID] = useState(() =>
-    getDefaultTransactionId(),
-  );
-
   useOpenPix(appID);
 
   const isOpenPixLoaded = !!window.$openpix?.addEventListener;
@@ -40,7 +37,7 @@ const Checkout = ({
   useEffect(() => {
     if (isOpenPixLoaded) {
       window.$openpix.push([
-        'pix',
+        'pixTemp',
         {
           correlationID,
           value,
