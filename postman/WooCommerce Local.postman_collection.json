@@ -1,0 +1,200 @@
+{
+	"info": {
+		"_postman_id": "949d1e35-46c7-40d1-9c02-f8bdb45c0f90",
+		"name": "WooCommerce Local",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Webhook Test Calls",
+			"item": [
+				{
+					"name": "POST Webhook test with all auth fields",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-OpenPix-Authorization",
+								"value": "{{authorization}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"evento\": \"teste_webhook\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:10008/wc-api/WC_OpenPix_Pix_Gateway?authorization={{authorization}}",
+							"host": [
+								"localhost"
+							],
+							"port": "10008",
+							"path": [
+								"wc-api",
+								"WC_OpenPix_Pix_Gateway"
+							],
+							"query": [
+								{
+									"key": "authorization",
+									"value": "{{authorization}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST Webhook Test with x-openpix-authorization header only",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "{{authorization}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"evento\": \"teste_webhook\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:10008/wc-api/WC_OpenPix_Pix_Gateway",
+							"host": [
+								"localhost"
+							],
+							"port": "10008",
+							"path": [
+								"wc-api",
+								"WC_OpenPix_Pix_Gateway"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST Webhook test with authorization header only",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{authorization}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"evento\": \"teste_webhook\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:10008/wc-api/WC_OpenPix_Pix_Gateway",
+							"host": [
+								"localhost"
+							],
+							"port": "10008",
+							"path": [
+								"wc-api",
+								"WC_OpenPix_Pix_Gateway"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST Webhook test with query string only",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"evento\": \"teste_webhook\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:10008/wc-api/WC_OpenPix_Pix_Gateway?authorization={{authorization}}",
+							"host": [
+								"localhost"
+							],
+							"port": "10008",
+							"path": [
+								"wc-api",
+								"WC_OpenPix_Pix_Gateway"
+							],
+							"query": [
+								{
+									"key": "authorization",
+									"value": "{{authorization}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Webhook Validations Calls Copy",
+			"item": [
+				{
+					"name": "POST Webhook Authorization Invalid",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"evento\": \"teste_webhook\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1/openpix/webhook/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"path": [
+								"openpix",
+								"webhook",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

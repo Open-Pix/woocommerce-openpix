@@ -87,6 +87,14 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             return $_SERVER['Authorization'];
         }
 
+        if (array_key_exists('HTTP_X_OPENPIX_AUTHORIZATION', $_SERVER)) {
+            return $_SERVER['HTTP_X_OPENPIX_AUTHORIZATION'];
+        }
+
+        if (array_key_exists('authorization', $_GET)) {
+            return $_GET['authorization'];
+        }
+
         return '';
     }
 
