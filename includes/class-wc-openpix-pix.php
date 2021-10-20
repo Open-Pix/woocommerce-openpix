@@ -79,31 +79,6 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
     public function getAuthorization()
     {
-        WC_OpenPix::debug(
-            json_encode(
-                $_SERVER,
-                JSON_UNESCAPED_UNICODE |
-                    JSON_UNESCAPED_SLASHES |
-                    JSON_NUMERIC_CHECK
-            )
-        );
-        WC_OpenPix::debug(
-            json_encode(
-                $_GET,
-                JSON_UNESCAPED_UNICODE |
-                    JSON_UNESCAPED_SLASHES |
-                    JSON_NUMERIC_CHECK
-            )
-        );
-        WC_OpenPix::debug(
-            json_encode(
-                $_POST,
-                JSON_UNESCAPED_UNICODE |
-                    JSON_UNESCAPED_SLASHES |
-                    JSON_NUMERIC_CHECK
-            )
-        );
-
         if (array_key_exists('HTTP_AUTHORIZATION', $_SERVER)) {
             return $_SERVER['HTTP_AUTHORIZATION'];
         }
