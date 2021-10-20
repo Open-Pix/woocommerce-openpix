@@ -76,26 +76,29 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
         return true;
     }
-
-    public function getAuthorization()
+    /**
+     * Validate the webhook for security reasons.
+     *
+     * @return bool
+     */
+    public function validateRequest()
     {
-        if (array_key_exists('HTTP_AUTHORIZATION', $_SERVER)) {
-            return $_SERVER['HTTP_AUTHORIZATION'];
-        }
+        $systemWebhookAuthorization = $this->webhookAuthorization;
 
-        if (array_key_exists('Authorization', $_SERVER)) {
-            return $_SERVER['Authorization'];
-        }
+        $webhookAuthHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
+        $webhookAuthOpenPixHeader =
+            $_SERVER['HTTP_X_OPENPIX_AUTHORIZATION'] ?? '';
+        $webhookAuthQueryString = $_GET['authorization'] ?? '';
 
-        if (array_key_exists('HTTP_X_OPENPIX_AUTHORIZATION', $_SERVER)) {
-            return $_SERVER['HTTP_X_OPENPIX_AUTHORIZATION'];
-        }
+        $isAuthHeaderValid = $webhookAuthHeader === $systemWebhookAuthorization;
+        $isAuthOpenPixHeaderValid =
+            $webhookAuthOpenPixHeader === $systemWebhookAuthorization;
+        $isAuthQueryStringValid =
+            $webhookAuthQueryString === $systemWebhookAuthorization;
 
-        if (array_key_exists('authorization', $_GET)) {
-            return $_GET['authorization'];
-        }
-
-        return '';
+        return $isAuthHeaderValid ||
+            $isAuthOpenPixHeaderValid ||
+            $isAuthQueryStringValid;
     }
 
     public function get_order_id_by_correlation_id($correlation_id)
@@ -142,9 +145,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         $body = file_get_contents('php://input', true);
         $data = json_decode($body, true);
 
-        $authorization = $this->getAuthorization();
-
-        if ($authorization !== $this->webhookAuthorization) {
+        if (!$this->validateRequest()) {
             header('HTTP/1.2 400 Bad Request');
             $response = [
                 'error' => 'Invalid Webhook Authorization',
