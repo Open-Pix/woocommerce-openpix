@@ -4,6 +4,86 @@ if (!defined('ABSPATH')) {
     exit();
 }
 
+add_action('admin_footer', 'my_action_javascript'); // Write our JS below here
+
+function my_action_javascript()
+{
+    ?>
+	<script type="text/javascript" >
+	jQuery(document).ready(function($) {
+
+        jQuery("#woocommerce_woocommerce_openpix_pix_webhook_button").click(() => {
+            var data = {
+                action: 'openpix_configure_webhook',
+            };
+            jQuery.post(ajaxurl,data,function(response) {
+                alert(response);
+            })
+        })
+	});
+	</script> <?php
+}
+add_action('wp_ajax_openpix_configure_webhook', 'openpix_configure_webhook');
+
+function openpix_configure_webhook()
+{
+    $webhookUrl = str_replace(
+        'https:',
+        'http:',
+        home_url('/') . 'wc-api/' . 'WC_OpenPix_Pix_Gateway'
+    );
+    $url = 'http://localhost:5001' . '/api/openpix/v1/webhook';
+    $apiId =
+        'Q2xpZW50X0lkX2I5MmQ1NjhlLTVkNjktNDhhNS1iYjhhLWNlNTU4N2VhNjE0ZTpDbGllbnRfU2VjcmV0X3VJdXY5S1BnMkkxeVp4eXVUelJWeFZTWmZhanJMK25hSktWSlZ5TXhUNVE9';
+    $params = [
+        'timeout' => 60,
+        'headers' => [
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
+            'Authorization' => $apiId,
+            'version' => WC_OpenPix::VERSION,
+            'platform' => 'WOOCOMMERCE',
+        ],
+        'method' => 'GET',
+    ];
+    $response = wp_remote_get("$url?url=$webhookUrl", $params); // check if alredy have one webhook with this $webhookUrl
+
+    $data = json_decode($response['body'], true);
+
+    $hasActiveWebhook = $data['webhooks'][0]['isActive'] ?? false;
+
+    if (!$hasActiveWebhook) {
+        // set auth key of class
+        wp_die();
+    }
+    $payload = [
+        'webhook' => [
+            'name' => 'webhookName',
+            'url' => $webhookUrl,
+            'authorization' => 'openpix',
+            'isActive' => true,
+        ],
+    ];
+    $paramsWebhookPost = [
+        'timeout' => 60,
+        'headers' => [
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
+            'Authorization' => $apiId,
+            'version' => WC_OpenPix::VERSION,
+            'platform' => 'WOOCOMMERCE',
+        ],
+        'body' => json_encode($payload),
+        'method' => 'POST',
+        'data_format' => 'body',
+    ];
+
+    $responseWebhookPost = wp_remote_post($url, $paramsWebhookPost);
+
+    print_r(json_decode($responseWebhookPost['body'], true));
+
+    wp_die(); // this is required to terminate immediately and return a proper response
+}
 function wc_openpix_assets_url()
 {
     return plugin_dir_url(dirname(__FILE__)) . 'assets/';
@@ -501,6 +581,17 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                 'type' => 'select',
                 'options' => $this->get_available_status(),
                 'default' => $this->get_available_status('wc-processing'),
+            ],
+            'webhook_button' => [
+                'title' => __('Webhook Configuration', 'woocommerce-openpix'),
+                'type' => 'button',
+                'class' => 'button-primary',
+                'description' => __(
+                    'This will be used to create or config your webhook',
+                    'woocommerce-openpix'
+                ),
+                'desc_tip' => 'true',
+                'default' => 'Configure your webhook',
             ],
         ];
     }
