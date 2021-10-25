@@ -8,7 +8,8 @@ add_action('admin_footer', 'my_action_javascript'); // Write our JS below here
 
 function my_action_javascript()
 {
-    ?>
+    ?>// move to another .js
+    
 	<script type="text/javascript" >
 	jQuery(document).ready(function($) {
 
@@ -22,68 +23,14 @@ function my_action_javascript()
         })
 	});
 	</script> <?php
+    // move to another .js
+    ?>
 }
-add_action('wp_ajax_openpix_configure_webhook', 'openpix_configure_webhook');
-
-function openpix_configure_webhook()
-{
-    $webhookUrl = str_replace(
-        'https:',
-        'http:',
-        home_url('/') . 'wc-api/' . 'WC_OpenPix_Pix_Gateway'
-    );
-    $url = 'http://localhost:5001' . '/api/openpix/v1/webhook';
-    $apiId =
-        'Q2xpZW50X0lkX2I5MmQ1NjhlLTVkNjktNDhhNS1iYjhhLWNlNTU4N2VhNjE0ZTpDbGllbnRfU2VjcmV0X3VJdXY5S1BnMkkxeVp4eXVUelJWeFZTWmZhanJMK25hSktWSlZ5TXhUNVE9';
-    $params = [
-        'timeout' => 60,
-        'headers' => [
-            'Accept' => 'application/json',
-            'Content-Type' => 'application/json',
-            'Authorization' => $apiId,
-            'version' => WC_OpenPix::VERSION,
-            'platform' => 'WOOCOMMERCE',
-        ],
-        'method' => 'GET',
-    ];
-    $response = wp_remote_get("$url?url=$webhookUrl", $params); // check if alredy have one webhook with this $webhookUrl
-
-    $data = json_decode($response['body'], true);
-
-    $hasActiveWebhook = $data['webhooks'][0]['isActive'] ?? false;
-
-    if (!$hasActiveWebhook) {
-        // set auth key of class
-        wp_die();
-    }
-    $payload = [
-        'webhook' => [
-            'name' => 'webhookName',
-            'url' => $webhookUrl,
-            'authorization' => 'openpix',
-            'isActive' => true,
-        ],
-    ];
-    $paramsWebhookPost = [
-        'timeout' => 60,
-        'headers' => [
-            'Accept' => 'application/json',
-            'Content-Type' => 'application/json',
-            'Authorization' => $apiId,
-            'version' => WC_OpenPix::VERSION,
-            'platform' => 'WOOCOMMERCE',
-        ],
-        'body' => json_encode($payload),
-        'method' => 'POST',
-        'data_format' => 'body',
-    ];
-
-    $responseWebhookPost = wp_remote_post($url, $paramsWebhookPost);
-
-    print_r(json_decode($responseWebhookPost['body'], true));
-
-    wp_die(); // this is required to terminate immediately and return a proper response
-}
+// that's will be removed
+add_action('wp_ajax_openpix_configure_webhook', [
+    'WC_OpenPix_Pix_Gateway',
+    'openpix_configure_webhook',
+]);
 function wc_openpix_assets_url()
 {
     return plugin_dir_url(dirname(__FILE__)) . 'assets/';
@@ -606,7 +553,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         echo wp_kses_post(wpautop(wptexturize($this->description)));
     }
 
-    public function getOpenPixApiUrl()
+    public static function getOpenPixApiUrl()
     {
         if (WC_OpenPix::OPENPIX_ENV === 'development') {
             return 'http://localhost:5001';
@@ -901,7 +848,87 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             'redirect' => $this->get_return_url($order),
         ];
     }
+    public static function openpix_configure_webhook()
+    {
+        $webhookUrl = str_replace(
+            'https:',
+            'http:',
+            home_url('/') . 'wc-api/' . 'WC_OpenPix_Pix_Gateway'
+        );
 
+        $url = self::getOpenPixApiUrl() . '/api/openpix/v1/webhook';
+        $openpixSettings = get_option(
+            'woocommerce_woocommerce_openpix_pix_settings'
+        );
+        $apiId = $openpixSettings['appID'];
+
+        $params = [
+            'timeout' => 60,
+            'headers' => [
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json',
+                'Authorization' => $apiId,
+                'version' => WC_OpenPix::VERSION,
+                'platform' => 'WOOCOMMERCE',
+            ],
+            'method' => 'GET',
+        ];
+        $response = wp_remote_get("$url?url=$webhookUrl", $params); // check if alredy have one webhook with this $webhookUrl
+
+        $data = json_decode($response['body'], true);
+
+        $hasActiveWebhook = $data['webhooks'][0]['isActive'] ?? false;
+
+        if (!$hasActiveWebhook) {
+            echo 'hasActiveWebhook -> wp_die';
+            $openpixSettings['webhook_authorization'] =
+                $data['webhooks'][0]['webhook_authorization'];
+            update_option(
+                'woocommerce_woocommerce_openpix_pix_settings',
+                $openpixSettings
+            );
+            // set auth key of class
+            wp_die();
+        }
+
+        $webhookAuthorization = WC_OpenPix::uuid_v4();
+
+        $payload = [
+            'webhook' => [
+                'name' => 'webhookName',
+                'url' => $webhookUrl,
+                'authorization' => $webhookAuthorization,
+                'isActive' => true,
+            ],
+        ];
+        $paramsWebhookPost = [
+            'timeout' => 60,
+            'headers' => [
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json',
+                'Authorization' => $apiId,
+                'version' => WC_OpenPix::VERSION,
+                'platform' => 'WOOCOMMERCE',
+            ],
+            'body' => json_encode($payload),
+            'method' => 'POST',
+            'data_format' => 'body',
+        ];
+
+        $openpixSettings['webhook_authorization'] = $webhookAuthorization;
+
+        update_option(
+            'woocommerce_woocommerce_openpix_pix_settings',
+            $openpixSettings
+        );
+
+        $responseWebhookPost = wp_remote_post($url, $paramsWebhookPost);
+
+        $bodyWebhook = json_decode($responseWebhookPost['body'], true);
+        print_r($bodyWebhook);
+
+        wp_die(); // this is required to terminate immediately and return a proper response
+    }
     public function thankyou_page($order_id)
     {
         $order = wc_get_order($order_id);
