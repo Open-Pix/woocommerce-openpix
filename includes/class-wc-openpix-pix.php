@@ -6,10 +6,9 @@ if (!defined('ABSPATH')) {
 
 add_action('admin_footer', 'my_action_javascript'); // Write our JS below here
 
-function my_action_javascript()
+function my_action_javascript() // move to another .js
 {
-    ?>// move to another .js
-    
+    ?>
 	<script type="text/javascript" >
 	jQuery(document).ready(function($) {
 
@@ -23,14 +22,9 @@ function my_action_javascript()
         })
 	});
 	</script> <?php
-    // move to another .js
-    ?>
 }
 // that's will be removed
-add_action('wp_ajax_openpix_configure_webhook', [
-    'WC_OpenPix_Pix_Gateway',
-    'openpix_configure_webhook',
-]);
+add_action('wp_ajax_openpix_configure_webhook', array( 'WC_OpenPix_Pix_Gateway', 'openpix_configure_webhook' ));
 function wc_openpix_assets_url()
 {
     return plugin_dir_url(dirname(__FILE__)) . 'assets/';
@@ -850,6 +844,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
     }
     public static function openpix_configure_webhook()
     {
+        
         $webhookUrl = str_replace(
             'https:',
             'http:',
@@ -857,9 +852,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         );
 
         $url = self::getOpenPixApiUrl() . '/api/openpix/v1/webhook';
-        $openpixSettings = get_option(
-            'woocommerce_woocommerce_openpix_pix_settings'
-        );
+        $openpixSettings = get_option('woocommerce_woocommerce_openpix_pix_settings');
         $apiId = $openpixSettings['appID'];
 
         $params = [
@@ -874,19 +867,15 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             'method' => 'GET',
         ];
         $response = wp_remote_get("$url?url=$webhookUrl", $params); // check if alredy have one webhook with this $webhookUrl
-
+    
         $data = json_decode($response['body'], true);
-
+    
         $hasActiveWebhook = $data['webhooks'][0]['isActive'] ?? false;
-
+        
         if (!$hasActiveWebhook) {
-            echo 'hasActiveWebhook -> wp_die';
-            $openpixSettings['webhook_authorization'] =
-                $data['webhooks'][0]['webhook_authorization'];
-            update_option(
-                'woocommerce_woocommerce_openpix_pix_settings',
-                $openpixSettings
-            );
+            echo "hasActiveWebhook -> wp_die";
+            $openpixSettings['webhook_authorization'] = $data['webhooks'][0]['webhook_authorization'];
+            update_option('woocommerce_woocommerce_openpix_pix_settings',$openpixSettings);
             // set auth key of class
             wp_die();
         }
@@ -917,16 +906,13 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
         $openpixSettings['webhook_authorization'] = $webhookAuthorization;
 
-        update_option(
-            'woocommerce_woocommerce_openpix_pix_settings',
-            $openpixSettings
-        );
+        update_option('woocommerce_woocommerce_openpix_pix_settings',$openpixSettings);
 
         $responseWebhookPost = wp_remote_post($url, $paramsWebhookPost);
 
-        $bodyWebhook = json_decode($responseWebhookPost['body'], true);
+        $bodyWebhook = json_decode($responseWebhookPost['body'],true);
         print_r($bodyWebhook);
-
+        
         wp_die(); // this is required to terminate immediately and return a proper response
     }
     public function thankyou_page($order_id)
