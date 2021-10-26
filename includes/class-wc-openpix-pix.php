@@ -18,6 +18,10 @@ function embedWebhookConfigButton()
                 action: 'openpix_configure_webhook',
             };
             jQuery.post(ajaxurl,data,function(response) {
+                if(!response.success) {
+                    alert(response.message);
+                }
+                console.log(response);
                 console.log(JSON.stringify(response,null,4).replace(/\\/g, ""));
             })
         })
@@ -868,7 +872,17 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             'woocommerce_woocommerce_openpix_pix_settings'
         );
         $appID = $openpixSettings['appID'];
-
+        if (!$appID) {
+            $response = [
+                'message' => __(
+                    'OpenPix: You need to add appID before configuring webhook.',
+                    'woocommerce-openpix'
+                ),
+                'success' => false,
+            ];
+            wp_send_json($response);
+            wp_die();
+        }
         $params = [
             'timeout' => 60,
             'headers' => [
