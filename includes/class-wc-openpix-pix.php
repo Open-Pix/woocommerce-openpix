@@ -18,9 +18,9 @@ function embedWebhookConfigButton()
                 action: 'openpix_configure_webhook',
             };
             jQuery.post(ajaxurl,data,function(response) {
-                if(!response.success) {
+                // if(!response.success) {
                     alert(response.message);
-                }
+                // }
                 console.log(response);
                 console.log(JSON.stringify(response,null,4).replace(/\\/g, ""));
             })
@@ -507,6 +507,27 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                 ],
                 'default' => '',
             ],
+            'hmac_authorization' => [
+                'type' => 'text',
+                'title' => __('Webhook HMAC Secret Key', 'woocommerce-openpix'),
+                'description' => __('Hmac signature', 'woocommerce-openpix'),
+                'custom_attributes' => [
+                    'readonly' => 'readonly',
+                ],
+            ],
+            'webhook_button' => [
+                'type' => 'button',
+                'title' => __('Webhook Configuration', 'woocommerce-openpix'),
+                'class' => 'button-primary',
+                'description' => __(
+                    'Configure webhook integration',
+                    'woocommerce-openpix'
+                ),
+                'custom_attributes' => [
+                    'value' => 'Configure your webhook',
+                ],
+                'value' => 'Configure your webhook',
+            ],
             'status_section' => [
                 'title' => __('Configure order status', 'woocommerce-openpix'),
                 'type' => 'title',
@@ -528,23 +549,6 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                 'type' => 'select',
                 'options' => $this->get_available_status(),
                 'default' => $this->get_available_status('wc-processing'),
-            ],
-            'hmac_authorization' => [
-                'type' => 'text',
-                'title' => __('Webhook HMAC Secret Key', 'woocommerce-openpix'),
-                'description' => __('Hmac signature', 'woocommerce-openpix'),
-                'custom_attributes' => [
-                    'readonly' => 'readonly',
-                ],
-            ],
-            'webhook_button' => [
-                'title' => __('Webhook Configuration', 'woocommerce-openpix'),
-                'type' => 'button',
-                'class' => 'button-primary',
-                'description' => __(
-                    'Configure webhook integration',
-                    'woocommerce-openpix'
-                ),
             ],
         ];
     }
@@ -902,8 +906,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             isset($data['webhooks'][0]['isActive']) &&
             $data['webhooks'][0]['isActive'] == true;
 
-        if ($hasActiveWebhook) {
-            echo 'hasActiveWebhook -> webhook already configured';
+        if (!$hasActiveWebhook) {
             $webhook = $data['webhooks'][0];
             if (isset($webhook['authorization'])) {
                 $openpixSettings['webhook_authorization'] =
@@ -918,8 +921,16 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                 'woocommerce_woocommerce_openpix_pix_settings',
                 $openpixSettings
             );
-            echo json_encode(
-                $openpixSettings,
+            $responsePayload = [
+                'message' => __(
+                    'OpenPix: Webhook already configured.',
+                    'woocommerce-openpix'
+                ),
+                'success' => true,
+            ];
+            wp_send_json(
+                $responsePayload,
+                null,
                 JSON_UNESCAPED_UNICODE |
                     JSON_UNESCAPED_SLASHES |
                     JSON_NUMERIC_CHECK
@@ -932,7 +943,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
         $payload = [
             'webhook' => [
-                'name' => 'webhookName',
+                'name' => 'WooCommerce-Webhook',
                 'url' => $webhookUrl,
                 'authorization' => $webhookAuthorization,
                 'isActive' => true,
@@ -951,7 +962,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             'method' => 'POST',
             'data_format' => 'body',
         ];
-
+        $oldOpenpixSettings = $openpixSettings;
         $openpixSettings['webhook_authorization'] = $webhookAuthorization;
 
         update_option(
@@ -962,6 +973,43 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         $responseWebhookPost = wp_remote_post($url, $paramsWebhookPost);
 
         $bodyWebhook = json_decode($responseWebhookPost['body'], true);
+
+        if (isset($bodyWebhook['error'])) {
+            // Roolback of openpixSettings
+            update_option(
+                'woocommerce_woocommerce_openpix_pix_settings',
+                $oldOpenpixSettings
+            );
+            $responsePayload = [
+                'message' => __(
+                    'OpenPix: Error configuring webhook.',
+                    'woocommerce-openpix'
+                ),
+                'success' => false,
+            ];
+            wp_send_json(
+                $responsePayload,
+                null,
+                JSON_UNESCAPED_UNICODE |
+                    JSON_UNESCAPED_SLASHES |
+                    JSON_NUMERIC_CHECK
+            );
+            wp_die();
+        }
+
+        $responsePayload = [
+            'message' => __(
+                'OpenPix: Webhook configured.',
+                'woocommerce-openpix'
+            ),
+            'success' => true,
+        ];
+        wp_send_json(
+            $responsePayload,
+            null,
+            JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
+        );
+        wp_die();
         print_r($bodyWebhook);
 
         wp_die(); // this is required to terminate immediately and return a proper response
