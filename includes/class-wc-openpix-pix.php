@@ -18,7 +18,7 @@ function embedWebhookConfigButton()
                 action: 'openpix_configure_webhook',
             };
             jQuery.post(ajaxurl,data,function(response) {
-                alert(response);
+                console.log(JSON.stringify(response,null,4).replace(/\\/g, ""));
             })
         })
 	});
@@ -498,6 +498,9 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                         $webhookUrl .
                         '</a>'
                 ),
+                'custom_attributes' => [
+                    'readonly' => 'readonly',
+                ],
                 'default' => '',
             ],
             'status_section' => [
@@ -521,6 +524,14 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                 'type' => 'select',
                 'options' => $this->get_available_status(),
                 'default' => $this->get_available_status('wc-processing'),
+            ],
+            'hmac_authorization' => [
+                'type' => 'text',
+                'title' => __('Webhook HMAC Secret Key', 'woocommerce-openpix'),
+                'description' => __('Hmac signature', 'woocommerce-openpix'),
+                'custom_attributes' => [
+                    'readonly' => 'readonly',
+                ],
             ],
             'webhook_button' => [
                 'title' => __('Webhook Configuration', 'woocommerce-openpix'),
@@ -873,17 +884,33 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
         $data = json_decode($response['body'], true);
 
-        $hasActiveWebhook = $data['webhooks'][0]['isActive'] ?? false;
+        $hasActiveWebhook =
+            isset($data['webhooks'][0]['isActive']) &&
+            $data['webhooks'][0]['isActive'] == true;
 
         if ($hasActiveWebhook) {
-            echo 'hasActiveWebhook -> wp_die';
-            $openpixSettings['webhook_authorization'] =
-                $data['webhooks'][0]['webhook_authorization'];
+            echo 'hasActiveWebhook -> webhook already configured';
+            $webhook = $data['webhooks'][0];
+            if (isset($webhook['authorization'])) {
+                $openpixSettings['webhook_authorization'] =
+                    $webhook['authorization'];
+            }
+            if (isset($webhook['hmacSecretKey'])) {
+                $openpixSettings['hmac_authorization'] =
+                    $webhook['hmacSecretKey'];
+            }
+
             update_option(
                 'woocommerce_woocommerce_openpix_pix_settings',
                 $openpixSettings
             );
-            // set auth key of class
+            echo json_encode(
+                $openpixSettings,
+                JSON_UNESCAPED_UNICODE |
+                    JSON_UNESCAPED_SLASHES |
+                    JSON_NUMERIC_CHECK
+            );
+
             wp_die();
         }
 
