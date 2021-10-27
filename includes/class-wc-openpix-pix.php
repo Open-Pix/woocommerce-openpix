@@ -906,7 +906,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             isset($data['webhooks'][0]['isActive']) &&
             $data['webhooks'][0]['isActive'] == true;
 
-        if (!$hasActiveWebhook) {
+        if ($hasActiveWebhook) {
             $webhook = $data['webhooks'][0];
             if (isset($webhook['authorization'])) {
                 $openpixSettings['webhook_authorization'] =
