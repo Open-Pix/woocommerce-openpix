@@ -523,10 +523,6 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                     'Configure webhook integration',
                     'woocommerce-openpix'
                 ),
-                'custom_attributes' => [
-                    'value' => 'Configure your webhook',
-                ],
-                'value' => 'Configure your webhook',
             ],
             'status_section' => [
                 'title' => __('Configure order status', 'woocommerce-openpix'),
@@ -551,6 +547,9 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                 'default' => $this->get_available_status('wc-processing'),
             ],
         ];
+        if (!$this->get_option('webhook_button')) {
+            $this->update_option('webhook_button', 'Webhook Configuration');
+        }
     }
 
     public function is_available()
@@ -1009,9 +1008,6 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             null,
             JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
         );
-        wp_die();
-        print_r($bodyWebhook);
-
         wp_die(); // this is required to terminate immediately and return a proper response
     }
     public function thankyou_page($order_id)
