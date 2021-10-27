@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: OpenPix for WooCommerce\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-27 15:28+0000\n"
+"POT-Creation-Date: 2021-10-27 18:50+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -223,4 +223,16 @@ msgstr ""
 
 #: includes/class-wc-openpix-pix.php:490
 msgid "Woocommerce Plugin Documentation"
+msgstr ""
+
+msgctxt "webhook_button"
+msgid "Configure webhook on your site with OpenPix in one click"
+msgstr ""
+
+msgctxt "webhook_button"
+msgid "One Click Configuration"
+msgstr ""
+
+msgctxt "webhook_button"
+msgid "Configure now with one click"
 msgstr ""

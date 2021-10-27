@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: OpenPix for WooCommerce\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-01 19:50+0000\n"
-"PO-Revision-Date: 2021-10-27 16:51+0000\n"
+"PO-Revision-Date: 2021-10-27 18:52+0000\n"
 "Last-Translator: \n"
 "Language-Team: Português do Brasil\n"
 "Language: pt_BR\n"
@@ -221,6 +221,18 @@ msgstr "Configuração do webhook"
 #: includes/class-wc-openpix-pix.php:518
 msgid "Webhook HMAC Secret Key"
 msgstr "Chave secreta Webhook HMAC"
+
+msgctxt "webhook_button"
+msgid "Configure now with one click"
+msgstr "Clique aqui e configure automaticamente"
+
+msgctxt "webhook_button"
+msgid "Configure webhook on your site with OpenPix in one click"
+msgstr "Configure o webhook no seu site com a Openpix em apenas um clique"
+
+msgctxt "webhook_button"
+msgid "One Click Configuration"
+msgstr "Configuração em um clique"
 
 #. Description of the plugin
 #: includes/class-wc-openpix.php:14 includes/class-wc-openpix-pix.php:52
