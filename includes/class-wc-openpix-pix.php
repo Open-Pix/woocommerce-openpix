@@ -989,17 +989,20 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
         $bodyWebhook = json_decode($responseWebhookPost['body'], true);
 
-        if (isset($bodyWebhook['error'])) {
+        if (isset($bodyWebhook['error']) || isset($bodyWebhook['errors'])) {
             // Roolback of openpixSettings
             update_option(
                 'woocommerce_woocommerce_openpix_pix_settings',
                 $oldOpenpixSettings
             );
+            $errorFromApi =
+                $bodyWebhook['error'] ?? $bodyWebhook['errors'][0]['message'];
             $responsePayload = [
-                'message' => __(
-                    'OpenPix: Error configuring webhook.',
-                    'woocommerce-openpix'
-                ),
+                'message' =>
+                    __(
+                        'OpenPix: Error configuring webhook.',
+                        'woocommerce-openpix'
+                    ) . " \n$errorFromApi",
                 'success' => false,
             ];
             wp_send_json(
