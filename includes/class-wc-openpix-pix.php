@@ -18,11 +18,17 @@ function embedWebhookConfigButton()
                 action: 'openpix_configure_webhook',
             };
             jQuery.post(ajaxurl,data,function(response) {
-                // if(!response.success) {
+                if(response?.message) {
                     alert(response.message);
-                // }
-                console.log(response);
-                console.log(JSON.stringify(response,null,4).replace(/\\/g, ""));
+                }
+                if(response?.success) {
+                    if(response?.body?.webhook_authorization) {
+                        jQuery("#woocommerce_woocommerce_openpix_pix_webhook_authorization").val(response.body.webhook_authorization);
+                    }
+                    if(response?.body?.hmac_authorization) {
+                        jQuery("#woocommerce_woocommerce_openpix_pix_hmac_authorization").val(response.body.hmac_authorization);
+                    }
+                }
             })
         })
 	});
@@ -925,6 +931,12 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                     'OpenPix: Webhook already configured.',
                     'woocommerce-openpix'
                 ),
+                'body' => [
+                    'webhook_authorization' =>
+                        $openpixSettings['webhook_authorization'],
+                    'hmac_authorization' =>
+                        $openpixSettings['hmac_authorization'],
+                ],
                 'success' => true,
             ];
             wp_send_json(
@@ -962,6 +974,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             'data_format' => 'body',
         ];
         $oldOpenpixSettings = $openpixSettings;
+        // because iph_handler validade request
         $openpixSettings['webhook_authorization'] = $webhookAuthorization;
 
         update_option(
@@ -996,11 +1009,24 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             wp_die();
         }
 
+        $openpixSettings['hmac_authorization'] =
+            $bodyWebhook['webhook']['hmacSecretKey'];
+
+        update_option(
+            'woocommerce_woocommerce_openpix_pix_settings',
+            $openpixSettings
+        );
+
         $responsePayload = [
             'message' => __(
                 'OpenPix: Webhook configured.',
                 'woocommerce-openpix'
             ),
+            'body' => [
+                'webhook_authorization' =>
+                    $openpixSettings['webhook_authorization'],
+                'hmac_authorization' => $openpixSettings['hmac_authorization'],
+            ],
             'success' => true,
         ];
         wp_send_json(
