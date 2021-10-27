@@ -494,6 +494,15 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                         '</a>'
                 ),
             ],
+            'webhook_button' => [
+                'type' => 'button',
+                'title' => __('One Click Configuration', 'woocommerce-openpix'),
+                'class' => 'button-primary',
+                'description' => __(
+                    'Configure webhook on your site with OpenPix in one click',
+                    'woocommerce-openpix'
+                ),
+            ],
             'webhook_authorization' => [
                 'title' => __('Webhook Authorization', 'woocommerce-openpix'),
                 'type' => 'text',
@@ -521,15 +530,6 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                     'readonly' => 'readonly',
                 ],
             ],
-            'webhook_button' => [
-                'type' => 'button',
-                'title' => __('Webhook Configuration', 'woocommerce-openpix'),
-                'class' => 'button-primary',
-                'description' => __(
-                    'Configure webhook integration',
-                    'woocommerce-openpix'
-                ),
-            ],
             'status_section' => [
                 'title' => __('Configure order status', 'woocommerce-openpix'),
                 'type' => 'title',
@@ -554,7 +554,10 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             ],
         ];
         if (!$this->get_option('webhook_button')) {
-            $this->update_option('webhook_button', 'Webhook Configuration');
+            $this->update_option(
+                'webhook_button',
+                __('Configure now with one click', 'woocommerce-openpix')
+            );
         }
     }
 
