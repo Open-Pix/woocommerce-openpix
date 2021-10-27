@@ -3,94 +3,127 @@ msgstr ""
 "Project-Id-Version: OpenPix for WooCommerce\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-01 19:50+0000\n"
-"PO-Revision-Date: 2021-09-23 17:29+0000\n"
+"PO-Revision-Date: 2021-10-27 16:51+0000\n"
 "Last-Translator: \n"
-"Language-Team: Portuguese (Brazil)\n"
+"Language-Team: Português do Brasil\n"
 "Language: pt_BR\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Loco https://localise.biz/\n"
-"X-Loco-Version: 2.5.2; wp-5.7\n"
+"X-Loco-Version: 2.5.3; wp-5.8.1\n"
 "X-Domain: woocommerce-openpix"
 
-#: includes/class-wc-openpix-pix.php:403
+#: includes/class-wc-openpix.php:246 includes/class-wc-openpix-pix.php:439
+msgctxt "AppID OpenPix"
 msgid "AppID OpenPix"
 msgstr "AppID OpenPix"
 
-#: includes/class-wc-openpix-pix.php:482
+#: includes/class-wc-openpix-pix.php:538
+msgctxt "Change status after issuing the pix to"
 msgid "Change status after issuing the pix to"
 msgstr "Alterar o status do pedido após emissão do Pix para"
 
-#: includes/class-wc-openpix-pix.php:409
+#: includes/class-wc-openpix-pix.php:445
+msgctxt "Configure labels"
 msgid "Configure labels"
 msgstr "Configurar textos"
 
-#: includes/class-wc-openpix-pix.php:478
+#: includes/class-wc-openpix-pix.php:534
+msgctxt "Configure order status"
 msgid "Configure order status"
 msgstr "Configurar o status do pedido"
 
-#: includes/class-wc-openpix-pix.php:443
-msgid "Configure Webhook integration"
+#: includes/class-wc-openpix-pix.php:528
+#, fuzzy
+#| msgid "Configure Webhook integration"
+msgid "Configure webhook integration"
 msgstr "Configurar integração Webhook"
 
-#: includes/class-wc-openpix-pix.php:423
+#: includes/class-wc-openpix-pix.php:479
+msgctxt "Configure Webhook integration"
+msgid "Configure Webhook integration"
+msgstr "Configurar integração do Webhook"
+
+#: includes/class-wc-openpix-pix.php:459
+msgctxt "Description"
 msgid "Description"
 msgstr "Descrição"
 
-#: includes/class-wc-openpix-pix.php:374
+#: includes/class-wc-openpix.php:242 includes/class-wc-openpix-pix.php:413
+msgctxt "Enable OpenPix"
 msgid "Enable OpenPix"
 msgstr "Habilitar OpenPix"
 
-#: includes/class-wc-openpix-pix.php:383
+#: includes/class-wc-openpix-pix.php:419
+msgctxt "Enable realtime"
 msgid "Enable realtime"
 msgstr "Habilitar Atualização de Tempo Real"
 
-#: includes/class-wc-openpix-pix.php:372
+#: includes/class-wc-openpix.php:240 includes/class-wc-openpix-pix.php:411
+msgctxt "Enable/Disable"
 msgid "Enable/Disable"
 msgstr "Habilitar/Desabilitar"
 
-#: includes/class-wc-openpix-pix.php:713 includes/class-wc-openpix-pix.php:757
+#: includes/class-wc-openpix-pix.php:772 includes/class-wc-openpix-pix.php:816
+msgctxt "Error creating Pix, try again"
 msgid "Error creating Pix, try again"
 msgstr "Erro ao gerar cobrança Pix, tente novamente por favor"
 
-#: includes/class-wc-openpix-pix.php:449
+#: includes/class-wc-openpix-pix.php:485
 #, php-format
+msgctxt "Follow documentation to configure Webhook on OpenPix here %s."
 msgid "Follow documentation to configure Webhook on OpenPix here %s."
 msgstr "Siga a documentação para configurar o Webhook no OpenPix aqui %s."
 
-#: includes/class-wc-openpix-pix.php:390
+#: includes/class-wc-openpix-pix.php:426
 #, php-format
+msgctxt "Follow documentation to get your OpenPix AppID here %s."
 msgid "Follow documentation to get your OpenPix AppID here %s."
-msgstr "Siga a documentação para obter seu OpenPix AppID aqui % s."
+msgstr "Siga a documentação para obter seu OpenPix AppID aqui %s"
+
+#: includes/class-wc-openpix-pix.php:519
+msgctxt "Hmac signature"
+msgid "Hmac signature"
+msgstr "Registro Hmac."
 
 #. Author URI of the plugin
+msgctxt "https://openpix.com.br/"
 msgid "https://openpix.com.br/"
 msgstr "https://openpix.com.br/"
 
-#: includes/class-wc-openpix-pix.php:731
+#: includes/class-wc-openpix-pix.php:790
+msgctxt "Invalid AppID"
 msgid "Invalid AppID"
-msgstr "AppID inválido"
+msgstr "AppID inválido."
 
-#: includes/class-wc-openpix-pix.php:618
+#: includes/class-wc-openpix-pix.php:677
 msgid "Invalid Birthdate"
 msgstr "Aniversário Inválido"
 
-#: includes/class-wc-openpix-pix.php:633
+#: includes/class-wc-openpix-pix.php:692
 msgid "Invalid Cell Phone"
 msgstr "Celular Inválido"
 
-#: includes/class-wc-openpix-pix.php:643
+#: includes/class-wc-openpix-pix.php:702
 msgid "Invalid Phone"
 msgstr "Telefone Inválido"
 
+#: includes/class-wc-openpix.php:356
+msgid "Missing OpenPix payment information"
+msgstr "Sem informação de pagamento OpenPix."
+
 #. Author of the plugin
-#: includes/class-wc-openpix-pix.php:17
+#: includes/class-wc-openpix-pix.php:51
 msgid "OpenPix"
 msgstr "OpenPix"
 
-#: includes/class-wc-openpix-pix.php:395
+#: includes/class-wc-openpix.php:13
+msgid "OpenPix - Parcelado"
+msgstr "OpenPix - Parcelado"
+
+#: includes/class-wc-openpix-pix.php:431
 msgid "OpenPix API Getting Started"
 msgstr "Introdução a API OpenPix"
 
@@ -98,44 +131,68 @@ msgstr "Introdução a API OpenPix"
 msgid "OpenPix for WooCommerce"
 msgstr "OpenPix para WooCommerce"
 
-#: includes/class-wc-openpix-pix.php:387
+#: includes/class-wc-openpix-pix.php:423
 msgid "OpenPix Integration API"
 msgstr "Integração da API OpenPix"
 
-#: includes/class-wc-openpix-pix.php:793
+#: includes/class-wc-openpix-pix.php:996
+msgid "OpenPix: Error configuring webhook."
+msgstr "OpenPix: Erro ao configurar webhook."
+
+#: includes/class-wc-openpix.php:382 includes/class-wc-openpix-pix.php:853
 msgid "OpenPix: The Pix was emitted but not paied yet."
 msgstr "OpenPix: O Pix foi emitido, mas ainda não foi pago."
 
-#: includes/class-wc-openpix-pix.php:304
+#: includes/class-wc-openpix.php:149 includes/class-wc-openpix-pix.php:347
 msgid "OpenPix: Transaction paid"
 msgstr "OpenPix: transação paga"
 
-#: includes/class-wc-openpix-pix.php:433
+#: includes/class-wc-openpix-pix.php:930
+msgid "OpenPix: Webhook already configured."
+msgstr "OpenPix: Webhook já configurado."
+
+#: includes/class-wc-openpix-pix.php:1021
+msgid "OpenPix: Webhook configured."
+msgstr "OpenPix: Webhook configurado."
+
+#: includes/class-wc-openpix-pix.php:886
+msgid "OpenPix: You need to add appID before configuring webhook."
+msgstr ""
+"OpenPix: É necessário adicionar um appID válido antes de configurar o webhook"
+
+#: includes/class-wc-openpix.php:262 includes/class-wc-openpix-pix.php:469
 msgid "Order Button Text"
 msgstr "Texto do botão de pedido"
 
-#: includes/class-wc-openpix-pix.php:491
+#: includes/class-wc-openpix-pix.php:547
 msgid "Order status after pix charge is paid"
 msgstr "Status do pedido após o pagamento do pix"
 
-#: includes/class-wc-openpix-pix.php:420 includes/class-wc-openpix-pix.php:430
-#: includes/class-wc-openpix-pix.php:440
+#: includes/class-wc-openpix.php:259 includes/class-wc-openpix.php:269
+#: includes/class-wc-openpix-pix.php:456 includes/class-wc-openpix-pix.php:466
+#: includes/class-wc-openpix-pix.php:476
 msgid "Pay with Pix"
 msgstr "Pague com Pix"
 
-#: includes/class-wc-openpix-pix.php:425
+#: includes/class-wc-openpix-pix.php:461
 msgid "This controls the description which the user sees during checkout."
 msgstr "Isso controla a descrição que o usuário vê durante o checkout."
 
-#: includes/class-wc-openpix-pix.php:435
+#: includes/class-wc-openpix.php:264 includes/class-wc-openpix-pix.php:471
 msgid "This controls the order button payment label."
 msgstr "Isso controla a etiqueta de pagamento do botão de pedido."
 
-#: includes/class-wc-openpix-pix.php:415
+#: includes/class-wc-openpix.php:254 includes/class-wc-openpix-pix.php:451
 msgid "This controls the title which the user sees during checkout."
 msgstr "Isso controla o título que o usuário vê durante o checkout."
 
-#: includes/class-wc-openpix-pix.php:465
+#: includes/class-wc-openpix.php:274
+msgid ""
+"This will be used to validate Webhook/IPN request calls to approve payments"
+msgstr ""
+"Será utilizado para validar a requisição Webhook/IPN para aprovar pagamentos"
+
+#: includes/class-wc-openpix-pix.php:501
 #, php-format
 msgid ""
 "This will be used to validate Webhook/IPN request calls to approve payments. "
@@ -145,23 +202,31 @@ msgstr ""
 "para aprovar o pagamento. URL do WooCommerce Webhook a ser registrado no "
 "OpenPix:%s"
 
-#: includes/class-wc-openpix-pix.php:413
+#: includes/class-wc-openpix.php:252 includes/class-wc-openpix-pix.php:449
 msgid "Title"
 msgstr "Título"
 
-#: includes/class-wc-openpix-pix.php:378
+#: includes/class-wc-openpix-pix.php:417
 msgid "Update UI in realtime"
 msgstr "Atualizar UI em tempo real"
 
-#: includes/class-wc-openpix-pix.php:462
+#: includes/class-wc-openpix.php:272 includes/class-wc-openpix-pix.php:498
 msgid "Webhook Authorization"
 msgstr "Autorização de webhook"
 
+#: includes/class-wc-openpix-pix.php:526
+msgid "Webhook Configuration"
+msgstr "Configuração do webhook"
+
+#: includes/class-wc-openpix-pix.php:518
+msgid "Webhook HMAC Secret Key"
+msgstr "Chave secreta Webhook HMAC"
+
 #. Description of the plugin
-#: includes/class-wc-openpix-pix.php:18
+#: includes/class-wc-openpix.php:14 includes/class-wc-openpix-pix.php:52
 msgid "WooCommerce OpenPix Payment Gateway"
 msgstr "Gateway de pagamento OpenPix para WooCommerce"
 
-#: includes/class-wc-openpix-pix.php:454
+#: includes/class-wc-openpix-pix.php:490
 msgid "Woocommerce Plugin Documentation"
 msgstr "Documentação do plug-in Woocommerce"

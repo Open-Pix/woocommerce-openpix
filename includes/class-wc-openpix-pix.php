@@ -526,7 +526,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                 'title' => __('Webhook Configuration', 'woocommerce-openpix'),
                 'class' => 'button-primary',
                 'description' => __(
-                    'Configure webhook integration',
+                    'Configure Webhook integration',
                     'woocommerce-openpix'
                 ),
             ],
