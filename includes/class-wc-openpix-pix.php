@@ -8,7 +8,7 @@ add_action('admin_footer', 'embedWebhookConfigButton');
 
 function embedWebhookConfigButton()
 {
-    ?>// move to another .js
+    ?>
     
 	<script type="text/javascript" >
 	jQuery(document).ready(function($) {
@@ -16,6 +16,7 @@ function embedWebhookConfigButton()
         jQuery("#woocommerce_woocommerce_openpix_pix_webhook_button").click(() => {
             var data = {
                 action: 'openpix_configure_webhook',
+                appID: jQuery('#woocommerce_woocommerce_openpix_pix_appID').val()
             };
             jQuery.post(ajaxurl,data,function(response) {
                 if(response?.message) {
@@ -883,6 +884,16 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         $openpixSettings = get_option(
             'woocommerce_woocommerce_openpix_pix_settings'
         );
+        if (
+            empty(trim($openpixSettings['appID'])) &&
+            !empty(trim($_POST['appID']))
+        ) {
+            $openpixSettings['appID'] = trim($_POST['appID']);
+            update_option(
+                'woocommerce_woocommerce_openpix_pix_settings',
+                $openpixSettings
+            );
+        }
         $appID = $openpixSettings['appID'];
         if (!$appID) {
             $response = [
