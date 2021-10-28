@@ -29,6 +29,9 @@ function embedWebhookConfigButton()
                     if(response?.body?.hmac_authorization) {
                         jQuery("#woocommerce_woocommerce_openpix_pix_hmac_authorization").val(response.body.hmac_authorization);
                     }
+                    if(response?.body?.webhook_status) {
+                        jQuery("#woocommerce_woocommerce_openpix_pix_webhook_status").val(response.body.webhook_status);
+                    }
                 }
             })
         })
@@ -531,6 +534,15 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                     'readonly' => 'readonly',
                 ],
             ],
+            'webhook_status' => [
+                'type' => 'text',
+                'title' => __('Webhook Status', 'woocommerce-openpix'),
+                'description' => __('Status ', 'woocommerce-openpix'),
+                'custom_attributes' => [
+                    'readonly' => 'readonly',
+                ],
+                'default' => __('Not configured'),
+            ],
             'status_section' => [
                 'title' => __('Configure order status', 'woocommerce-openpix'),
                 'type' => 'title',
@@ -554,8 +566,6 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                 'default' => $this->get_available_status('wc-processing'),
             ],
         ];
-        $this->update_option('hmac_authorization', '');
-        $this->update_option('webhook_authorization', '');
 
         if (!$this->get_option('webhook_button')) {
             $this->update_option(
@@ -941,6 +951,10 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                 $openpixSettings['hmac_authorization'] =
                     $webhook['hmacSecretKey'];
             }
+            $openpixSettings['webhook_status'] = __(
+                'Configured',
+                'woocommerce-openpix'
+            );
 
             update_option(
                 'woocommerce_woocommerce_openpix_pix_settings',
@@ -956,6 +970,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                         $openpixSettings['webhook_authorization'],
                     'hmac_authorization' =>
                         $openpixSettings['hmac_authorization'],
+                    'webhook_status' => $openpixSettings['webhook_status'],
                 ],
                 'success' => true,
             ];
@@ -1008,18 +1023,27 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
         if (isset($bodyWebhook['error']) || isset($bodyWebhook['errors'])) {
             // Roolback of openpixSettings
+            $openpixSettings['webhook_status'] = __(
+                'Not configured',
+                'woocommerce-openpix'
+            );
+
             update_option(
                 'woocommerce_woocommerce_openpix_pix_settings',
                 $oldOpenpixSettings
             );
             $errorFromApi =
                 $bodyWebhook['error'] ?? $bodyWebhook['errors'][0]['message'];
+
             $responsePayload = [
                 'message' =>
                     __(
                         'OpenPix: Error configuring webhook.',
                         'woocommerce-openpix'
                     ) . " \n$errorFromApi",
+                'body' => [
+                    'webhook_status' => $openpixSettings['webhook_status'],
+                ],
                 'success' => false,
             ];
             wp_send_json(
@@ -1035,6 +1059,11 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         $openpixSettings['hmac_authorization'] =
             $bodyWebhook['webhook']['hmacSecretKey'];
 
+        $openpixSettings['webhook_status'] = __(
+            'Not configured',
+            'woocommerce-openpix'
+        );
+
         update_option(
             'woocommerce_woocommerce_openpix_pix_settings',
             $openpixSettings
@@ -1049,6 +1078,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                 'webhook_authorization' =>
                     $openpixSettings['webhook_authorization'],
                 'hmac_authorization' => $openpixSettings['hmac_authorization'],
+                'webhook_status' => $openpixSettings['webhook_status'],
             ],
             'success' => true,
         ];
