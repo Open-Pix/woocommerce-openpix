@@ -554,6 +554,9 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                 'default' => $this->get_available_status('wc-processing'),
             ],
         ];
+        $this->update_option('hmac_authorization', '');
+        $this->update_option('webhook_authorization', '');
+
         if (!$this->get_option('webhook_button')) {
             $this->update_option(
                 'webhook_button',
@@ -895,6 +898,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             );
         }
         $appID = $openpixSettings['appID'];
+
         if (!$appID) {
             $response = [
                 'message' => __(
@@ -921,12 +925,14 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
         $data = json_decode($response['body'], true);
 
-        $hasActiveWebhook =
-            isset($data['webhooks'][0]['isActive']) &&
-            $data['webhooks'][0]['isActive'] == true;
-
+        $hasActiveWebhook = false;
+        foreach ($data['webhooks'] as $webhook) {
+            if ($webhook['isActive']) {
+                $hasActiveWebhook = true;
+                break;
+            }
+        }
         if ($hasActiveWebhook) {
-            $webhook = $data['webhooks'][0];
             if (isset($webhook['authorization'])) {
                 $openpixSettings['webhook_authorization'] =
                     $webhook['authorization'];
