@@ -1,3 +1,17 @@
+#### 1.9.0 (2021-10-29)
+
+##### New Features
+
+* **installment:**  installment plugin (cc0fb31c)
+* **webhookStatus:**  add webhookStatus field (bb88e2b3)
+* **appID:**  improve AJAX of appID to customer (5f0c3958)
+* **one-click-button:** add webhook config one click button (7f4741e4)
+* **authorization:**
+  * improve authorization validation (fa3718c4)
+  * get authorization by header or query string (56da9930)
+* **checkout:**  add plugin js and improve correlationID (5c44b669)
+* **charge:**  save pix key on meta data (004c002e)
+
 ### 1.8.0 (2021-09-23)
 
 ##### Chores
@@ -19,8 +33,8 @@
 ##### New Features
 
 * **status:**
-  *  edit title of select (87bdf969)
-  *  add change status when paid (5b30a3a4)
+  * edit title of select (87bdf969)
+  * add change status when paid (5b30a3a4)
 * **remove:**  remove old approach (41a89a94)
 * **stable:**  stable (2900287c)
 
@@ -65,8 +79,8 @@
 
 * **readme:**  bump to 1.5.0 and update readme (087b0dfc)
 * **customer:**
-  *  add 55 on phone number (44d636c2)
-  *  person type (b953f561)
+  * add 55 on phone number (44d636c2)
+  * person type (b953f561)
 
 ##### Bug Fixes
 
@@ -107,8 +121,8 @@
 
 * **checks:**  fix checks (01c76320)
 * **version:**
-  *  fix version (533470ba)
-  *  fix version number on php (c5fd02a3)
+  * fix version (533470ba)
+  * fix version number on php (c5fd02a3)
 
 ### 1.1.0 (2021-05-27)
 
@@ -116,24 +130,24 @@
 
 * **release:**  release automation (745adb4b)
 * **i18n:**
-  *  translate plugin (010bb00c)
-  *  i18n (de779d00)
-  *  add translation to OpenPix plugin (20ae838f)
+  * translate plugin (010bb00c)
+  * i18n (de779d00)
+  * add translation to OpenPix plugin (20ae838f)
 * **status:**  let user customize order status, make wc-pending default, fix entria/feedback-server#23022 (b035bd5c)
 * **safe:**
-  *  safe cents on wp, fix entria/feedback-server#23006 (fadaeefe)
-  *  safe js (2c0fc50d)
+  * safe cents on wp, fix entria/feedback-server#23006 (fadaeefe)
+  * safe js (2c0fc50d)
 * **v1:**
-  *  1.0.1 (6462a732)
-  *  v1 (c0ae3471)
+  * 1.0.1 (6462a732)
+  * v1 (c0ae3471)
 * **responsive:**  fix wwocommerce responsive fix entria/feedback-server#22703 (9cb10c54)
 * **global:**  avoid global functions, prefer static functions instead (431c2862)
 * **pack:**  remove backup po pot files (ecbd0f79)
 * **sanitize:**  sanitize text fields and email, fix entria/feedback-server#21955 (a3828e9a)
 * **translate:**  add mising i18n (13a58394)
 * **ipn:**
-  *  show proper ipn to be registered at OpenPix (eb6cbbeb)
-  *  add ipn handler for webhook (97f72134)
+  * show proper ipn to be registered at OpenPix (eb6cbbeb)
+  * add ipn handler for webhook (97f72134)
 * **check:**  check if respones code is 200, and set production (14e25f1b)
 * **cleanup:**  final adjusts (c32996bc)
 * **instructions:**  improve instructoins (bb002f62)
@@ -161,12 +175,12 @@
 
 #### 1.0.2
 
-- Robust float to cents logic
-- Be able to customize order status after Pix is emitted
+* Robust float to cents logic
+* Be able to customize order status after Pix is emitted
 
 #### 1.0.1
 
-- Responsive improvement
+* Responsive improvement
 
 #### 1.0.0
 
