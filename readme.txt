@@ -38,7 +38,7 @@ Para questões relacionadas a integração e plugin, acesse o [Portal do Desenvo
 
 = 1.8.1 - 2021-10-29 =
 
-* Melhoria na configuração do webhook
+* Configuração automática da integração do webhook
 
 = 1.8.0 - 2021-09-23 =
 
