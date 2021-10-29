@@ -541,7 +541,6 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                 'custom_attributes' => [
                     'readonly' => 'readonly',
                 ],
-                'default' => __('Not configured'),
             ],
             'status_section' => [
                 'title' => __('Configure order status', 'woocommerce-openpix'),
@@ -571,6 +570,13 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             $this->update_option(
                 'webhook_button',
                 __('Configure now with one click', 'woocommerce-openpix')
+            );
+        }
+
+        if (!$this->get_option('webhook_status')) {
+            $this->update_option(
+                'webhook_status',
+                __('Not configured', 'woocommerce-openpix')
             );
         }
     }
@@ -1060,7 +1066,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             $bodyWebhook['webhook']['hmacSecretKey'];
 
         $openpixSettings['webhook_status'] = __(
-            'Not configured',
+            'Configured',
             'woocommerce-openpix'
         );
 
