@@ -5,40 +5,12 @@
 * **installment:**  installment plugin (cc0fb31c)
 * **webhookStatus:**  add webhookStatus field (bb88e2b3)
 * **appID:**  improve AJAX of appID to customer (5f0c3958)
-* **one-click-button:**  improve labels of one click button (7f4741e4)
+* **one-click-button:** add webhook config one click button (7f4741e4)
 * **authorization:**
   *  improve authorization validation (fa3718c4)
   *  get authorization by header or query string (56da9930)
 * **checkout:**  add plugin js and improve correlationID (5c44b669)
 * **charge:**  save pix key on meta data (004c002e)
-
-##### Bug Fixes
-
-* **webhookStatus:**  fix correct label to webhookStatus (1eae0d53)
-* **isActive:**  check if have some webhook active on api (9ef9792c)
-* **errors:**  add suport to errors from api (b7beb7e1)
-* **hasActiveWebhook:**  fix validation (40348f26)
-* **one-click:**  small fixes (3ee1c0a9)
-
-##### Other Changes
-
-* **one-click:**
-  *  add english labels of webhook status (62b1fe58)
-  *  add labels of webhook status (ed09f956)
-  *  improve labels (5263b66c)
-  *  resolve conflicts (58dbbe09)
-  *  add new strings of webhook (784a5b84)
-  *  add ajax refresh to hmac and webhook auth (3517da98)
-  *  add button value (385937d8)
-  *  improve json returns (aac13363)
-  *  add appid validation (91116d1d)
-  *  adjust title (ea7c338c)
-  *  add edge case if webhook alredy configured (4a26f33d)
-  *  prettier (0b56defa)
-  *  add dinamic happy case scenario (5dbb68cf)
-  *  add button to config webhook of customer (c065ff97)
-* **authorization:**  add postman (9a3b7d24)
-* **debug:**  remove debugs (7becfae8)
 
 ### 1.8.0 (2021-09-23)
 
