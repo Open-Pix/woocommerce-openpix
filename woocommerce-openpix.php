@@ -36,7 +36,7 @@ class WC_OpenPix
 {
     const VERSION = '1.8.0';
     // change this to work in development, staging or production
-    //         const OPENPIX_ENV = 'development';
+    //             const OPENPIX_ENV = 'development';
     //    const OPENPIX_ENV = 'staging';
     const OPENPIX_ENV = 'production';
 
@@ -68,7 +68,8 @@ class WC_OpenPix
     private function includes()
     {
         include_once dirname(__FILE__) . '/includes/class-wc-openpix-pix.php';
-        include_once dirname(__FILE__) . '/includes/class-wc-openpix.php';
+        include_once dirname(__FILE__) .
+            '/includes/class-wc-openpix-installment.php';
     }
 
     public function add_gateway($methods)
