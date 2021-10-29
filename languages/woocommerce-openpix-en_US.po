@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: OpenPix for WooCommerce\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-01 19:50+0000\n"
-"PO-Revision-Date: 2021-10-29 14:23+0000\n"
+"PO-Revision-Date: 2021-10-29 14:33+0000\n"
 "Last-Translator: \n"
 "Language-Team: English (United States)\n"
 "Language: en_US\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Loco https://localise.biz/\n"
-"X-Loco-Version: 2.5.2; wp-5.7.2\n"
+"X-Loco-Version: 2.5.3; wp-5.8.1\n"
 "X-Domain: woocommerce-openpix"
 
 #: includes/class-wc-openpix.php:246 includes/class-wc-openpix-pix.php:443
@@ -29,7 +29,7 @@ msgstr "Configure labels"
 
 #: includes/class-wc-openpix-pix.php:573
 msgid "Configure now with one click"
-msgstr ""
+msgstr "Configure now with one click"
 
 #: includes/class-wc-openpix-pix.php:547
 msgid "Configure order status"
@@ -41,11 +41,11 @@ msgstr "Configure Webhook integration"
 
 #: includes/class-wc-openpix-pix.php:505
 msgid "Configure webhook on your site with OpenPix in one click"
-msgstr ""
+msgstr "Configure webhook on your site with OpenPix in one click"
 
 #: includes/class-wc-openpix-pix.php:954
 msgid "Configured"
-msgstr ""
+msgstr "Configured"
 
 #: includes/class-wc-openpix-pix.php:463
 msgid "Description"
@@ -79,7 +79,7 @@ msgstr "Follow documentation to get your OpenPix AppID here %s."
 
 #: includes/class-wc-openpix-pix.php:532
 msgid "Hmac signature"
-msgstr ""
+msgstr "Hmac signature"
 
 #. Author URI of the plugin
 msgid "https://openpix.com.br/"
@@ -103,16 +103,16 @@ msgstr "Invalid Phone"
 
 #: includes/class-wc-openpix.php:356
 msgid "Missing OpenPix payment information"
-msgstr ""
+msgstr "Missing OpenPix payment information"
 
 #: includes/class-wc-openpix-pix.php:1026
 #: includes/class-wc-openpix-pix.php:1062
 msgid "Not configured"
-msgstr ""
+msgstr "Not configured"
 
 #: includes/class-wc-openpix-pix.php:503
 msgid "One Click Configuration"
-msgstr ""
+msgstr "One Click Configuration"
 
 #. Author of the plugin
 #: includes/class-wc-openpix-pix.php:55
@@ -121,7 +121,7 @@ msgstr "OpenPix"
 
 #: includes/class-wc-openpix.php:13
 msgid "OpenPix - Parcelado"
-msgstr ""
+msgstr "OpenPix - Parcelado"
 
 #: includes/class-wc-openpix-pix.php:435
 msgid "OpenPix API Getting Started"
@@ -137,7 +137,7 @@ msgstr "OpenPix Integration API"
 
 #: includes/class-wc-openpix-pix.php:1040
 msgid "OpenPix: Error configuring webhook."
-msgstr ""
+msgstr "OpenPix: Error configuring webhook."
 
 #: includes/class-wc-openpix.php:382 includes/class-wc-openpix-pix.php:870
 msgid "OpenPix: The Pix was emitted but not paied yet."
@@ -150,15 +150,15 @@ msgstr "OpenPix: Transaction paid"
 
 #: includes/class-wc-openpix-pix.php:964
 msgid "OpenPix: Webhook already configured."
-msgstr ""
+msgstr "OpenPix: Webhook already configured."
 
 #: includes/class-wc-openpix-pix.php:1073
 msgid "OpenPix: Webhook configured."
-msgstr ""
+msgstr "OpenPix: Webhook configured."
 
 #: includes/class-wc-openpix-pix.php:914
 msgid "OpenPix: You need to add appID before configuring webhook."
-msgstr ""
+msgstr "OpenPix: You need to add appID before configuring webhook."
 
 #: includes/class-wc-openpix.php:262 includes/class-wc-openpix-pix.php:473
 msgid "Order Button Text"
@@ -176,7 +176,7 @@ msgstr "Pay with Pix"
 
 #: includes/class-wc-openpix-pix.php:540
 msgid "Status "
-msgstr ""
+msgstr "Status "
 
 #: includes/class-wc-openpix-pix.php:465
 msgid "This controls the description which the user sees during checkout."
@@ -194,6 +194,7 @@ msgstr "This controls the title which the user sees during checkout."
 msgid ""
 "This will be used to validate Webhook/IPN request calls to approve payments"
 msgstr ""
+"This will be used to validate Webhook/IPN request calls to approve payments"
 
 #: includes/class-wc-openpix-pix.php:514
 #, php-format
@@ -218,11 +219,11 @@ msgstr "Webhook Authorization"
 
 #: includes/class-wc-openpix-pix.php:531
 msgid "Webhook HMAC Secret Key"
-msgstr ""
+msgstr "Webhook HMAC Secret Key"
 
 #: includes/class-wc-openpix-pix.php:539
 msgid "Webhook Status"
-msgstr ""
+msgstr "Webhook Status"
 
 #. Description of the plugin
 #: includes/class-wc-openpix.php:14 includes/class-wc-openpix-pix.php:56
