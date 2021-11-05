@@ -888,12 +888,15 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
     }
     public static function getWebhookUrl()
     {
-        $webhookUrl = str_replace(
-            'https:',
-            'http:',
-            home_url('/') . 'wc-api/' . 'WC_OpenPix_Pix_Gateway'
-        );
-        return $webhookUrl;
+        if (WC_OpenPix::OPENPIX_ENV == 'development') {
+            $webhookUrl = str_replace(
+                'https:',
+                'http:',
+                home_url('/') . 'wc-api/' . 'WC_OpenPix_Pix_Gateway'
+            );
+            return $webhookUrl;
+        }
+        return home_url('/') . 'wc-api/' . 'WC_OpenPix_Pix_Gateway';
     }
     public static function openpix_configure_webhook()
     {
