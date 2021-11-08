@@ -36,6 +36,11 @@ Para questões relacionadas a integração e plugin, acesse o [Portal do Desenvo
 
 == Changelog ==
 
+= 1.10.0 - 2021-11-08 =
+
+* Melhoria na configuração automática do Webhook
+* Número no pedido nas informaçõs adicionais
+
 = 1.9.0 - 2021-10-29 =
 
 * Configuração automática da integração do webhook
