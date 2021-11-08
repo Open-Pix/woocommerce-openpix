@@ -758,10 +758,18 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
         $storeName = get_bloginfo('name');
 
+        $additionalInformation = [
+            [
+                'key' => 'order_id',
+                'value' => $order_id,
+            ],
+        ];
+
         $payload = [
             'correlationID' => $correlationID,
             'value' => $total_cents,
             'comment' => substr($storeName, 0, 140),
+            'additionalInfo' => $additionalInformation,
         ];
 
         $customer = $this->getCustomerData($order);
