@@ -1,3 +1,59 @@
+#### 1.9.1 (2021-11-08)
+
+##### Build System / Dependencies
+
+* **change-log:**
+  *  v1.9.0 (93491eac)
+  *  v1.8.1 (18b11623)
+  *  v1.8.1 (26dba2a7)
+  *  v1.8.1 (8fd3b658)
+
+##### New Features
+
+* **release:**  improve release (fe17bedc)
+* **additionalInfo:**
+  *  change order_id to Order (f55883ef)
+  *  add order_id on additionalInformation (d53439f9)
+* **installment:**  installment plugin (cc0fb31c)
+* **webhookStatus:**  add webhookStatus field (bb88e2b3)
+* **appID:**  improve AJAX of appID to customer (5f0c3958)
+* **one-click-button:**  improve labels of one click button (7f4741e4)
+* **authorization:**
+  *  improve authorization validation (fa3718c4)
+  *  get authorization by header or query string (56da9930)
+* **checkout:**  add plugin js and improve correlationID (5c44b669)
+* **charge:**  save pix key on meta data (004c002e)
+
+##### Bug Fixes
+
+* **protocol:**  remove every return of http (3cbbcc6f)
+* **webhookStatus:**  fix correct label to webhookStatus (1eae0d53)
+* **isActive:**  check if have some webhook active on api (9ef9792c)
+* **errors:**  add suport to errors from api (b7beb7e1)
+* **hasActiveWebhook:**  fix validation (40348f26)
+* **one-click:**  small fixes (3ee1c0a9)
+
+##### Other Changes
+
+* **order:**  add order translation (4896d9d7)
+* **one-click:**
+  *  add english labels of webhook status (62b1fe58)
+  *  add labels of webhook status (ed09f956)
+  *  improve labels (5263b66c)
+  *  resolve conflicts (58dbbe09)
+  *  add new strings of webhook (784a5b84)
+  *  add ajax refresh to hmac and webhook auth (3517da98)
+  *  add button value (385937d8)
+  *  improve json returns (aac13363)
+  *  add appid validation (91116d1d)
+  *  adjust title (ea7c338c)
+  *  add edge case if webhook alredy configured (4a26f33d)
+  *  prettier (0b56defa)
+  *  add dinamic happy case scenario (5dbb68cf)
+  *  add button to config webhook of customer (c065ff97)
+* **authorization:**  add postman (9a3b7d24)
+* **debug:**  remove debugs (7becfae8)
+
 #### 1.9.0 (2021-10-29)
 
 ##### New Features
