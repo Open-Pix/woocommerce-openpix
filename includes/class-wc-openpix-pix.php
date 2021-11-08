@@ -760,7 +760,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
         $additionalInformation = [
             [
-                'key' => 'order_id',
+                'key' => __('Order'),
                 'value' => $order_id,
             ],
         ];
