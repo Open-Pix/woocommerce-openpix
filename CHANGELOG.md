@@ -1,3 +1,13 @@
+#### 1.9.2 (2021-11-09)
+
+##### New Features
+
+* **readme:**  stable readme tag (0015c300)
+
+##### Bug Fixes
+
+* **status:**  change update_status to before a payment_complete (e6d9da81)
+
 #### 1.9.1 (2021-11-08)
 
 ##### Build System / Dependencies
