@@ -179,7 +179,6 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
     {
         global $wpdb;
         @ob_clean();
-
         $body = file_get_contents('php://input', true);
         $data = json_decode($body, true);
 
@@ -344,13 +343,14 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             if ($order) {
                 if ($status === 'COMPLETED') {
                     // Changing the order for processing and reduces the stock.
-                    $order->payment_complete();
 
                     $order->update_status(
                         $this->status_when_paid,
                         __('OpenPix: Transaction paid', 'woocommerce-openpix')
                     );
 
+                    $order->payment_complete();
+                    
                     // add endToEndId to meta data order
                     $meta_data = [
                         'openpix_endToEndId' => $endToEndId,
