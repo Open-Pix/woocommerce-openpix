@@ -1,3 +1,13 @@
+#### 1.11.1 (2021-11-11)
+
+##### New Features
+
+* **orderId:**  add orderId on comment (a7e8e6a3)
+
+##### Bug Fixes
+
+* **ersion:**  fix version (a32a5f5b)
+
 #### 1.9.2 (2021-11-09)
 
 ##### New Features
