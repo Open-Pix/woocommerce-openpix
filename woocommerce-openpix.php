@@ -4,7 +4,7 @@
  * Description: WooCommerce OpenPix Payment Gateway
  * Author: OpenPix
  * Author URI: https://openpix.com.br/
- * Version: 1.11.0
+ * Version: 1.12.0
  * Text Domain: woocommerce-openpix
  *
  * @package WooCommerce_OpenPix
@@ -34,7 +34,7 @@ function woocommerce_openpix_init()
 
 class WC_OpenPix
 {
-    const VERSION = '1.11.0';
+    const VERSION = '1.12.0';
     // change this to work in development, staging or production
     //             const OPENPIX_ENV = 'development';
     //    const OPENPIX_ENV = 'staging';
@@ -68,14 +68,11 @@ class WC_OpenPix
     private function includes()
     {
         include_once dirname(__FILE__) . '/includes/class-wc-openpix-pix.php';
-        include_once dirname(__FILE__) .
-            '/includes/class-wc-openpix-installment.php';
     }
 
     public function add_gateway($methods)
     {
         $methods[] = 'WC_OpenPix_Pix_Gateway';
-        $methods[] = 'WC_OpenPix_Installment_Gateway';
 
         return $methods;
     }
