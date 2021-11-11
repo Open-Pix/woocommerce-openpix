@@ -1,6 +1,6 @@
 ## OpenPix for WooCommerce
 
-## Instalmment Plugin
+## Installment Plugin
 
 How to enable installment plugin
 
