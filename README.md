@@ -61,6 +61,8 @@ cp Open-Pix/woocommerce-openpix content to svn woocommerce-openpix/trunk
 unzip woocommerce-openpix.zip -d w1.1.0
 cp w1.1.0/* woocommerce-openpix/thunk/.
 M - means modified
+// add files
+svn add * 
 svn ci -m "version 1.1.0"
 svn cp trunk tags/1.1.0
 ```
