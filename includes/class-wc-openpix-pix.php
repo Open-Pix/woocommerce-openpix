@@ -1141,11 +1141,12 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                 'value' => $order_id,
             ],
         ];
-
+        $comment = substr("$storeName", 0, 100) . '#' . $order_id;
+        $comment_trimmed = substr($comment, 0, 140);
         $payload = [
             'correlationID' => $correlationID,
             'value' => $total_cents,
-            'comment' => substr("$storeName", 0, 100) . "#$order_id",
+            'comment' => $comment_trimmed,
             'additionalInfo' => $additionalInformation,
         ];
 
