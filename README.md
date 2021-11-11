@@ -1,5 +1,27 @@
 ## OpenPix for WooCommerce
 
+## Installment Plugin
+
+How to enable installment plugin
+
+```php
+private function includes()
+{
+    include_once dirname(__FILE__) . '/includes/class-wc-openpix-pix.php';
+    include_once dirname(__FILE__) .
+        '/includes/class-wc-openpix-installment.php';
+}
+
+public function add_gateway($methods)
+{
+    $methods[] = 'WC_OpenPix_Pix_Gateway';
+    $methods[] = 'WC_OpenPix_Installment_Gateway';
+
+    return $methods;
+}
+```
+	
+
 ## LocalWP
 You can run your Wordpress in many ways
 Run directly in your machine
