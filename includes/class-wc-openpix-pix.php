@@ -350,7 +350,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                     );
 
                     $order->payment_complete();
-                    
+
                     // add endToEndId to meta data order
                     $meta_data = [
                         'openpix_endToEndId' => $endToEndId,
@@ -756,27 +756,12 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             ];
         }
 
-        $storeName = get_bloginfo('name');
-
-        $additionalInformation = [
-            [
-                'key' => __('Order'),
-                'value' => $order_id,
-            ],
-        ];
-
-        $payload = [
-            'correlationID' => $correlationID,
-            'value' => $total_cents,
-            'comment' => substr($storeName, 0, 140),
-            'additionalInfo' => $additionalInformation,
-        ];
-
-        $customer = $this->getCustomerData($order);
-
-        if ($customer) {
-            $payload['customer'] = $customer;
-        }
+        $payload = $this->getPayload(
+            $order_id,
+            $correlationID,
+            $total_cents,
+            $order
+        );
 
         $params = [
             'timeout' => 60,
@@ -1133,5 +1118,42 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             WC_OpenPIx::get_templates_path(),
             WC_OpenPIx::get_templates_path()
         );
+    }
+
+    /**
+     * @param int $order_id
+     * @param string $correlationID
+     * @param int $total_cents
+     * @param $order
+     * @return array
+     */
+    public function getPayload(
+        int $order_id,
+        string $correlationID,
+        int $total_cents,
+        $order
+    ): array {
+        $storeName = get_bloginfo('name');
+
+        $additionalInformation = [
+            [
+                'key' => __('Order'),
+                'value' => $order_id,
+            ],
+        ];
+
+        $payload = [
+            'correlationID' => $correlationID,
+            'value' => $total_cents,
+            'comment' => substr("$storeName", 0, 100) . "#$order_id",
+            'additionalInfo' => $additionalInformation,
+        ];
+
+        $customer = $this->getCustomerData($order);
+
+        if ($customer) {
+            $payload['customer'] = $customer;
+        }
+        return $payload;
     }
 }
