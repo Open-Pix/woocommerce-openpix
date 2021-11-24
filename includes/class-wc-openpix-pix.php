@@ -57,7 +57,6 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             'WooCommerce OpenPix Payment Gateway',
             'woocommerce-openpix'
         );
-
         $this->has_fields = true; // direct payment
         $this->supports = ['products'];
 
@@ -409,7 +408,6 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
     public function init_form_fields()
     {
         $webhookUrl = self::getWebhookUrl();
-
         $this->form_fields = [
             'enabled' => [
                 'title' => __('Enable/Disable', 'woocommerce-openpix'),
