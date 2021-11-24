@@ -80,6 +80,31 @@ class WC_OpenPix_Cashback_Gateway extends WC_Payment_Gateway
         );
     }
 
+    public function checkout_scripts()
+    {
+        if (is_checkout()) {
+            wp_enqueue_script(
+                'openpix-checkout',
+                $this->get_checkout_js_url(),
+                ['jquery', 'jquery-blockui'],
+                WC_OpenPix::VERSION,
+                true
+            );
+
+            $name = get_bloginfo('name');
+
+            $correlationID = $this->getCorrelationID();
+
+            WC_OpenPix::debug('get correlationID result ' . $correlationID);
+
+            wp_localize_script('openpix-checkout', 'wcOpenpixParams', [
+                'appID' => $this->appID,
+                'storeName' => $name,
+                'correlationID' => $correlationID,
+            ]);
+        }
+    }
+
     public function getCorrelationID()
     {
         $correlationIDFromSession = WC()->session->get('correlationID');
