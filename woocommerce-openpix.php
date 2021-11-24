@@ -36,8 +36,8 @@ class WC_OpenPix
 {
     const VERSION = '1.12.0';
     // change this to work in development, staging or production
-    //             const OPENPIX_ENV = 'development';
-    //    const OPENPIX_ENV = 'staging';
+    // const OPENPIX_ENV = 'development';
+    // const OPENPIX_ENV = 'staging';
     const OPENPIX_ENV = 'production';
 
     protected static $instance = null;
@@ -68,11 +68,14 @@ class WC_OpenPix
     private function includes()
     {
         include_once dirname(__FILE__) . '/includes/class-wc-openpix-pix.php';
+        include_once dirname(__FILE__) .
+            '/includes/class-wc-openpix-cashback.php';
     }
 
     public function add_gateway($methods)
     {
         $methods[] = 'WC_OpenPix_Pix_Gateway';
+        $methods[] = 'WC_OpenPix_Cashback_Gateway';
 
         return $methods;
     }

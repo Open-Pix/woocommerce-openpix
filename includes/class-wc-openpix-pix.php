@@ -89,8 +89,6 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             $this,
             'thankyou_page',
         ]);
-
-        $this->webhookTrack = 'api/openpix/orders';
     }
 
     // move ipn to another file
@@ -410,7 +408,6 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
     public function init_form_fields()
     {
         $webhookUrl = self::getWebhookUrl();
-        $this->registerHooks();
         $this->form_fields = [
             'enabled' => [
                 'title' => __('Enable/Disable', 'woocommerce-openpix'),
@@ -621,35 +618,6 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         }
 
         return '55' . $phoneSafe;
-    }
-
-    public function ceHandlerWooCommerceNewOrder($order)
-    {
-        try {
-            $params = [
-                'timeout' => 60,
-                'headers' => [
-                    'Accept' => 'application/json',
-                    'Content-Type' => 'application/json',
-                    'Authorization' => $this->appID,
-                    'version' => WC_OpenPix::VERSION,
-                    'platform' => 'WOOCOMMERCE',
-                ],
-                'body' => json_encode(json_decode($order, true)),
-                'method' => 'POST',
-                'data_format' => 'body',
-            ];
-            wp_remote_post($this->webhookTrack, $params);
-        } catch (\Exception $exception) {
-        }
-    }
-
-    public function registerHooks()
-    {
-        add_action('woocommerce_checkout_order_created', [
-            $this,
-            'ceHandlerWooCommerceNewOrder',
-        ]);
     }
 
     public function getTaxID($order)
