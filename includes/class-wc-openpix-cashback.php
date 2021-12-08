@@ -41,9 +41,6 @@ class WC_OpenPix_Cashback_Gateway extends WC_Payment_Gateway
             $this,
             'ipn_handler',
         ]);
-
-        $this->webhookTrack =
-            'https://webhook.site/874f0614-2057-413f-9bbd-934d6b290a1c';
     }
 
     public function getAuthorization()
@@ -192,9 +189,17 @@ class WC_OpenPix_Cashback_Gateway extends WC_Payment_Gateway
         return 'https://api.openpix.com.br';
     }
 
+    public function getWebhookTrack()
+    {
+        return $this->getOpenPixApiUrl() . '/api/openpix/woocommerce';
+    }
+
     public function ceHandlerWooCommerceNewOrder($order)
     {
         try {
+            if (is_numeric($order)) {
+                $order = wc_get_order($order);
+            }
             $params = [
                 'timeout' => 60,
                 'headers' => [
@@ -204,20 +209,26 @@ class WC_OpenPix_Cashback_Gateway extends WC_Payment_Gateway
                     'version' => WC_OpenPix::VERSION,
                     'platform' => 'WOOCOMMERCE',
                 ],
-                'body' => json_encode(json_decode($order, true)),
+                'body' => json_encode(['raw' => json_decode($order, true)]),
                 'method' => 'POST',
                 'data_format' => 'body',
             ];
-            wp_remote_post($this->webhookTrack, $params);
+
+            wp_remote_post($this->getWebhookTrack(), $params);
         } catch (\Exception $exception) {
         }
     }
 
     public function registerHooks()
     {
-        add_action('woocommerce_checkout_order_created', [
-            $this,
-            'ceHandlerWooCommerceNewOrder',
-        ]);
+        $actions = [
+            'woocommerce_reduce_order_stock',
+            'woocommerce_payment_complete',
+            'woocommerce_order_status_completed',
+            'woocommerce_checkout_order_created',
+        ];
+        foreach ($actions as $action) {
+            add_action($action, [$this, 'ceHandlerWooCommerceNewOrder']);
+        }
     }
 }
