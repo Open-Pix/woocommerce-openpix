@@ -603,6 +603,20 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         return 'https://api.openpix.com.br';
     }
 
+    public static function getOpenPixPluginUrlScript()
+    {
+        if (WC_OpenPix::OPENPIX_ENV === 'development') {
+            return 'http://localhost:4444/openpix.js';
+        }
+
+        if (WC_OpenPix::OPENPIX_ENV === 'staging') {
+            return 'https://plugin.openpix.com.br/v1/openpix-dev.js';
+        }
+
+        // production
+        return 'https://plugin.openpix.com.br/v1/openpix.js';
+    }
+
     public function get_openpix_amount($total)
     {
         return absint(
@@ -1100,7 +1114,8 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         );
 
         $environment = WC_OpenPix::OPENPIX_ENV;
-
+        $queryString = "appID={$this->appID}&correlationID={$correlationID}&node=openpix-order";
+        $pluginUrl = self::getOpenPixPluginUrlScript();
         wc_get_template(
             'payment-instructions.php',
             [
@@ -1112,6 +1127,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                 'appID' => $this->appID,
                 'pluginUrl' => WC_OpenPix::get_assets_url(),
                 'realtime' => $this->realtime,
+                'src' => "$pluginUrl?$queryString",
             ],
             WC_OpenPIx::get_templates_path(),
             WC_OpenPIx::get_templates_path()
