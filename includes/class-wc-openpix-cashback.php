@@ -136,36 +136,6 @@ class WC_OpenPix_Cashback_Gateway extends WC_Payment_Gateway
                 'description' => 'AppID OpenPix',
                 'default' => '',
             ],
-            'title' => [
-                'title' => __('Title', 'woocommerce-openpix'),
-                'type' => 'text',
-                'description' => __(
-                    'This controls the title which the user sees during checkout.',
-                    'woocommerce-openpix'
-                ),
-                'desc_tip' => true,
-                'default' => __('Pay with Pix', 'woocommerce-openpix'),
-            ],
-            'order_button_text' => [
-                'title' => __('Order Button Text', 'woocommerce-openpix'),
-                'type' => 'text',
-                'description' => __(
-                    'This controls the order button payment label.',
-                    'woocommerce-openpix'
-                ),
-                'desc_tip' => true,
-                'default' => __('Pay with Pix', 'woocommerce-openpix'),
-            ],
-            'webhook_authorization' => [
-                'title' => __('Webhook Authorization', 'woocommerce-openpix'),
-                'type' => 'text',
-                'description' => __(
-                    'This will be used to validate Webhook/IPN request calls to approve payments',
-                    'woocommerce-openpix'
-                ),
-                'desc_tip' => true,
-                'default' => '',
-            ],
         ];
         $this->registerHooks();
     }
