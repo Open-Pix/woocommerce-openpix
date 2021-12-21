@@ -8,7 +8,7 @@ class WC_OpenPix_Cashback_Gateway extends WC_Payment_Gateway
 {
     public function __construct()
     {
-        $this->id = 'woocommerce_openpix';
+        $this->id = 'woocommerce_openpix_cashback';
         $this->method_title = __('OpenPix - Cashback', 'woocommerce-openpix');
         $this->method_description = __(
             'WooCommerce OpenPix Payment Gateway',
@@ -23,7 +23,7 @@ class WC_OpenPix_Cashback_Gateway extends WC_Payment_Gateway
         $this->init_settings();
 
         // Define user set variables.
-        $this->title = $this->get_option('title');
+        $this->title = 'Cashback';
         $this->order_button_text = $this->get_option('order_button_text');
         $this->appID = $this->get_option('appID');
         $this->webhookAuthorization = $this->get_option(
