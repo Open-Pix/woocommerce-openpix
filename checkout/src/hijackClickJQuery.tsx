@@ -2,7 +2,8 @@
 import $ from './jquery';
 import * as formSubmit from './formSubmit';
 
-const paymentMethodID = 'woocommerce_openpix';
+// export const paymentMethodID = 'woocommerce_openpix';
+export const paymentMethodID = 'woocommerce_openpix_cashback';
 
 // validate if openpix method is selected
 const isOpenPixMethod = (): boolean => {

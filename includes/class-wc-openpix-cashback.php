@@ -24,7 +24,7 @@ class WC_OpenPix_Cashback_Gateway extends WC_Payment_Gateway
 
         // Define user set variables.
         $this->title = 'Cashback';
-        $this->order_button_text = $this->get_option('order_button_text');
+        $this->order_button_text = 'Cashback';
         $this->appID = $this->get_option('appID');
         $this->webhookAuthorization = $this->get_option(
             'webhook_authorization'

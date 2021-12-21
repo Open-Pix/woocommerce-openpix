@@ -123,6 +123,7 @@ export const getCustomerFromWoocommerce = (
 };
 
 export const onCheckout = () => {
+  console.log('onCheckout');
   if (formSubmit.getFormSubmit()) {
     // let woocommerce process the payment
     return true;
@@ -159,6 +160,7 @@ export const onCheckout = () => {
     customer,
     appID: wcOpenpixParams.appID,
     correlationID: wcOpenpixParams.correlationID,
+    retry: new Date(),
   };
 
   render(

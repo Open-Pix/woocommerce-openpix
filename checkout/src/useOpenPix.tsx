@@ -23,6 +23,10 @@ export const useOpenPix = (appID: string) => {
 
   const scriptURL = config.OPENPIX_PLUGIN_URL;
 
+  console.log({
+    config,
+  });
+
   // eslint-disable-next-line
   const [loaded, error] = useScript(scriptURL);
 
