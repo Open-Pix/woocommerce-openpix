@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import { useOpenPix } from './useOpenPix';
+import {usePrevious} from "./usePrevious";
 
 export const getDefaultTransactionId = () =>
   uuidv4().toString().replace(/-/g, '');
@@ -21,6 +22,7 @@ export type AppProps = {
   customer?: Customer;
   appID: string;
   correlationID: string;
+  retry: string;
 };
 const Checkout = ({
   onSuccess,
@@ -29,15 +31,20 @@ const Checkout = ({
   customer,
   appID,
   correlationID,
+    retry,
 }: AppProps) => {
   useOpenPix(appID);
+
+  const oldRetry = usePrevious(retry);
 
   const isOpenPixLoaded = !!window.$openpix?.addEventListener;
 
   useEffect(() => {
-    if (isOpenPixLoaded) {
+    const shouldRetry = retry !== oldRetry && isOpenPixLoaded;
+
+    if (shouldRetry) {
       window.$openpix.push([
-        'pixTemp',
+        'cashback',
         {
           correlationID,
           value,
@@ -67,7 +74,7 @@ const Checkout = ({
         unsubscribe && unsubscribe();
       };
     }
-  }, [isOpenPixLoaded]);
+  }, [isOpenPixLoaded, retry]);
 
   return null;
 };
