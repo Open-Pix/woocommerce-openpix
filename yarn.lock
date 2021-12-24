@@ -2306,10 +2306,10 @@
     http-proxy-middleware "^2.0.0"
     webpack "*"
 
-"@types/webpack-plugin-serve@1.4.1":
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/@types/webpack-plugin-serve/-/webpack-plugin-serve-1.4.1.tgz#18149c98c82d37fa2317724360f4c9763f1a9cb9"
-  integrity sha512-6lCF4lFxlWRh8dCyD8GWlomH1d4Xt1W5fU073Q087svx7yGQbyfUO27hLkY9L9GBOwol/n2xO1jVmuOzXsivqg==
+"@types/webpack-plugin-serve@1.4.2":
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/@types/webpack-plugin-serve/-/webpack-plugin-serve-1.4.2.tgz#30ca8f4b9f74e74b29be682265e92ceb23269a8c"
+  integrity sha512-h7tKnZfAm3w6e9iiT60KzSeETiO19fLTUd/Z9Wc3dNMrztMXASoMhX1mIogySUjwW4fHsTpXhCUrJEZ02dkQLQ==
   dependencies:
     "@types/connect-history-api-fallback" "*"
     "@types/koa" "*"
