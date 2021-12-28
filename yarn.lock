@@ -1969,10 +1969,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/hard-source-webpack-plugin@1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@types/hard-source-webpack-plugin/-/hard-source-webpack-plugin-1.0.3.tgz#c5b5aef197b37cfc5c86eee3a9437968b73960a3"
-  integrity sha512-s5DFymCpyYi+WbkArnexb8pAHTMObBinONyqVbxthzqPJLgFdKOOxwD8zMcFVfTna1SkxHqsUMuONdZhE0086w==
+"@types/hard-source-webpack-plugin@1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@types/hard-source-webpack-plugin/-/hard-source-webpack-plugin-1.0.4.tgz#19b440ddc2a638e4382d0b9204be0601254798fb"
+  integrity sha512-TTW0B4Q1zW/rH93AcOAHpGoiREvisvdpsFFI+fO7ig07PzL3fghWSuBD/zSdvyxK4DZfHMpac30wYQvqKaOKEw==
   dependencies:
     "@types/webpack" "^4"
 
