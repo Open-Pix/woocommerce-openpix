@@ -963,7 +963,7 @@
   dependencies:
     "@babel/helper-plugin-utils" "^7.16.5"
 
-"@babel/plugin-transform-typescript@7.16.7", "@babel/plugin-transform-typescript@^7.16.1":
+"@babel/plugin-transform-typescript@7.16.7", "@babel/plugin-transform-typescript@^7.16.7":
   version "7.16.7"
   resolved "https://registry.yarnpkg.com/@babel/plugin-transform-typescript/-/plugin-transform-typescript-7.16.7.tgz#33f8c2c890fbfdc4ef82446e9abb8de8211a3ff3"
   integrity sha512-Hzx1lvBtOCWuCEwMmYOfpQpO7joFeXLgoPuzZZBtTxXqSqUGUubvFGZv2ygo1tB5Bp9q6PXV3H0E/kf7KM0RLA==
@@ -1090,14 +1090,14 @@
     "@babel/plugin-transform-react-jsx-development" "^7.16.7"
     "@babel/plugin-transform-react-pure-annotations" "^7.16.7"
 
-"@babel/preset-typescript@7.16.5":
-  version "7.16.5"
-  resolved "https://registry.yarnpkg.com/@babel/preset-typescript/-/preset-typescript-7.16.5.tgz#b86a5b0ae739ba741347d2f58c52f52e63cf1ba1"
-  integrity sha512-lmAWRoJ9iOSvs3DqOndQpj8XqXkzaiQs50VG/zESiI9D3eoZhGriU675xNCr0UwvsuXrhMAGvyk1w+EVWF3u8Q==
+"@babel/preset-typescript@7.16.7":
+  version "7.16.7"
+  resolved "https://registry.yarnpkg.com/@babel/preset-typescript/-/preset-typescript-7.16.7.tgz#ab114d68bb2020afc069cd51b37ff98a046a70b9"
+  integrity sha512-WbVEmgXdIyvzB77AQjGBEyYPZx+8tTsO50XtfozQrkW8QB2rLJpH2lgx0TRw5EJrBxOZQ+wCcyPVQvS8tjEHpQ==
   dependencies:
-    "@babel/helper-plugin-utils" "^7.16.5"
-    "@babel/helper-validator-option" "^7.14.5"
-    "@babel/plugin-transform-typescript" "^7.16.1"
+    "@babel/helper-plugin-utils" "^7.16.7"
+    "@babel/helper-validator-option" "^7.16.7"
+    "@babel/plugin-transform-typescript" "^7.16.7"
 
 "@babel/runtime-corejs3@^7.10.2":
   version "7.16.5"
