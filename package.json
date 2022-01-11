@@ -66,7 +66,7 @@
     "@types/webpack-dev-server": "4.7.2",
     "@types/webpack-plugin-serve": "1.4.2",
     "@typescript-eslint/eslint-plugin": "5.9.1",
-    "@typescript-eslint/parser": "5.9.0",
+    "@typescript-eslint/parser": "5.9.1",
     "@webpack-cli/serve": "1.6.0",
     "autodll-webpack-plugin": "^0.4.2",
     "babel-jest": "^27.4.6",
