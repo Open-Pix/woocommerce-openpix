@@ -36,9 +36,9 @@ class WC_OpenPix
 {
     const VERSION = '1.12.0';
     // change this to work in development, staging or production
-    // const OPENPIX_ENV = 'development';
+    const OPENPIX_ENV = 'development';
     // const OPENPIX_ENV = 'staging';
-    const OPENPIX_ENV = 'production';
+    // const OPENPIX_ENV = 'production';
 
     protected static $instance = null;
 
@@ -135,13 +135,6 @@ class WC_OpenPix
     // load javascript and css
     public function load_plugin_assets()
     {
-        wp_register_script(
-            'openpix_frontend_js',
-            wc_openpix_assets_url() . 'thankyou.js',
-            ['jquery'],
-            '1.0',
-            false
-        );
         wp_register_style(
             'openpix_frontend_css',
             wc_openpix_assets_url() . 'thankyou.css',
@@ -151,7 +144,6 @@ class WC_OpenPix
         );
 
         // add script and style to screen
-        wp_enqueue_script('openpix_frontend_js');
         wp_enqueue_style('openpix_frontend_css');
     }
 }
