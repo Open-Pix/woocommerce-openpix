@@ -17,6 +17,7 @@ export type Customer = {
 export type AppProps = {
   // eslint-disable-next-line
   onSuccess: (correlationID: string) => void;
+  onCashbackApplyEvent: (event: any) => void;
   value: number;
   description?: string;
   customer?: Customer;
@@ -26,13 +27,15 @@ export type AppProps = {
 };
 const Checkout = ({
   onSuccess,
+  onCashbackApplyEvent,
   value,
   description,
   customer,
   appID,
   correlationID,
-    retry,
+  retry,
 }: AppProps) => {
+
   useOpenPix(appID);
 
   const oldRetry = usePrevious(retry);
@@ -69,9 +72,11 @@ const Checkout = ({
       };
 
       const unsubscribe = window.$openpix.addEventListener(logEvents);
+      const cashbackUnsubscribe = window.$openpix.addEventListener(onCashbackApplyEvent);
 
       return () => {
         unsubscribe && unsubscribe();
+        cashbackUnsubscribe && cashbackUnsubscribe();
       };
     }
   }, [isOpenPixLoaded, retry]);
