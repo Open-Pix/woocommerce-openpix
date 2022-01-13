@@ -76,7 +76,7 @@
     "css-loader": "^6.3.0",
     "dotenv-safe": "^8.2.0",
     "dotenv-webpack": "^7.0.3",
-    "esbuild-register": "^3.3.1",
+    "esbuild-register": "^3.3.2",
     "eslint": "8.6.0",
     "eslint-config-airbnb": "19.0.4",
     "eslint-config-okonet": "7.0.2",
