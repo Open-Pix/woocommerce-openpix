@@ -158,13 +158,13 @@ export const onCheckout = () => {
     console.log('logEvents: ', e);
 
     if (e.type === 'CASHBACK_APPLY') {
-      const { shopper, cashbackHash } = e.data;
+      const { shopper, cashbackValue, cashbackHash } = e.data;
 
-      if (shopper?.cashbackBalance) {
+      if (cashbackValue) {
         form.append(
           $<HTMLInputElement>('<input hidden/>')
             .attr('name', 'openpix_cashback_value')
-            .val(shopper.cashbackBalance),
+            .val(cashbackValue),
         );
       }
 
