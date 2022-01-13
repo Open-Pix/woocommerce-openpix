@@ -1206,7 +1206,6 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         }
 
         $cashback = $this->getCashbackData();
-        print_r($cashback);
 
         if ($cashback) {
             $payload['cashbackHash'] = $cashback['cashbackHash'];
