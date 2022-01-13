@@ -56,6 +56,19 @@ class WC_OpenPix_Cashback_Gateway extends WC_Payment_Gateway
         return '';
     }
 
+    public function payment_fields()
+    {
+        if ($description = $this->get_description()) {
+            echo wp_kses_post(wpautop(wptexturize($description)));
+        }
+
+        $cart_total = $this->get_order_total();
+
+        echo '<div id="openpix-checkout-params" ';
+        echo 'data-total="' . esc_attr($cart_total * 100) . '" ';
+        echo '></div>';
+    }
+
     public function get_checkout_js_url()
     {
         return 'http://localhost:6688/main.js';
