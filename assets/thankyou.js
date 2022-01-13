@@ -1,128 +1,128 @@
-(function () {
-  document.addEventListener('DOMContentLoaded', function () {
-    const btnCopyEmv = document.querySelector('#btnCopyEmv');
+// (function () {
+//   document.addEventListener('DOMContentLoaded', function () {
+//     const btnCopyEmv = document.querySelector('#btnCopyEmv');
 
-    if (btnCopyEmv) {
-      btnCopyEmv.addEventListener('click', function () {
-        const textAreaEmv = document.querySelector('#emv');
+//     if (btnCopyEmv) {
+//       btnCopyEmv.addEventListener('click', function () {
+//         const textAreaEmv = document.querySelector('#emv');
 
-        textAreaEmv.select();
-        textAreaEmv.setSelectionRange(0, 99999);
-        document.execCommand('copy');
-        document.getSelection().collapseToEnd();
+//         textAreaEmv.select();
+//         textAreaEmv.setSelectionRange(0, 99999);
+//         document.execCommand('copy');
+//         document.getSelection().collapseToEnd();
 
-        const originalText = btnCopyEmv.innerHTML;
-        btnCopyEmv.innerHTML = 'Copiado!';
+//         const originalText = btnCopyEmv.innerHTML;
+//         btnCopyEmv.innerHTML = 'Copiado!';
 
-        setTimeout(function () {
-          btnCopyEmv.innerHTML = originalText;
-        }, 10 * 1000);
-      });
-    }
+//         setTimeout(function () {
+//           btnCopyEmv.innerHTML = originalText;
+//         }, 10 * 1000);
+//       });
+//     }
 
-    function getApiUrl() {
-      if (window.__initialProps__.environment == 'development') {
-        return 'http://localhost:5001';
-      }
+//     function getApiUrl() {
+//       if (window.__initialProps__.environment == 'development') {
+//         return 'http://localhost:5001';
+//       }
 
-      if (window.__initialProps__.environment == 'staging') {
-        return 'https://api.openpix.dev';
-      }
+//       if (window.__initialProps__.environment == 'staging') {
+//         return 'https://api.openpix.dev';
+//       }
 
-      // production
-      return 'https://api.openpix.com.br';
-    }
+//       // production
+//       return 'https://api.openpix.com.br';
+//     }
 
-    function getCorrelationID() {
-      return window.__initialProps__.correlationID;
-    }
+//     function getCorrelationID() {
+//       return window.__initialProps__.correlationID;
+//     }
 
-    function getAppID() {
-      return window.__initialProps__.appID;
-    }
+//     function getAppID() {
+//       return window.__initialProps__.appID;
+//     }
 
-    let shouldPolling = true;
+//     let shouldPolling = true;
 
-    async function checkChargeStatus(payload) {
-      let { correlationID, url, appID } = payload;
+//     async function checkChargeStatus(payload) {
+//       let { correlationID, url, appID } = payload;
 
-      let result = await fetch(`${url}/${correlationID}`, {
-        method: 'GET',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          Authorization: appID,
-        },
-      });
+//       let result = await fetch(`${url}/${correlationID}`, {
+//         method: 'GET',
+//         headers: {
+//           Accept: 'application/json',
+//           'Content-Type': 'application/json',
+//           Authorization: appID,
+//         },
+//       });
 
-      let data = await result.json();
+//       let data = await result.json();
 
-      if (!data.charge) {
-        return;
-      }
+//       if (!data.charge) {
+//         return;
+//       }
 
-      const { charge } = data;
+//       const { charge } = data;
 
-      if (charge.status === 'ACTIVE') {
-        return;
-      }
+//       if (charge.status === 'ACTIVE') {
+//         return;
+//       }
 
-      if (charge.status === 'EXPIRED') {
-        let checkoutSuccessClass = document.getElementById('success-content');
+//       if (charge.status === 'EXPIRED') {
+//         let checkoutSuccessClass = document.getElementById('success-content');
 
-        checkoutSuccessClass.innerHTML = `
-          <div class="openpix-content">
-            <div class="openpix-pix-completed">
-              <span class="label">Pagamento expirado</span>
-            </div>
-          </div>
-        `;
+//         checkoutSuccessClass.innerHTML = `
+//           <div class="openpix-content">
+//             <div class="openpix-pix-completed">
+//               <span class="label">Pagamento expirado</span>
+//             </div>
+//           </div>
+//         `;
 
-        shouldPolling = false;
-        return;
-      }
+//         shouldPolling = false;
+//         return;
+//       }
 
-      if (charge.status === 'COMPLETED') {
-        let checkoutSuccessClass = document.getElementById('success-content');
+//       if (charge.status === 'COMPLETED') {
+//         let checkoutSuccessClass = document.getElementById('success-content');
 
-        const successImg = `${window.__initialProps__.pluginUrl}/assets/images/success.png`;
+//         const successImg = `${window.__initialProps__.pluginUrl}/assets/images/success.png`;
 
-        checkoutSuccessClass.innerHTML = `
-          <div class="openpix-content">
-            <div class="openpix-pix-completed">
-              <span class="label-completed">Pagamento realizado</span>
-              <span class="label">Pix foi realizado com sucesso!</span>
-              <img src="${successImg}" alt="check image">
-            </div>
-          </div>
-        `;
+//         checkoutSuccessClass.innerHTML = `
+//           <div class="openpix-content">
+//             <div class="openpix-pix-completed">
+//               <span class="label-completed">Pagamento realizado</span>
+//               <span class="label">Pix foi realizado com sucesso!</span>
+//               <img src="${successImg}" alt="check image">
+//             </div>
+//           </div>
+//         `;
 
-        shouldPolling = false;
+//         shouldPolling = false;
 
-        return;
-      }
-    }
+//         return;
+//       }
+//     }
 
-    async function polling() {
-      let url = `${getApiUrl()}/api/openpix/v1/charge`;
+//     async function polling() {
+//       let url = `${getApiUrl()}/api/openpix/v1/charge`;
 
-      const payload = {
-        correlationID: getCorrelationID(),
-        api: getApiUrl(),
-        appID: getAppID(),
-        url,
-      };
+//       const payload = {
+//         correlationID: getCorrelationID(),
+//         api: getApiUrl(),
+//         appID: getAppID(),
+//         url,
+//       };
 
-      await checkChargeStatus(payload);
-      if (shouldPolling) {
-        setTimeout(polling, 2000);
-      }
-    }
+//       await checkChargeStatus(payload);
+//       if (shouldPolling) {
+//         setTimeout(polling, 2000);
+//       }
+//     }
 
-    if (window.__initialProps__) {
-      if (window.__initialProps__.realtime) {
-        setTimeout(polling, 2000);
-      }
-    }
-  });
-})();
+//     if (window.__initialProps__) {
+//       if (window.__initialProps__.realtime) {
+//         setTimeout(polling, 2000);
+//       }
+//     }
+//   });
+// })();
