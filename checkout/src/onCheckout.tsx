@@ -123,7 +123,6 @@ export const getCustomerFromWoocommerce = (
 };
 
 export const onCheckout = () => {
-  console.log('onCheckout');
   if (formSubmit.getFormSubmit()) {
     // let woocommerce process the payment
     return true;
@@ -147,14 +146,49 @@ export const onCheckout = () => {
   // eslint-disable-next-line
   console.log({
     wcOpenpixParams,
+    inlineData,
     total: inlineData.data('total'),
     customer,
     wooData,
     nonce: wooData['woocommerce-process-checkout-nonce'],
   });
 
+  const onCashbackApplyEvent = (e) => {
+    // eslint-disable-next-line
+    console.log('logEvents: ', e);
+
+    if (e.type === 'CASHBACK_APPLY') {
+      const { shopper, cashbackHash } = e.data;
+
+      if (shopper?.cashbackBalance) {
+        form.append(
+          $<HTMLInputElement>('<input hidden/>')
+            .attr('name', 'openpix_cashback_value')
+            .val(shopper.cashbackBalance),
+        );
+      }
+
+      if (shopper?.id) {
+        form.append(
+          $<HTMLInputElement>('<input hidden/>')
+            .attr('name', 'openpix_shopper_id')
+            .val(shopper.id),
+        );
+      }
+
+      if (cashbackHash) {
+        form.append(
+          $<HTMLInputElement>('<input hidden/>')
+            .attr('name', 'openpix_cashback_hash')
+            .val(cashbackHash),
+        );
+      }
+    }
+  };
+
   const props: AppProps = {
     onSuccess,
+    onCashbackApplyEvent,
     value: inlineData.data('total'),
     description: wcOpenpixParams.storeName,
     customer,

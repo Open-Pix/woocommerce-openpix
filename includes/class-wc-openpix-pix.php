@@ -709,6 +709,30 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         return $customer;
     }
 
+    public function getCashbackData()
+    {
+        $order_cashback_hash = $_POST['openpix_cashback_hash'];
+        $order_cashback_value = intval($_POST['openpix_cashback_value']);
+        $order_shopper_id = $_POST['openpix_shopper_id'];
+
+        $hasCashback =
+            isset($order_cashback_hash) &&
+            isset($order_cashback_value) &&
+            isset($order_shopper_id);
+
+        if (!$hasCashback) {
+            return null;
+        }
+
+        $cashback = [
+            'cashbackHash' => $order_cashback_hash,
+            'cashbackValue' => $order_cashback_value,
+            'shopperId' => $order_shopper_id,
+        ];
+
+        return $cashback;
+    }
+
     public function validateOrderFields($order)
     {
         $birthdate = sanitize_text_field(
@@ -1180,6 +1204,16 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         if ($customer) {
             $payload['customer'] = $customer;
         }
+
+        $cashback = $this->getCashbackData();
+        print_r($cashback);
+
+        if ($cashback) {
+            $payload['cashbackHash'] = $cashback['cashbackHash'];
+            $payload['cashbackValue'] = $cashback['cashbackValue'];
+            $payload['shopperId'] = $cashback['shopperId'];
+        }
+
         return $payload;
     }
 }
