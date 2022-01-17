@@ -136,18 +136,22 @@ export const onCheckout = () => {
   // description
 
   const form = $('form.checkout, form#order_review');
+  const checkoutTable = $(
+    'table.shop_table, table.shop_table woocommerce-checkout-review-order-table',
+  );
+  const checkoutTotals = checkoutTable.children('tfoot');
   const inlineData = $('#openpix-checkout-params', form);
 
   const { wcOpenpixParams } = window;
 
   const wooData = getWoocommerceFormData();
   const customer = getCustomerFromWoocommerce(wooData);
-
+  const total = inlineData.data('total');
   // eslint-disable-next-line
   console.log({
     wcOpenpixParams,
     inlineData,
-    total: inlineData.data('total'),
+    total,
     customer,
     wooData,
     nonce: wooData['woocommerce-process-checkout-nonce'],
@@ -166,6 +170,35 @@ export const onCheckout = () => {
             .attr('name', 'openpix_cashback_value')
             .val(cashbackValue),
         );
+        const th = $('<th/>').text('Cashback');
+        const td = $('<td/>');
+        const tdSpanContent = $(
+          '<span class="woocommerce-Price-amount amount"/>',
+        );
+        const bdi = $('<bdi/>');
+        bdi.append('-');
+        bdi.append(
+          $('<span class="woocommerce-Price-currencySymbol"/>').text('$'),
+        );
+
+        const cashbackMoney = cashbackValue / 100;
+        const cashbackValueFixed = cashbackMoney.toFixed(2);
+        const tr = $('<tr class="cart-subtotal"/>').append(
+          th,
+          td.append(tdSpanContent.append(bdi.append(cashbackValueFixed))),
+        );
+        checkoutTotals.children('tr.cart-subtotal').after(tr);
+
+        const orderTotal = $('tr.order-total', checkoutTotals);
+        const orderTotalBdi = $('bdi', orderTotal);
+        orderTotalBdi.text(null);
+        orderTotalBdi.append(
+          $('<span class="woocommerce-Price-currencySymbol"/>').text('$'),
+        );
+
+        const orderTotalMoney = (total - cashbackValue) / 100;
+        const orderTotalFixed = orderTotalMoney.toFixed(2);
+        orderTotalBdi.append(orderTotalFixed);
       }
 
       if (shopper?.id) {
