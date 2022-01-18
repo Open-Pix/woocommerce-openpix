@@ -163,8 +163,21 @@ export const onCheckout = () => {
 
     if (e.type === 'CASHBACK_APPLY') {
       const { shopper, cashbackValue, cashbackHash } = e.data;
+      const cashbackValueInput = $(
+        'input[name=openpix_cashback_value]',
+        form,
+      ).val();
+      const cashbackHashInput = $(
+        'input[name=openpix_cashback_hash]',
+        form,
+      ).val();
+      const shopperIdInput = $('input[name=openpix_shopper_id]', form).val();
 
-      if (cashbackValue) {
+      if (cashbackValueInput && cashbackHashInput && shopperIdInput) {
+        return;
+      }
+
+      if (cashbackValue && !cashbackValueInput) {
         form.append(
           $<HTMLInputElement>('<input hidden/>')
             .attr('name', 'openpix_cashback_value')
@@ -201,7 +214,7 @@ export const onCheckout = () => {
         orderTotalBdi.append(orderTotalFixed);
       }
 
-      if (shopper?.id) {
+      if (shopper?.id && !shopperIdInput) {
         form.append(
           $<HTMLInputElement>('<input hidden/>')
             .attr('name', 'openpix_shopper_id')
@@ -209,7 +222,7 @@ export const onCheckout = () => {
         );
       }
 
-      if (cashbackHash) {
+      if (cashbackHash && !cashbackHashInput) {
         form.append(
           $<HTMLInputElement>('<input hidden/>')
             .attr('name', 'openpix_cashback_hash')
