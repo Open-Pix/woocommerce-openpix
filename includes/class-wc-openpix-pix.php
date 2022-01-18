@@ -634,6 +634,11 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         ); // In cents.
     }
 
+    public function get_wc_amount($total)
+    {
+        return absint($total / 100); // money.
+    }
+
     public function formatPhone($phone)
     {
         $phoneSafe = preg_replace('/^0|\D+/', '', $phone);
@@ -1208,6 +1213,13 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         $cashback = $this->getCashbackData();
 
         if ($cashback) {
+            $coupon = new AWPCustomDiscount(
+                'cshbck-' . $order_id,
+                $this->get_wc_amount($cashback['cashbackValue']),
+                'fixed_cart'
+            );
+            $coupon->addDiscount($order);
+
             $payload['cashbackHash'] = $cashback['cashbackHash'];
             $payload['cashbackValue'] = $cashback['cashbackValue'];
             $payload['shopperId'] = $cashback['shopperId'];
