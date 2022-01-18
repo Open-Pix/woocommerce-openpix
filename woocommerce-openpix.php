@@ -70,6 +70,7 @@ class WC_OpenPix
         include_once dirname(__FILE__) . '/includes/class-wc-openpix-pix.php';
         include_once dirname(__FILE__) .
             '/includes/class-wc-openpix-cashback.php';
+        include_once dirname(__FILE__) . '/cashback/class-cashback-coupon.php';
     }
 
     public function add_gateway($methods)
