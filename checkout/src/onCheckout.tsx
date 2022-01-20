@@ -112,7 +112,7 @@ export const normalizePhoneNumber = (phoneNumber: string): string | null => {
 
 export const getCustomerFromWoocommerce = (
   data: WoocomerceFormData,
-): Customer | null => {
+): Partial<Customer> => {
   const getTaxID = () => {
     if (data.billing_cpf) {
       return data.billing_cpf;
@@ -128,7 +128,7 @@ export const getCustomerFromWoocommerce = (
   const taxID = getTaxID();
 
   if (!taxID) {
-    return null;
+    return {};
   }
 
   return {
