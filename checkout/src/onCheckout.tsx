@@ -61,6 +61,25 @@ type WoocomerceFormData = {
   _wp_http_referer: string;
 };
 
+type TaxID = {
+  taxID: string;
+  type: string;
+};
+
+type Email = {
+  email: string;
+  wasVerified: boolean;
+};
+
+type Shopper = {
+  id: string;
+  name: string;
+  phones: string;
+  taxID: TaxID;
+  emails: Email[];
+  cashbackUsableBalance: number;
+};
+
 export const formDataToObject = (data: FormData) => {
   const obj = {};
   data.forEach((value, key) => (obj[key] = value));
@@ -93,7 +112,7 @@ export const normalizePhoneNumber = (phoneNumber: string): string | null => {
 
 export const getCustomerFromWoocommerce = (
   data: WoocomerceFormData,
-): Customer | null => {
+): Partial<Customer> => {
   const getTaxID = () => {
     if (data.billing_cpf) {
       return data.billing_cpf;
@@ -109,7 +128,7 @@ export const getCustomerFromWoocommerce = (
   const taxID = getTaxID();
 
   if (!taxID) {
-    return null;
+    return {};
   }
 
   return {
@@ -119,6 +138,49 @@ export const getCustomerFromWoocommerce = (
       normalizePhoneNumber(data.billing_cellphone) ||
       normalizePhoneNumber(data.billing_phone),
     email: data.billing_email,
+  };
+};
+
+export const getCustommerFromShopper = (
+  data: Shopper,
+): Partial<Customer> | null => {
+  const getTaxID = () => {
+    if (!data?.taxID?.taxID) {
+      return {};
+    }
+
+    return { taxId: data.taxID.taxID };
+  };
+
+  const getEmail = () => {
+    if (!data?.emails[0].email) {
+      return {};
+    }
+
+    return { email: data?.emails[0].email };
+  };
+
+  const getPhone = () => {
+    if (!data?.phones[0]) {
+      return {};
+    }
+
+    return { phone: data?.phones[0] };
+  };
+
+  const getName = () => {
+    if (!data?.name) {
+      return {};
+    }
+
+    return { name: data?.name };
+  };
+
+  return {
+    ...getName(),
+    ...getTaxID(),
+    ...getEmail(),
+    ...getPhone(),
   };
 };
 
@@ -145,7 +207,7 @@ export const onCheckout = () => {
   const { wcOpenpixParams } = window;
 
   const wooData = getWoocommerceFormData();
-  const customer = getCustomerFromWoocommerce(wooData);
+  const wooCustomer = getCustomerFromWoocommerce(wooData);
   const total = inlineData.data('total');
   // eslint-disable-next-line
   console.log({
@@ -157,12 +219,14 @@ export const onCheckout = () => {
     nonce: wooData['woocommerce-process-checkout-nonce'],
   });
 
+  let shopperCustomer: Partial<Customer> | null = null;
   const onCashbackApplyEvent = (e) => {
     // eslint-disable-next-line
     console.log('logEvents: ', e);
 
     if (e.type === 'CASHBACK_APPLY') {
       const { shopper, cashbackValue, cashbackHash } = e.data;
+      shopperCustomer = getCustommerFromShopper(shopper);
       const cashbackValueInput = $(
         'input[name=openpix_cashback_value]',
         form,
@@ -230,6 +294,13 @@ export const onCheckout = () => {
         );
       }
     }
+  };
+
+  const customer: Customer = {
+    name: wooCustomer?.name ?? shopperCustomer?.name,
+    phone: wooCustomer?.phone ?? shopperCustomer?.phone,
+    email: wooCustomer?.email ?? shopperCustomer?.email,
+    taxID: wooCustomer?.taxID ?? shopperCustomer?.taxID,
   };
 
   const props: AppProps = {
