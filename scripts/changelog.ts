@@ -6,7 +6,7 @@ import util from 'util';
 
 import moment from 'moment';
 // eslint-disable-next-line
-import git from 'simple-git/promise';
+import git from 'simple-git';
 // eslint-disable-next-line
 import changelog from 'generate-changelog';
 import dotenvSafe from 'dotenv-safe';
