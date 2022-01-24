@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import git from 'simple-git/promise';
+import git from 'simple-git';
 
 const octonode = require('octonode');
 const log = require('npmlog');
