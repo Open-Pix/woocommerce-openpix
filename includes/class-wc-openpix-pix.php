@@ -90,6 +90,76 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             $this,
             'thankyou_page',
         ]);
+
+        // inject openpix react - cashback plugin
+        add_action('wp_enqueue_scripts', [$this, 'checkout_scripts']);
+    }
+
+    // cashback
+    public function checkout_scripts()
+    {
+        if (is_checkout()) {
+            wp_enqueue_script(
+                'openpix-checkout',
+                $this->get_checkout_js_url(),
+                ['jquery', 'jquery-blockui'],
+                WC_OpenPix::VERSION,
+                true
+            );
+
+            $name = get_bloginfo('name');
+
+            $correlationID = $this->getCorrelationID();
+
+            WC_OpenPix::debug('get correlationID result ' . $correlationID);
+
+            wp_localize_script('openpix-checkout', 'wcOpenpixParams', [
+                'appID' => $this->appID,
+                'storeName' => $name,
+                'correlationID' => $correlationID,
+            ]);
+        }
+    }
+
+    public function getCorrelationID()
+    {
+        $correlationIDFromSession = WC()->session->get('correlationID');
+
+        WC_OpenPix::debug(
+            'correlationIDFromSession ' . $correlationIDFromSession
+        );
+
+        if (isset($correlationIDFromSession)) {
+            return $correlationIDFromSession;
+        }
+
+        $correlationID = WC_OpenPix::uuid_v4();
+
+        WC()->session->set('correlationID', $correlationID);
+
+        return $correlationID;
+    }
+
+    public function get_checkout_js_url()
+    {
+        // TODO - improve
+        return 'http://localhost:6688/main.js';
+        if (WC_OpenPix::OPENPIX_ENV === 'development') {
+            return plugins_url('build/main.js', plugin_dir_path(__FILE__));
+        }
+
+        if (WC_OpenPix::OPENPIX_ENV === 'staging') {
+            return plugins_url(
+                'assets/js/woo-openpix-dev.js',
+                plugin_dir_path(__FILE__)
+            );
+        }
+
+        // production
+        return plugins_url(
+            'assets/js/woo-openpix.js',
+            plugin_dir_path(__FILE__)
+        );
     }
 
     // move ipn to another file
@@ -594,9 +664,22 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         return parent::is_available() && !empty($this->appID);
     }
 
+    //    public function payment_fields()
+    //    {
+    //        echo wp_kses_post(wpautop(wptexturize($this->description)));
+    //    }
+
     public function payment_fields()
     {
-        echo wp_kses_post(wpautop(wptexturize($this->description)));
+        if ($description = $this->get_description()) {
+            echo wp_kses_post(wpautop(wptexturize($description)));
+        }
+
+        $cart_total = $this->get_order_total();
+
+        echo '<div id="openpix-checkout-params" ';
+        echo 'data-total="' . esc_attr($cart_total * 100) . '" ';
+        echo '></div>';
     }
 
     public static function getOpenPixApiUrl()
