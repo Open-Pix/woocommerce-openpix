@@ -3,7 +3,7 @@ import $ from './jquery';
 import * as formSubmit from './formSubmit';
 
 // export const paymentMethodID = 'woocommerce_openpix';
-export const paymentMethodID = 'woocommerce_openpix_cashback';
+export const paymentMethodID = 'woocommerce_openpix_pix';
 
 // validate if openpix method is selected
 const isOpenPixMethod = (): boolean => {
@@ -37,7 +37,7 @@ export const hijackClickJQuery = (onClick: () => boolean) => {
       return false;
     }
 
-    $('form.checkout').on('click', '#place_order', function (evt) {
+    $('form.checkout').on('click', '#place_order', function () {
       if (isCheckoutInvalid()) {
         return true;
       }
