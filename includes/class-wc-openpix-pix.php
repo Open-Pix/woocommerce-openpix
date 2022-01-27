@@ -93,6 +93,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
         // inject openpix react - cashback plugin
         add_action('wp_enqueue_scripts', [$this, 'checkout_scripts']);
+        // $this->registerHooks();
     }
 
     // cashback
