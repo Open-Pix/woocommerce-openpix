@@ -276,6 +276,23 @@ export const onCheckout = () => {
     }
   };
 
+  const onCashbackInactiveEvent = (e) => {
+    if (e.type === 'CASHBACK_INACTIVE') {
+      // window.$openpix.push(['close']);
+      formSubmit.setFormSubmit(true);
+
+      // add a hiden input with correlation id used
+      $('input[name=openpix_correlation_id]', form).remove();
+      form.append(
+        $('<input name="openpix_correlation_id" type="hidden" />').val(
+          wcOpenpixParams.correlationID,
+        ),
+      );
+
+      form.trigger('submit');
+    }
+  };
+
   const customer: Customer = {
     name: wooCustomer?.name ?? shopperCustomer?.name,
     phone: wooCustomer?.phone ?? shopperCustomer?.phone,
@@ -286,6 +303,7 @@ export const onCheckout = () => {
   const props: AppProps = {
     onSuccess,
     onCashbackApplyEvent,
+    onCashbackInactiveEvent,
     value: inlineData.data('total'),
     description: wcOpenpixParams.storeName,
     customer,

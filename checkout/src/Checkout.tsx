@@ -18,6 +18,7 @@ export type AppProps = {
   // eslint-disable-next-line
   onSuccess: (correlationID: string) => void;
   onCashbackApplyEvent: (event: any) => void;
+  onCashbackInactiveEvent: (event: any) => void;
   value: number;
   description?: string;
   customer?: Customer;
@@ -28,6 +29,7 @@ export type AppProps = {
 const Checkout = ({
   onSuccess,
   onCashbackApplyEvent,
+  onCashbackInactiveEvent,
   value,
   description,
   customer,
@@ -73,10 +75,12 @@ const Checkout = ({
 
       const unsubscribe = window.$openpix.addEventListener(logEvents);
       const cashbackUnsubscribe = window.$openpix.addEventListener(onCashbackApplyEvent);
+      const cashbackInactiveUnsubscribe = window.$openpix.addEventListener(onCashbackInactiveEvent);
 
       return () => {
         unsubscribe && unsubscribe();
         cashbackUnsubscribe && cashbackUnsubscribe();
+        cashbackInactiveUnsubscribe && cashbackInactiveUnsubscribe();
       };
     }
   }, [isOpenPixLoaded, retry]);
