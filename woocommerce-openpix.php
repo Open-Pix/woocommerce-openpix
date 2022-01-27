@@ -68,8 +68,6 @@ class WC_OpenPix
     private function includes()
     {
         include_once dirname(__FILE__) . '/includes/class-wc-openpix-pix.php';
-        include_once dirname(__FILE__) .
-            '/includes/class-wc-openpix-cashback.php';
         include_once dirname(__FILE__) . '/cashback/class-cashback-coupon.php';
     }
 
