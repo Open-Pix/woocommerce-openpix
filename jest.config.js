@@ -9,4 +9,5 @@ module.exports = {
   moduleFileExtensions: ['js', 'css', 'ts', 'tsx', 'json'],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   setupFiles: ['<rootDir>/jest.setupFiles.js'],
+  testEnvironment: 'jsdom',
 };
