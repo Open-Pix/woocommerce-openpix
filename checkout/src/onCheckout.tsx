@@ -210,7 +210,6 @@ export const onCheckout = () => {
     wcOpenpixParams,
     inlineData,
     total,
-    customer,
     wooData,
     nonce: wooData['woocommerce-process-checkout-nonce'],
   });
@@ -218,7 +217,7 @@ export const onCheckout = () => {
   let shopperCustomer: Partial<Customer> | null = null;
   const onCashbackApplyEvent = (e) => {
     // eslint-disable-next-line
-    console.log('logEvents: ', e);
+    console.log('apply event logEvents: ', e);
 
     if (e.type === 'CASHBACK_APPLY') {
       const { shopper, cashbackValue, cashbackHash } = e.data;
@@ -277,6 +276,8 @@ export const onCheckout = () => {
   };
 
   const onCashbackInactiveEvent = (e) => {
+    console.log('inactive: ', e);
+
     if (e.type === 'CASHBACK_INACTIVE') {
       // window.$openpix.push(['close']);
       formSubmit.setFormSubmit(true);

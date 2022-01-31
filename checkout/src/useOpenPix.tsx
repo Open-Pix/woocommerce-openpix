@@ -6,7 +6,7 @@ import { config } from './config';
 export type IOpenPixApi = {
   generateStatic: (options: any) => any;
   status: () => void;
-  addEventListener: () => void;
+  addEventListener: () => () => void;
 };
 
 declare global {
@@ -23,12 +23,11 @@ export const useOpenPix = (appID: string) => {
 
   const scriptURL = config.OPENPIX_PLUGIN_URL;
 
-  console.log({
-    config,
-  });
-
   // eslint-disable-next-line
-  const [loaded, error] = useScript(scriptURL);
+  const [loaded, error] = useScript({
+    src: scriptURL,
+    checkForExisting: true,
+  });
 
   useEffect(() => {
     if (!error) {

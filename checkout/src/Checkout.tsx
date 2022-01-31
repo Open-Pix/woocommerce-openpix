@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { v4 as uuidv4 } from 'uuid';
 
@@ -37,6 +37,7 @@ const Checkout = ({
   correlationID,
   retry,
 }: AppProps) => {
+  const [cashbackCalled, setCashbackCalled] = useState<boolean>(false);
 
   useOpenPix(appID);
 
@@ -45,7 +46,7 @@ const Checkout = ({
   const isOpenPixLoaded = !!window.$openpix?.addEventListener;
 
   useEffect(() => {
-    const shouldRetry = retry !== oldRetry && isOpenPixLoaded;
+    const shouldRetry = (retry !== oldRetry || !cashbackCalled) && isOpenPixLoaded;
 
     if (shouldRetry) {
       window.$openpix.push([
@@ -59,6 +60,14 @@ const Checkout = ({
         },
       ]);
 
+      if (!cashbackCalled) {
+        setCashbackCalled(true);
+      }
+    }
+  }, [isOpenPixLoaded, retry, cashbackCalled]);
+
+  useEffect(() => {
+    if (isOpenPixLoaded) {
       const logEvents = (e) => {
         // eslint-disable-next-line
         console.log('logEvents: ', e);
@@ -83,7 +92,7 @@ const Checkout = ({
         cashbackInactiveUnsubscribe && cashbackInactiveUnsubscribe();
       };
     }
-  }, [isOpenPixLoaded, retry]);
+  }, [isOpenPixLoaded]);
 
   return null;
 };
