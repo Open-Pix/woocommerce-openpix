@@ -143,10 +143,8 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
     public function get_checkout_js_url()
     {
-        // TODO - improve
-        return 'http://localhost:6688/main.js';
         if (WC_OpenPix::OPENPIX_ENV === 'development') {
-            return plugins_url('build/main.js', plugin_dir_path(__FILE__));
+            return 'http://localhost:6688/main.js';
         }
 
         if (WC_OpenPix::OPENPIX_ENV === 'staging') {

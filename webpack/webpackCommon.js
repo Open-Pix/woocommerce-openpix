@@ -3,6 +3,7 @@ const path = require('path');
 const dotEnv = require('dotenv-webpack');
 const { merge } = require('webpack-merge');
 const webpack = require('webpack');
+const TerserPlugin = require('terser-webpack-plugin');
 
 const cwd = process.cwd();
 const outputPath = path.join(cwd, 'assets/js');
@@ -12,6 +13,7 @@ const buildTimeStamp = now.toISOString();
 
 const common = {
   mode: 'production',
+  devtool: 'source-map',
   context: path.resolve(cwd, './'),
   entry: ['./checkout/src/index.tsx'],
   output: {
@@ -30,6 +32,13 @@ const common = {
         exclude: [/node_modules/],
         use: ['babel-loader?cacheDirectory'],
       },
+    ],
+  },
+  optimization: {
+    minimizer: [
+      new TerserPlugin({
+        parallel: 4,
+      }),
     ],
   },
 };
