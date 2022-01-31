@@ -9,8 +9,6 @@ if (!defined('ABSPATH')) {
       'environment' => $environment,
       'appID' => $appID,
       'pluginUrl' => $pluginUrl,
-      'realtime' => $realtime,
-      'beta' => $beta,
   ]); ?>
 </script>
 

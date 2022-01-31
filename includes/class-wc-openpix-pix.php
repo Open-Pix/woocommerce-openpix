@@ -74,9 +74,6 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
         $this->status_when_waiting = $this->get_option('status_when_waiting');
         $this->status_when_paid = $this->get_option('status_when_paid');
-        $this->beta = $this->get_option('beta') === 'yes';
-
-        $this->realtime = $this->get_option('realtime') === 'yes';
 
         add_action('woocommerce_update_options_payment_gateways_' . $this->id, [
             $this,
@@ -483,21 +480,6 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                 'title' => __('Enable/Disable', 'woocommerce-openpix'),
                 'type' => 'checkbox',
                 'label' => __('Enable OpenPix', 'woocommerce-openpix'),
-                'default' => 'no',
-            ],
-            'realtime' => [
-                'title' => __('Update UI in realtime', 'woocommerce-openpix'),
-                'type' => 'checkbox',
-                'label' => __('Enable realtime', 'woocommerce-openpix'),
-                'default' => 'no',
-            ],
-            'beta' => [
-                'title' => __(
-                    'Display beta testing features',
-                    'woocommerce-openpix'
-                ),
-                'type' => 'checkbox',
-                'label' => __('Enable beta features', 'woocommerce-openpix'),
                 'default' => 'no',
             ],
             'api_section' => [
@@ -1247,9 +1229,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                 'environment' => $environment,
                 'appID' => $this->appID,
                 'pluginUrl' => WC_OpenPix::get_assets_url(),
-                'realtime' => $this->realtime,
                 'src' => "$pluginUrl?$queryString",
-                'beta' => $this->beta,
             ],
             WC_OpenPIx::get_templates_path(),
             WC_OpenPIx::get_templates_path()
