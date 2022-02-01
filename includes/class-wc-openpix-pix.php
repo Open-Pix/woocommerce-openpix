@@ -580,26 +580,17 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                         $webhookUrl .
                         '</a>'
                 ),
-                'custom_attributes' => [
-                    'readonly' => 'readonly',
-                ],
                 'default' => '',
             ],
             'hmac_authorization' => [
                 'type' => 'text',
                 'title' => __('Webhook HMAC Secret Key', 'woocommerce-openpix'),
                 'description' => __('Hmac signature', 'woocommerce-openpix'),
-                'custom_attributes' => [
-                    'readonly' => 'readonly',
-                ],
             ],
             'webhook_status' => [
                 'type' => 'text',
                 'title' => __('Webhook Status', 'woocommerce-openpix'),
                 'description' => __('Status ', 'woocommerce-openpix'),
-                'custom_attributes' => [
-                    'readonly' => 'readonly',
-                ],
             ],
             'status_section' => [
                 'title' => __('Configure order status', 'woocommerce-openpix'),
