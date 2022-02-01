@@ -636,11 +636,6 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         return parent::is_available() && !empty($this->appID);
     }
 
-    //    public function payment_fields()
-    //    {
-    //        echo wp_kses_post(wpautop(wptexturize($this->description)));
-    //    }
-
     public function payment_fields()
     {
         if ($description = $this->get_description()) {
