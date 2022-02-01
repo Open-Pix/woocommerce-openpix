@@ -1,3 +1,25 @@
+#### 2.0.1 (2022-02-01)
+
+##### Build System / Dependencies
+
+* **deps-dev:**
+  *  bump @typescript-eslint/parser from 5.10.1 to 5.10.2 (#238) (2183180a)
+  *  bump webpack from 5.67.0 to 5.68.0 (#240) (150adfe6)
+  *  bump eslint-plugin-compat from 4.0.1 to 4.0.2 (#239) (abb975e2)
+  *  bump @typescript-eslint/eslint-plugin (#237) (c1667197)
+
+##### New Features
+
+* **version:**  fix version (e4456bda)
+* **pack:**  more stricti packing (78909262)
+* **clean:**  cleanup (a84667b2)
+* **cashback-complete-event:**  cashback complete event apply (#242) (450ba39c)
+* **readonly:**  remove readonly fields (bf9ff84c)
+
+##### Bug Fixes
+
+* **pack:**  improve pack and add cashback includes (0fae416f)
+
 ## 2.0.0 (2022-01-31)
 
 ##### Build System / Dependencies
