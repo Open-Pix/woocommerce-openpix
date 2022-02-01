@@ -19,6 +19,7 @@ export type AppProps = {
   onSuccess: (correlationID: string) => void;
   onCashbackApplyEvent: (event: any) => void;
   onCashbackInactiveEvent: (event: any) => void;
+  onCashbackCompleteEvent: (event: any) => void;
   value: number;
   description?: string;
   customer?: Customer;
@@ -30,6 +31,7 @@ const Checkout = ({
   onSuccess,
   onCashbackApplyEvent,
   onCashbackInactiveEvent,
+  onCashbackCompleteEvent,
   value,
   description,
   customer,
@@ -85,11 +87,13 @@ const Checkout = ({
       const unsubscribe = window.$openpix.addEventListener(logEvents);
       const cashbackUnsubscribe = window.$openpix.addEventListener(onCashbackApplyEvent);
       const cashbackInactiveUnsubscribe = window.$openpix.addEventListener(onCashbackInactiveEvent);
+      const cashbackCompleteUnsubscribe = window.$openpix.addEventListener(onCashbackCompleteEvent);
 
       return () => {
         unsubscribe && unsubscribe();
         cashbackUnsubscribe && cashbackUnsubscribe();
         cashbackInactiveUnsubscribe && cashbackInactiveUnsubscribe();
+        cashbackCompleteUnsubscribe && cashbackCompleteUnsubscribe();
       };
     }
   }, [isOpenPixLoaded]);
