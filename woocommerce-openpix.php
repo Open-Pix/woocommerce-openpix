@@ -36,7 +36,7 @@ class WC_OpenPix
 {
     const VERSION = '1.12.0';
     // change this to work in development, staging or production
-//     const OPENPIX_ENV = 'development';
+    //     const OPENPIX_ENV = 'development';
     // const OPENPIX_ENV = 'staging';
     const OPENPIX_ENV = 'production';
 
@@ -74,7 +74,6 @@ class WC_OpenPix
     public function add_gateway($methods)
     {
         $methods[] = 'WC_OpenPix_Pix_Gateway';
-        $methods[] = 'WC_OpenPix_Cashback_Gateway';
 
         return $methods;
     }
