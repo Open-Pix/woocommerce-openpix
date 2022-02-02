@@ -142,38 +142,38 @@ export const getCustomerFromWoocommerce = (
 };
 
 export const getCustommerFromShopper = (
-  data: Shopper,
+  shopper: Shopper,
 ): Partial<Customer> | null => {
   const getTaxID = () => {
-    if (!data?.taxID?.taxID) {
+    if (!shopper?.taxID?.taxID) {
       return {};
     }
 
-    return { taxId: data.taxID.taxID };
+    return { taxID: shopper.taxID.taxID };
   };
 
   const getEmail = () => {
-    if (!data?.emails[0].email) {
+    if (!shopper?.emails[0].email) {
       return {};
     }
 
-    return { email: data?.emails[0].email };
+    return { email: shopper?.emails[0].email };
   };
 
   const getPhone = () => {
-    if (!data?.phones[0]) {
+    if (!shopper?.phones[0]) {
       return {};
     }
 
-    return { phone: data?.phones[0] };
+    return { phone: shopper?.phones[0] };
   };
 
   const getName = () => {
-    if (!data?.name) {
+    if (!shopper?.name) {
       return {};
     }
 
-    return { name: data?.name };
+    return { name: shopper?.name };
   };
 
   return {
@@ -214,14 +214,35 @@ export const onCheckout = () => {
     nonce: wooData['woocommerce-process-checkout-nonce'],
   });
 
-  let shopperCustomer: Partial<Customer> | null = null;
+  const customer: Customer = {
+    name: wooCustomer?.name,
+    phone: wooCustomer?.phone,
+    email: wooCustomer?.email,
+    taxID: wooCustomer?.taxID,
+  };
+
   const onCashbackApplyEvent = (e) => {
     // eslint-disable-next-line
     console.log('apply event logEvents: ', e);
 
     if (e.type === 'CASHBACK_APPLY') {
       const { shopper, cashbackValue, cashbackHash } = e.data;
-      shopperCustomer = getCustommerFromShopper(shopper);
+      const shopperCustomer = getCustommerFromShopper(shopper);
+      const customerTaxId = customer?.taxID ?? shopperCustomer?.taxID;
+
+      const customerValueInput = $(
+        'input[name=openpix_customer_taxid]',
+        form,
+      ).val();
+
+      if (customerTaxId && !customerValueInput) {
+        form.append(
+          $<HTMLInputElement>('<input hidden/>')
+            .attr('name', 'openpix_customer_taxid')
+            .val(customerTaxId),
+        );
+      }
+
       const cashbackValueInput = $(
         'input[name=openpix_cashback_value]',
         form,
@@ -276,9 +297,9 @@ export const onCheckout = () => {
   };
 
   const onCashbackInactiveEvent = (e) => {
-    console.log('inactive: ', e);
-
     if (e.type === 'CASHBACK_INACTIVE') {
+      // eslint-disable-next-line
+      console.log('inactive: ', e);
       // window.$openpix.push(['close']);
       formSubmit.setFormSubmit(true);
 
@@ -295,9 +316,10 @@ export const onCheckout = () => {
   };
 
   const onCashbackCompleteEvent = (e) => {
-    console.log('complete: ', e);
-
     if (e.type === 'CASHBACK_COMPLETE') {
+      // eslint-disable-next-line
+      console.log('complete: ', e);
+
       // window.$openpix.push(['close']);
       formSubmit.setFormSubmit(true);
 
@@ -311,13 +333,6 @@ export const onCheckout = () => {
 
       form.trigger('submit');
     }
-  };
-
-  const customer: Customer = {
-    name: wooCustomer?.name ?? shopperCustomer?.name,
-    phone: wooCustomer?.phone ?? shopperCustomer?.phone,
-    email: wooCustomer?.email ?? shopperCustomer?.email,
-    taxID: wooCustomer?.taxID ?? shopperCustomer?.taxID,
   };
 
   const props: AppProps = {
