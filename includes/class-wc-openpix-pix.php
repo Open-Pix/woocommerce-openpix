@@ -705,19 +705,19 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         $order_billing_cpf = $order->get_meta('_billing_cpf');
         $order_billing_cnpj = $order->get_meta('_billing_cnpj');
 
-        if (isset($order_persontype)) {
+        if (!empty($order_persontype)) {
             if ($order_persontype === '1') {
-                return isset($order_billing_cpf)
+                return !empty($order_billing_cpf)
                     ? sanitize_text_field($order_billing_cpf)
                     : sanitize_text_field($order_billing_cnpj);
             }
 
-            return isset($order_billing_cnpj)
+            return !empty($order_billing_cnpj)
                 ? sanitize_text_field($order_billing_cnpj)
                 : sanitize_text_field($order_billing_cpf);
         }
 
-        return isset($order_billing_cpf)
+        return !empty($order_billing_cpf)
             ? sanitize_text_field($order_billing_cpf)
             : sanitize_text_field($order_billing_cnpj);
     }
