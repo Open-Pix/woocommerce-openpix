@@ -141,7 +141,7 @@ export const getCustomerFromWoocommerce = (
   };
 };
 
-export const getCustommerFromShopper = (
+export const getCustomerFromShopper = (
   shopper: Shopper,
 ): Partial<Customer> | null => {
   const getTaxID = () => {
@@ -203,7 +203,9 @@ export const onCheckout = () => {
   const { wcOpenpixParams } = window;
 
   const wooData = getWoocommerceFormData();
+
   const wooCustomer = getCustomerFromWoocommerce(wooData);
+
   const total = inlineData.data('total');
   // eslint-disable-next-line
   console.log({
@@ -221,36 +223,43 @@ export const onCheckout = () => {
     taxID: wooCustomer?.taxID,
   };
 
+  const appendCustomerTaxId = (shopper) => {
+    const shopperCustomer = getCustomerFromShopper(shopper);
+    const customerTaxId = customer?.taxID ?? shopperCustomer?.taxID;
+
+    const customerValueInput = $(
+      'input[name=openpix_customer_taxid]',
+      form,
+    ).val();
+
+    if (customerTaxId && !customerValueInput) {
+      form.append(
+        $<HTMLInputElement>('<input hidden/>')
+          .attr('name', 'openpix_customer_taxid')
+          .val(customerTaxId),
+      );
+    }
+  };
+
   const onCashbackApplyEvent = (e) => {
     // eslint-disable-next-line
     console.log('apply event logEvents: ', e);
 
     if (e.type === 'CASHBACK_APPLY') {
       const { shopper, cashbackValue, cashbackHash } = e.data;
-      const shopperCustomer = getCustommerFromShopper(shopper);
-      const customerTaxId = customer?.taxID ?? shopperCustomer?.taxID;
 
-      const customerValueInput = $(
-        'input[name=openpix_customer_taxid]',
-        form,
-      ).val();
-
-      if (customerTaxId && !customerValueInput) {
-        form.append(
-          $<HTMLInputElement>('<input hidden/>')
-            .attr('name', 'openpix_customer_taxid')
-            .val(customerTaxId),
-        );
-      }
+      appendCustomerTaxId(shopper);
 
       const cashbackValueInput = $(
         'input[name=openpix_cashback_value]',
         form,
       ).val();
+
       const cashbackHashInput = $(
         'input[name=openpix_cashback_hash]',
         form,
       ).val();
+
       const shopperIdInput = $('input[name=openpix_shopper_id]', form).val();
 
       if (cashbackValueInput && cashbackHashInput && shopperIdInput) {
@@ -319,6 +328,10 @@ export const onCheckout = () => {
     if (e.type === 'CASHBACK_COMPLETE') {
       // eslint-disable-next-line
       console.log('complete: ', e);
+
+      const { shopper } = e.data;
+
+      appendCustomerTaxId(shopper);
 
       // window.$openpix.push(['close']);
       formSubmit.setFormSubmit(true);
