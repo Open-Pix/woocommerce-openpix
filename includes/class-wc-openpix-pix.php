@@ -715,6 +715,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         return isset($order_billing_cpf) || isset($order_billing_cnpj);
     }
 
+    // @ TODO: why should prioritize the logged shopper?
     public function getTaxID($order)
     {
         $openpix_customer_taxid = $_POST['openpix_customer_taxid'];
