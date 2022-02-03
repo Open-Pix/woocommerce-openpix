@@ -699,8 +699,33 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         return '55' . $phoneSafe;
     }
 
+    public function getHasCustomer($order)
+    {
+        $openpix_customer_taxid = $_POST['openpix_customer_taxid'];
+
+        $hasOpenpixCustomer = isset($openpix_customer_taxid);
+
+        if ($hasOpenpixCustomer) {
+            return true;
+        }
+
+        $order_billing_cpf = $order->get_meta('_billing_cpf');
+        $order_billing_cnpj = $order->get_meta('_billing_cnpj');
+
+        return isset($order_billing_cpf) || isset($order_billing_cnpj);
+    }
+
+    // @ TODO: why should prioritize the logged shopper?
     public function getTaxID($order)
     {
+        $openpix_customer_taxid = $_POST['openpix_customer_taxid'];
+
+        $hasOpenpixCustomer = isset($openpix_customer_taxid);
+
+        if ($hasOpenpixCustomer) {
+            return sanitize_text_field($openpix_customer_taxid);
+        }
+
         $order_persontype = $order->get_meta('_billing_persontype');
         $order_billing_cpf = $order->get_meta('_billing_cpf');
         $order_billing_cnpj = $order->get_meta('_billing_cnpj');
@@ -727,7 +752,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         $order_billing_cpf = $order->get_meta('_billing_cpf');
         $order_billing_cnpj = $order->get_meta('_billing_cnpj');
 
-        $hasCustomer = isset($order_billing_cpf) || isset($order_billing_cnpj);
+        $hasCustomer = $this->getHasCustomer($order);
 
         if (!$hasCustomer) {
             return null;
