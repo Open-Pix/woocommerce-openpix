@@ -720,7 +720,8 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
     {
         $openpix_customer_taxid = $_POST['openpix_customer_taxid'];
 
-        $hasOpenpixCustomer = isset($openpix_customer_taxid);
+        $hasOpenpixCustomer =
+            isset($openpix_customer_taxid) && !empty($openpix_customer_taxid);
 
         if ($hasOpenpixCustomer) {
             return sanitize_text_field($openpix_customer_taxid);
