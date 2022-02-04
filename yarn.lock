@@ -1656,14 +1656,14 @@
     schema-utils "^3.0.0"
     source-map "^0.7.3"
 
-"@prettier/plugin-php@^0.17.5":
-  version "0.17.6"
-  resolved "https://registry.yarnpkg.com/@prettier/plugin-php/-/plugin-php-0.17.6.tgz#49e2cb091da89d525842412d2de20fc3ca3d1a20"
-  integrity sha512-Nxkq+Gl8bGbutRV7e3/p5d+Bcftn75oH61RT8xzk44T5ET7fVP50pUdaOdvt704GSNr6wwmfBW8MhBz5IKt+fA==
+"@prettier/plugin-php@^0.18.0":
+  version "0.18.0"
+  resolved "https://registry.yarnpkg.com/@prettier/plugin-php/-/plugin-php-0.18.0.tgz#5dc7224aea5f58cb93d58882b51b6646dcfd81e5"
+  integrity sha512-os1CLqJFUSJpp3hkJ4IARW1h5ZuWhRdPnGaGaJs517uCL57V4C9dJeaSmIUi20qPji+mDhGs7SNZgdyW8VNcuw==
   dependencies:
     linguist-languages "^7.5.1"
     mem "^8.0.0"
-    php-parser "https://github.com/glayzzle/php-parser#27abcb2337ac6450c068ef064982dfabf77916a5"
+    php-parser "3.1.0-beta.0"
 
 "@sinonjs/commons@^1.7.0":
   version "1.8.3"
@@ -7845,9 +7845,10 @@ performance-now@^2.1.0:
   resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
   integrity sha1-Ywn04OX6kT7BxpMHrjZLSzd8nns=
 
-"php-parser@https://github.com/glayzzle/php-parser#27abcb2337ac6450c068ef064982dfabf77916a5":
-  version "3.0.2"
-  resolved "https://github.com/glayzzle/php-parser#27abcb2337ac6450c068ef064982dfabf77916a5"
+php-parser@3.1.0-beta.0:
+  version "3.1.0-beta.0"
+  resolved "https://registry.yarnpkg.com/php-parser/-/php-parser-3.1.0-beta.0.tgz#e43cb58ca35022f00973daf9dc55170de1f64ebf"
+  integrity sha512-j4v15Zy6pvJKd1N3XR53AUTySr1YEiKer8OlIFvqZTdRwMMmWttPiOZ7oyP53/QHY4DDHUfAtK9ZMomKw0xFlw==
 
 picocolors@^1.0.0:
   version "1.0.0"
