@@ -70,7 +70,7 @@
     "@typescript-eslint/parser": "5.10.2",
     "@webpack-cli/serve": "1.6.1",
     "autodll-webpack-plugin": "^0.4.2",
-    "babel-jest": "^27.4.6",
+    "babel-jest": "^27.5.0",
     "babel-loader": "8.2.3",
     "cache-loader": "4.1.0",
     "cross-env": "7.0.3",
