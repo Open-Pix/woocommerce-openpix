@@ -77,7 +77,7 @@ type Shopper = {
   phones: string;
   taxID: TaxID;
   emails: Email[];
-  cashbackUsableBalance: number;
+  giftbackUsableBalance: number;
 };
 
 export const formDataToObject = (data: FormData) => {
@@ -241,36 +241,36 @@ export const onCheckout = () => {
     }
   };
 
-  const onCashbackApplyEvent = (e) => {
+  const onGiftbackApplyEvent = (e) => {
     // eslint-disable-next-line
     console.log('apply event logEvents: ', e);
 
-    if (e.type === 'CASHBACK_APPLY') {
-      const { shopper, cashbackValue, cashbackHash } = e.data;
+    if (e.type === 'GIFTBACK_APPLY') {
+      const { shopper, giftbackValue, giftbackHash } = e.data;
 
       appendCustomerTaxId(shopper);
 
-      const cashbackValueInput = $(
-        'input[name=openpix_cashback_value]',
+      const giftbackValueInput = $(
+        'input[name=openpix_giftback_value]',
         form,
       ).val();
 
-      const cashbackHashInput = $(
-        'input[name=openpix_cashback_hash]',
+      const giftbackHashInput = $(
+        'input[name=openpix_giftback_hash]',
         form,
       ).val();
 
       const shopperIdInput = $('input[name=openpix_shopper_id]', form).val();
 
-      if (cashbackValueInput && cashbackHashInput && shopperIdInput) {
+      if (giftbackValueInput && giftbackHashInput && shopperIdInput) {
         return;
       }
 
-      if (cashbackValue && !cashbackValueInput) {
+      if (giftbackValue && !giftbackValueInput) {
         form.append(
           $<HTMLInputElement>('<input hidden/>')
-            .attr('name', 'openpix_cashback_value')
-            .val(cashbackValue),
+            .attr('name', 'openpix_giftback_value')
+            .val(giftbackValue),
         );
       }
 
@@ -282,11 +282,11 @@ export const onCheckout = () => {
         );
       }
 
-      if (cashbackHash && !cashbackHashInput) {
+      if (giftbackHash && !giftbackHashInput) {
         form.append(
           $<HTMLInputElement>('<input hidden/>')
-            .attr('name', 'openpix_cashback_hash')
-            .val(cashbackHash),
+            .attr('name', 'openpix_giftback_hash')
+            .val(giftbackHash),
         );
       }
 
@@ -305,8 +305,8 @@ export const onCheckout = () => {
     }
   };
 
-  const onCashbackInactiveEvent = (e) => {
-    if (e.type === 'CASHBACK_INACTIVE') {
+  const onGiftbackInactiveEvent = (e) => {
+    if (e.type === 'GIFTBACK_INACTIVE') {
       // eslint-disable-next-line
       console.log('inactive: ', e);
       // window.$openpix.push(['close']);
@@ -324,8 +324,8 @@ export const onCheckout = () => {
     }
   };
 
-  const onCashbackCompleteEvent = (e) => {
-    if (e.type === 'CASHBACK_COMPLETE') {
+  const onGiftbackCompleteEvent = (e) => {
+    if (e.type === 'GIFTBACK_COMPLETE') {
       // eslint-disable-next-line
       console.log('complete: ', e);
 
@@ -350,9 +350,9 @@ export const onCheckout = () => {
 
   const props: AppProps = {
     onSuccess,
-    onCashbackApplyEvent,
-    onCashbackInactiveEvent,
-    onCashbackCompleteEvent,
+    onGiftbackApplyEvent,
+    onGiftbackInactiveEvent,
+    onGiftbackCompleteEvent,
     value: inlineData.data('total'),
     description: wcOpenpixParams.storeName,
     customer,

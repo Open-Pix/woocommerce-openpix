@@ -17,9 +17,9 @@ export type Customer = {
 export type AppProps = {
   // eslint-disable-next-line
   onSuccess: (correlationID: string) => void;
-  onCashbackApplyEvent: (event: any) => void;
-  onCashbackInactiveEvent: (event: any) => void;
-  onCashbackCompleteEvent: (event: any) => void;
+  onGiftbackApplyEvent: (event: any) => void;
+  onGiftbackInactiveEvent: (event: any) => void;
+  onGiftbackCompleteEvent: (event: any) => void;
   value: number;
   description?: string;
   customer?: Customer;
@@ -29,9 +29,9 @@ export type AppProps = {
 };
 const Checkout = ({
   onSuccess,
-  onCashbackApplyEvent,
-  onCashbackInactiveEvent,
-  onCashbackCompleteEvent,
+  onGiftbackApplyEvent,
+  onGiftbackInactiveEvent,
+  onGiftbackCompleteEvent,
   value,
   description,
   customer,
@@ -39,7 +39,7 @@ const Checkout = ({
   correlationID,
   retry,
 }: AppProps) => {
-  const [cashbackCalled, setCashbackCalled] = useState<boolean>(false);
+  const [giftbackCalled, setGiftbackCalled] = useState<boolean>(false);
 
   useOpenPix(appID);
 
@@ -48,11 +48,11 @@ const Checkout = ({
   const isOpenPixLoaded = !!window.$openpix?.addEventListener;
 
   useEffect(() => {
-    const shouldRetry = (retry !== oldRetry || !cashbackCalled) && isOpenPixLoaded;
+    const shouldRetry = (retry !== oldRetry || !giftbackCalled) && isOpenPixLoaded;
 
     if (shouldRetry) {
       window.$openpix.push([
-        'cashback',
+        'giftback',
         {
           correlationID,
           value,
@@ -62,11 +62,11 @@ const Checkout = ({
         },
       ]);
 
-      if (!cashbackCalled) {
-        setCashbackCalled(true);
+      if (!giftbackCalled) {
+        setGiftbackCalled(true);
       }
     }
-  }, [isOpenPixLoaded, retry, cashbackCalled]);
+  }, [isOpenPixLoaded, retry, giftbackCalled]);
 
   useEffect(() => {
     if (isOpenPixLoaded) {
@@ -85,15 +85,15 @@ const Checkout = ({
       };
 
       const unsubscribe = window.$openpix.addEventListener(logEvents);
-      const cashbackUnsubscribe = window.$openpix.addEventListener(onCashbackApplyEvent);
-      const cashbackInactiveUnsubscribe = window.$openpix.addEventListener(onCashbackInactiveEvent);
-      const cashbackCompleteUnsubscribe = window.$openpix.addEventListener(onCashbackCompleteEvent);
+      const giftbackUnsubscribe = window.$openpix.addEventListener(onGiftbackApplyEvent);
+      const giftbackInactiveUnsubscribe = window.$openpix.addEventListener(onGiftbackInactiveEvent);
+      const giftbackCompleteUnsubscribe = window.$openpix.addEventListener(onGiftbackCompleteEvent);
 
       return () => {
         unsubscribe && unsubscribe();
-        cashbackUnsubscribe && cashbackUnsubscribe();
-        cashbackInactiveUnsubscribe && cashbackInactiveUnsubscribe();
-        cashbackCompleteUnsubscribe && cashbackCompleteUnsubscribe();
+        giftbackUnsubscribe && giftbackUnsubscribe();
+        giftbackInactiveUnsubscribe && giftbackInactiveUnsubscribe();
+        giftbackCompleteUnsubscribe && giftbackCompleteUnsubscribe();
       };
     }
   }, [isOpenPixLoaded]);
