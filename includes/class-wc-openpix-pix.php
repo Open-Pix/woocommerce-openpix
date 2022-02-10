@@ -88,12 +88,12 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             'thankyou_page',
         ]);
 
-        // inject openpix react - cashback plugin
+        // inject openpix react - giftback plugin
         add_action('wp_enqueue_scripts', [$this, 'checkout_scripts']);
         // $this->registerHooks();
     }
 
-    // cashback
+    // giftback
     public function checkout_scripts()
     {
         if (is_checkout()) {
@@ -790,28 +790,28 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         return $customer;
     }
 
-    public function getCashbackData()
+    public function getGiftbackData()
     {
-        $order_cashback_hash = $_POST['openpix_cashback_hash'];
-        $order_cashback_value = intval($_POST['openpix_cashback_value']);
+        $order_giftback_hash = $_POST['openpix_giftback_hash'];
+        $order_giftback_value = intval($_POST['openpix_giftback_value']);
         $order_shopper_id = $_POST['openpix_shopper_id'];
 
-        $hasCashback =
-            isset($order_cashback_hash) &&
-            isset($order_cashback_value) &&
+        $hasGiftback =
+            isset($order_giftback_hash) &&
+            isset($order_giftback_value) &&
             isset($order_shopper_id);
 
-        if (!$hasCashback) {
+        if (!$hasGiftback) {
             return null;
         }
 
-        $cashback = [
-            'cashbackHash' => $order_cashback_hash,
-            'cashbackValue' => $order_cashback_value,
+        $giftback = [
+            'giftbackHash' => $order_giftback_hash,
+            'giftbackValue' => $order_giftback_value,
             'shopperId' => $order_shopper_id,
         ];
 
-        return $cashback;
+        return $giftback;
     }
 
     public function validateOrderFields($order)
@@ -1284,25 +1284,25 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             $payload['customer'] = $customer;
         }
 
-        $cashback = $this->getCashbackData();
+        $giftback = $this->getGiftbackData();
 
-        if ($cashback) {
+        if ($giftback) {
             $coupon = new AWPCustomDiscount(
                 'cshbck-' . $order_id,
-                $this->get_wc_amount($cashback['cashbackValue']),
+                $this->get_wc_amount($giftback['giftbackValue']),
                 'fixed_cart'
             );
             $coupon->addDiscount($order);
 
-            $payload['cashbackHash'] = $cashback['cashbackHash'];
-            $payload['cashbackValue'] = $cashback['cashbackValue'];
-            $payload['shopperId'] = $cashback['shopperId'];
+            $payload['giftbackHash'] = $giftback['giftbackHash'];
+            $payload['giftbackValue'] = $giftback['giftbackValue'];
+            $payload['shopperId'] = $giftback['shopperId'];
         }
 
         return $payload;
     }
 
-    // cashback growth
+    // giftback growth
     public function ceHandlerWooCommerceNewOrder($order)
     {
         try {

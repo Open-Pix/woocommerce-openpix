@@ -24,7 +24,7 @@ class AWPCustomDiscount
     function discountLabel($label, $coupon)
     {
         if ($coupon->code == $this->coupon_code) {
-            return __('Cashback');
+            return __('Giftback');
         }
         return $label;
     }

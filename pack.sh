@@ -10,7 +10,7 @@ zip -r woocommerce-openpix-$(date "+%Y-%m-%d:%H:%M").zip \
   assets/js/woo-openpix-dev.js \
   assets/js/woo-openpix-dev.js.LICENSE.txt \
   includes/class-wc-openpix-pix.php \
-   includes/class-cashback-coupon.php \
+   includes/class-giftback-coupon.php \
    languages \
    templates \
    woocommerce-openpix.php \
