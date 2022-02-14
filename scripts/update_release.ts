@@ -61,7 +61,7 @@ const createRelease = async (tagName) => {
   const resultTag = await git().tags();
   const currentTag = resultTag.all[resultTag.all.length - 2];
 
-  const diffPattern = `${currentTag}..master`;
+  const diffPattern = `${currentTag}..main`;
 
   const changelogContent = await changelog.generate({ tag: diffPattern });
 
