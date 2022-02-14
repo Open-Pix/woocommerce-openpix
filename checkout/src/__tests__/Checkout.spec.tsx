@@ -95,7 +95,7 @@ it.skip('should inject openpix plugin and call OnCheckout flow', async () => {
   `;
 
   const form = createElementFromHTML(woocommrece);
-  // form.submit = jest.fn();
+
   // add woocommerce nodes
   body.append(form);
 
@@ -106,7 +106,6 @@ it.skip('should inject openpix plugin and call OnCheckout flow', async () => {
 
   const payButton = getByText('Pay');
   fireEvent.click(payButton);
-  // getByText('hehe');
-  // expect(getByText('hehe')).toBeTruthy();
+
   expect(window.$openpix.push.mock.calls).toHaveLength(1);
 });
