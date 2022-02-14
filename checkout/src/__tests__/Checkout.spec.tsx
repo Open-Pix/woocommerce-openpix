@@ -65,7 +65,7 @@ it('should inject openpix plugin script and also consume WooCommerce data proper
   expect(getByText('Pay')).toBeTruthy();
 });
 
-it('should inject openpix plugin and call OnCheckout flow', async () => {
+it.skip('should inject openpix plugin and call OnCheckout flow', async () => {
   window.$openpix = {
     push: jest.fn(),
     addEventListener: jest.fn(),
