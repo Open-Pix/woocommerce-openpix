@@ -1,3 +1,58 @@
+#### 2.0.2 (2022-02-15)
+
+##### Build System / Dependencies
+
+* **deps-dev:**
+  *  bump @typescript-eslint/parser from 5.11.0 to 5.12.0 (#288) (b7b5c972)
+  *  bump @typescript-eslint/eslint-plugin (#287) (f0c016fd)
+  *  bump @prettier/plugin-php from 0.18.0 to 0.18.1 (#282) (e4c51b67)
+  *  bump lint-staged from 12.3.3 to 12.3.4 (#281) (3274d6eb)
+  *  bump simple-git from 3.1.1 to 3.2.4 (#280) (ece3aad7)
+  *  bump eslint from 8.8.0 to 8.9.0 (#279) (b7b86e18)
+  *  bump npmlog from 6.0.0 to 6.0.1 (#275) (48746c17)
+  *  bump @types/prettier from 2.4.3 to 2.4.4 (#274) (0c7c9ce2)
+  *  bump babel-jest from 27.5.0 to 27.5.1 (#273) (f57fb435)
+  *  bump jest from 27.5.0 to 27.5.1 (#272) (7851b425)
+  *  bump @babel/core from 7.17.0 to 7.17.2 (#271) (704d5b7f)
+  *  bump @typescript-eslint/eslint-plugin (#269) (6b1d1a23)
+  *  bump @typescript-eslint/parser from 5.10.2 to 5.11.0 (#270) (ea8cd88b)
+  *  bump jest from 27.4.7 to 27.5.0 (#268) (504570da)
+  *  bump babel-jest from 27.4.6 to 27.5.0 (#266) (ee642231)
+  *  bump @types/styled-components from 5.1.21 to 5.1.22 (#265) (3200fe0b)
+  *  bump @prettier/plugin-php from 0.17.6 to 0.18.0 (#264) (731d119d)
+  *  bump @types/react from 17.0.38 to 17.0.39 (#263) (6231f8a8)
+  *  bump @babel/cli from 7.16.8 to 7.17.0 (#260) (928fc22c)
+  *  bump @babel/core from 7.16.12 to 7.17.0 (#259) (0efe6736)
+  *  bump @testing-library/jest-dom from 5.16.1 to 5.16.2 (#257) (23353cf5)
+  *  bump @babel/plugin-transform-runtime (#258) (b80d3275)
+  *  bump webpack-dev-server from 4.7.3 to 4.7.4 (#255) (4792a15f)
+  *  bump css-loader from 6.5.1 to 6.6.0 (#256) (556ca78d)
+  *  bump webpack-plugin-serve from 1.5.0 to 1.6.0 (#251) (d90525f8)
+  *  bump lint-staged from 12.3.2 to 12.3.3 (#250) (4085ba0c)
+  *  bump terser-webpack-plugin from 5.3.0 to 5.3.1 (#248) (357f3b48)
+* **deps:**
+  *  bump vite from 2.8.1 to 2.8.2 (#286) (b9a7519d)
+  *  bump vite from 2.8.0 to 2.8.1 (#283) (65d47efc)
+  *  bump libphonenumber-js from 1.9.48 to 1.9.49 (#278) (0e3cbdda)
+  *  bump vite from 2.7.13 to 2.8.0 (#276) (1174c3a9)
+  *  bump libphonenumber-js from 1.9.47 to 1.9.48 (#267) (a95e826b)
+  *  bump core-js from 3.20.3 to 3.21.0 (#252) (9bcb812a)
+  *  bump libphonenumber-js from 1.9.46 to 1.9.47 (#249) (9965126a)
+
+##### New Features
+
+* **update:**  update version using sed (3067e209)
+* **checkout-plugin-mock-test:**  checkout test to validate openpix push call (#284) (f1ba2906)
+* **rename-cashback-giftback:**  renaming to giftback (#277) (84679c00)
+* **config:**  env local (90606b4a)
+
+##### Bug Fixes
+
+* **main:**  generate changelog using main (01e395b0)
+* **customer:**  get customer from event complete (44c16166)
+* **customer-by-shopper-taxid:**  fixing customer taxid field if shopper is logged in (#253) (b4187d9d)
+* **tax-id:**  get taxid (57384479)
+
 #### 2.0.1 (2022-02-01)
 
 ##### Build System / Dependencies
