@@ -6,7 +6,6 @@ import util from 'util';
 
 import semver from 'semver';
 
-
 import moment from 'moment';
 // eslint-disable-next-line
 import git from 'simple-git';
@@ -52,15 +51,15 @@ const createPullRequest = async (branchName, tag) => {
   const latestReleaseTag =
     latestReleases && latestReleases.data && latestReleases.data.length
       ? latestReleases.data[0].tag_name
-      : 'master';
+      : 'main';
 
   await octokit.pulls.create({
     owner,
     repo,
     title: `Deploy Production - ${tag} - ${now}`,
     head: branchName,
-    base: 'master',
-    body: `https://github.com/${owner}/${repo}/compare/${latestReleaseTag}...master`,
+    base: 'main',
+    body: `https://github.com/${owner}/${repo}/compare/${latestReleaseTag}...main`,
   });
 };
 
