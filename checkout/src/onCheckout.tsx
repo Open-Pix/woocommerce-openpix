@@ -348,11 +348,31 @@ export const onCheckout = () => {
     }
   };
 
+  const onPayAsGuestEvent = (e) => {
+    if (e.type === 'PAY_AS_GUEST') {
+      // eslint-disable-next-line
+      console.log('guest: ', e);
+      // window.$openpix.push(['close']);
+      formSubmit.setFormSubmit(true);
+
+      // add a hiden input with correlation id used
+      $('input[name=openpix_correlation_id]', form).remove();
+      form.append(
+        $('<input name="openpix_correlation_id" type="hidden" />').val(
+          wcOpenpixParams.correlationID,
+        ),
+      );
+
+      form.trigger('submit');
+    }
+  };
+
   const props: AppProps = {
     onSuccess,
     onGiftbackApplyEvent,
     onGiftbackInactiveEvent,
     onGiftbackCompleteEvent,
+    onPayAsGuestEvent,
     value: inlineData.data('total'),
     description: wcOpenpixParams.storeName,
     customer,
