@@ -4,6 +4,9 @@ import path from 'path';
 
 import util from 'util';
 
+import semver from 'semver';
+
+
 import moment from 'moment';
 // eslint-disable-next-line
 import git from 'simple-git';
@@ -61,42 +64,75 @@ const createPullRequest = async (branchName, tag) => {
   });
 };
 
+const updatePhp = async (latestVersion: string, newVersion: string) => {
+  // Version: 2.0.1
+  const headerSedExp = `sed -i '' s/"Version: ${latestVersion}"/"Version: ${newVersion}"/g woocommerce-openpix.php`;
+
+  // const VERSION = '2.0.1';
+  const constSedExp = `sed -i '' s/"VERSION = '${latestVersion}'"/"VERSION = '${newVersion}'"/g woocommerce-openpix.php`;
+
+  await exec(headerSedExp);
+  await exec(constSedExp);
+};
+
+const run = async () => {
+  const resultTag = await git().tags();
+  const latestTag = resultTag.latest;
+
+  const currentChangelog = fs.readFileSync('./CHANGELOG.md');
+
+  const diffPattern = `${latestTag}..main`;
+
+  const changelogContent = await changelog.generate({
+    tag: diffPattern,
+  });
+
+  const rxVersion = /\d+\.\d+\.\d+/;
+  const latestVersion = argv.version || changelogContent.match(rxVersion)?.[0];
+
+  const getReleaseType = () => {
+    if (argv.major) {
+      return 'major';
+    }
+
+    if (argv.minor) {
+      return 'minor';
+    }
+
+    return 'patch';
+  };
+
+  const newVersion = semver.inc(latestVersion, getReleaseType());
+
+  const newChangelogContent =
+    changelogContent.replace(rxVersion, newVersion) + currentChangelog;
+
+  fs.writeFileSync('./CHANGELOG.md', newChangelogContent);
+
+  await exec(`npm version --no-git-tag-version ${newVersion}`);
+
+  const tag = `v${newVersion}`;
+
+  const today = new Date();
+
+  const branchName = `feature-production/${today.getFullYear()}${
+    today.getMonth() + 1
+  }${today.getDate()}${today.getUTCHours()}${today.getUTCMinutes()}`;
+
+  await updatePhp(latestVersion, newVersion);
+
+  await git().checkout(['-B', branchName]);
+  await git().add(['package.json', 'CHANGELOG.md', 'woocommerce-openpix.php']);
+  await git().commit(`build(change-log): ${tag}`, [], '-n');
+  await git().addAnnotatedTag(`${tag}`, `build(tag): ${tag}`);
+  await git().push(['--follow-tags', '-u', 'origin', branchName]);
+
+  await createPullRequest(branchName, tag);
+};
+
 (async () => {
   try {
-    await git().tags();
-
-    const currentChangelog = fs.readFileSync('./CHANGELOG.md');
-
-    const changelogContent = await changelog.generate({
-      major: argv.major,
-      minor: argv.minor,
-      patch: argv.patch,
-    });
-
-    const rxVersion = /\d+\.\d+\.\d+/;
-    const newVersion = argv.version || changelogContent.match(rxVersion)?.[0];
-
-    const newChangelogContent =
-      changelogContent.replace(rxVersion, newVersion) + currentChangelog;
-    fs.writeFileSync('./CHANGELOG.md', newChangelogContent);
-
-    await exec(`npm version --no-git-tag-version ${newVersion}`);
-
-    const tag = `v${newVersion}`;
-
-    const today = new Date();
-
-    const branchName = `feature-production/${today.getFullYear()}${
-      today.getMonth() + 1
-    }${today.getDate()}${today.getUTCHours()}${today.getUTCMinutes()}`;
-
-    await git().checkout(['-B', branchName]);
-    await git().add(['package.json', 'CHANGELOG.md']);
-    await git().commit(`build(change-log): ${tag}`, [], '-n');
-    await git().addAnnotatedTag(`${tag}`, `build(tag): ${tag}`);
-    await git().push(['--follow-tags', '-u', 'origin', branchName]);
-
-    await createPullRequest(branchName, tag);
+    await run();
   } catch (err) {
     // eslint-disable-next-line
     console.log('err: ', err);
