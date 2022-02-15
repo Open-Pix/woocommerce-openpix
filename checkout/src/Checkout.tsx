@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import { useOpenPix } from './useOpenPix';
-import {usePrevious} from "./usePrevious";
+import { usePrevious } from './usePrevious';
 
 export const getDefaultTransactionId = () =>
   uuidv4().toString().replace(/-/g, '');
@@ -20,6 +20,7 @@ export type AppProps = {
   onGiftbackApplyEvent: (event: any) => void;
   onGiftbackInactiveEvent: (event: any) => void;
   onGiftbackCompleteEvent: (event: any) => void;
+  onPayAsGuestEvent: (event: any) => void;
   value: number;
   description?: string;
   customer?: Customer;
@@ -32,6 +33,7 @@ const Checkout = ({
   onGiftbackApplyEvent,
   onGiftbackInactiveEvent,
   onGiftbackCompleteEvent,
+  onPayAsGuestEvent,
   value,
   description,
   customer,
@@ -48,7 +50,8 @@ const Checkout = ({
   const isOpenPixLoaded = !!window.$openpix?.addEventListener;
 
   useEffect(() => {
-    const shouldRetry = (retry !== oldRetry || !giftbackCalled) && isOpenPixLoaded;
+    const shouldRetry =
+      (retry !== oldRetry || !giftbackCalled) && isOpenPixLoaded;
 
     if (shouldRetry) {
       window.$openpix.push([
@@ -85,15 +88,23 @@ const Checkout = ({
       };
 
       const unsubscribe = window.$openpix.addEventListener(logEvents);
-      const giftbackUnsubscribe = window.$openpix.addEventListener(onGiftbackApplyEvent);
-      const giftbackInactiveUnsubscribe = window.$openpix.addEventListener(onGiftbackInactiveEvent);
-      const giftbackCompleteUnsubscribe = window.$openpix.addEventListener(onGiftbackCompleteEvent);
+      const giftbackUnsubscribe =
+        window.$openpix.addEventListener(onGiftbackApplyEvent);
+      const giftbackInactiveUnsubscribe = window.$openpix.addEventListener(
+        onGiftbackInactiveEvent,
+      );
+      const giftbackCompleteUnsubscribe = window.$openpix.addEventListener(
+        onGiftbackCompleteEvent,
+      );
+      const payAsGuestEvent =
+        window.$openpix.addEventListener(onPayAsGuestEvent);
 
       return () => {
         unsubscribe && unsubscribe();
         giftbackUnsubscribe && giftbackUnsubscribe();
         giftbackInactiveUnsubscribe && giftbackInactiveUnsubscribe();
         giftbackCompleteUnsubscribe && giftbackCompleteUnsubscribe();
+        payAsGuestEvent && payAsGuestEvent();
       };
     }
   }, [isOpenPixLoaded]);
