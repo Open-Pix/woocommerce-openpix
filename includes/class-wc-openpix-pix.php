@@ -792,24 +792,35 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
     public function getGiftbackData()
     {
+        $hasGiftback =
+            isset($_POST['openpix_giftback_hash']) &&
+            isset($_POST['openpix_giftback_value']) &&
+            isset($_POST['openpix_shopper_id']);
+
+        if (!$hasGiftback) {
+            WC_OpenPix::debug('Not has giftback data');
+            return null;
+        }
+
         $order_giftback_hash = $_POST['openpix_giftback_hash'];
         $order_giftback_value = intval($_POST['openpix_giftback_value']);
         $order_shopper_id = $_POST['openpix_shopper_id'];
-
-        $hasGiftback =
-            isset($order_giftback_hash) &&
-            isset($order_giftback_value) &&
-            isset($order_shopper_id);
-
-        if (!$hasGiftback) {
-            return null;
-        }
 
         $giftback = [
             'giftbackHash' => $order_giftback_hash,
             'giftbackValue' => $order_giftback_value,
             'shopperId' => $order_shopper_id,
         ];
+
+        WC_OpenPix::debug(
+            'Giftback data: ' .
+                json_encode(
+                    $giftback,
+                    JSON_UNESCAPED_UNICODE |
+                        JSON_UNESCAPED_SLASHES |
+                        JSON_NUMERIC_CHECK
+                )
+        );
 
         return $giftback;
     }
@@ -904,11 +915,31 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             'data_format' => 'body',
         ];
 
+        WC_OpenPix::debug(
+            'Charge post payload: ' .
+                json_encode(
+                    $payload,
+                    JSON_UNESCAPED_UNICODE |
+                        JSON_UNESCAPED_SLASHES |
+                        JSON_NUMERIC_CHECK
+                )
+        );
+
         if (WC_OpenPix::OPENPIX_ENV === 'development') {
             $response = wp_remote_post($url, $params);
         } else {
             $response = wp_safe_remote_post($url, $params);
         }
+
+        WC_OpenPix::debug(
+            'Charge post response: ' .
+                json_encode(
+                    json_decode($response['body'], true),
+                    JSON_UNESCAPED_UNICODE |
+                        JSON_UNESCAPED_SLASHES |
+                        JSON_NUMERIC_CHECK
+                )
+        );
 
         if (is_wp_error($response)) {
             wc_add_notice(
