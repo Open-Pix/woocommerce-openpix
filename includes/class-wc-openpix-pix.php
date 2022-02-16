@@ -701,9 +701,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
     public function getHasCustomer($order)
     {
-        $openpix_customer_taxid = $_POST['openpix_customer_taxid'];
-
-        $hasOpenpixCustomer = isset($openpix_customer_taxid);
+        $hasOpenpixCustomer = isset($_POST['openpix_customer_taxid']);
 
         if ($hasOpenpixCustomer) {
             return true;
