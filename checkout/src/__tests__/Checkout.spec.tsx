@@ -1,18 +1,10 @@
 import $ from 'jquery';
 // eslint-disable-next-line
 import { within, screen, fireEvent } from '@testing-library/dom';
+import { woocommerceForm } from '../__fixtures__/woocommerceForm';
+import { createElementFromHTML } from '../../test/createElementFromHTML';
 
-window.HTMLFormElement.prototype.submit = jest.fn((e) => e.preventDefault());
-jest.mock(window.$openpix, () => {
-  const { createMockEnvironment } = require('relay-test-utils');
-  const environment = createMockEnvironment();
-  const getEnv = () => environment;
-
-  return {
-    getEnv,
-    environment,
-  };
-});
+// window.HTMLFormElement.prototype.submit = jest.fn((e) => e.preventDefault());
 
 beforeEach(() => {
   fetchMock.resetMocks();
@@ -22,54 +14,37 @@ beforeEach(() => {
 // simulate global jQuery
 window.jQuery = $;
 
-export const createElementFromHTML = (htmlString: string): ChildNode | null => {
-  const div = document.createElement('div');
-  div.innerHTML = htmlString.trim();
-
-  // Change this to div.childNodes to support multiple top-level nodes
-  return div.firstChild;
-};
-
 it('should inject openpix plugin script and also consume WooCommerce data properly', async () => {
   const body = document.querySelector('body');
 
-  // eslint-disable-next-line
-  const { getByText, findByText } = within(body);
-
-  const woocommrece = `
-    <form name="checkout">
-      <div id="#order_review">
-        <ul>
-          <li>
-            <input id="payment_method_another" />
-          </li>
-          <li>
-            <input id="payment_method_woocommerce_openpix" checked="checked" />
-          </li>
-        </ul>
-        <button type="submit">
-          Pay
-        </button>
-      </div>
-    </form>  
-  `;
-
   // add woocommerce nodes
-  body.append(createElementFromHTML(woocommrece));
+  body.append(createElementFromHTML(woocommerceForm));
+
+  // eslint-disable-next-line
+  const { getByText, findByText, queryByText, queryAllByText } = within(body);
 
   // start checkout logic
   require('../index');
 
-  // screen.debug();
+  const payWithPixs = queryAllByText('Pay with Pix');
 
-  expect(getByText('Pay')).toBeTruthy();
+  const btnPayWithPix = payWithPixs.find((el) => el.closest('button'));
+
+  expect(btnPayWithPix).toBeTruthy();
 });
 
 it.skip('should inject openpix plugin and call OnCheckout flow', async () => {
-  window.$openpix = {
-    push: jest.fn(),
+  window.$openpix = [];
+
+  const api = {
+    generateStatic: jest.fn(),
+    status: jest.fn(),
     addEventListener: jest.fn(),
   };
+
+  Object.keys(api).map((k) => {
+    window.$openpix[k] = api[k];
+  });
 
   const body = document.querySelector('body');
 
