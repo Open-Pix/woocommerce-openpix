@@ -8,6 +8,7 @@ import * as formSubmit from './formSubmit';
 import $ from './jquery';
 import { getHostNode } from './getHostNode';
 import Checkout, { AppProps, Customer } from './Checkout';
+import EntryType from './EntryType';
 
 type WCOpenPixParams = {
   appID: string;
@@ -241,138 +242,132 @@ export const onCheckout = () => {
     }
   };
 
-  const onGiftbackApplyEvent = (e) => {
-    // eslint-disable-next-line
-    console.log('apply event logEvents: ', e);
+  const onEvent = (e) => {
+    const { type, data } = e;
+    switch (type) {
+      // apply event
+      case EntryType.GIFTBACK_APPLY:
+        const { shopper, giftbackValue, giftbackHash } = data;
 
-    if (e.type === 'GIFTBACK_APPLY') {
-      const { shopper, giftbackValue, giftbackHash } = e.data;
+        appendCustomerTaxId(shopper);
 
-      appendCustomerTaxId(shopper);
+        const giftbackValueInput = $(
+          'input[name=openpix_giftback_value]',
+          form,
+        ).val();
 
-      const giftbackValueInput = $(
-        'input[name=openpix_giftback_value]',
-        form,
-      ).val();
+        const giftbackHashInput = $(
+          'input[name=openpix_giftback_hash]',
+          form,
+        ).val();
 
-      const giftbackHashInput = $(
-        'input[name=openpix_giftback_hash]',
-        form,
-      ).val();
+        const shopperIdInput = $('input[name=openpix_shopper_id]', form).val();
 
-      const shopperIdInput = $('input[name=openpix_shopper_id]', form).val();
+        if (giftbackValueInput && giftbackHashInput && shopperIdInput) {
+          return;
+        }
 
-      if (giftbackValueInput && giftbackHashInput && shopperIdInput) {
+        if (giftbackValue && !giftbackValueInput) {
+          form.append(
+            $<HTMLInputElement>('<input hidden/>')
+              .attr('name', 'openpix_giftback_value')
+              .val(giftbackValue),
+          );
+        }
+
+        if (shopper?.id && !shopperIdInput) {
+          form.append(
+            $<HTMLInputElement>('<input hidden/>')
+              .attr('name', 'openpix_shopper_id')
+              .val(shopper.id),
+          );
+        }
+
+        if (giftbackHash && !giftbackHashInput) {
+          form.append(
+            $<HTMLInputElement>('<input hidden/>')
+              .attr('name', 'openpix_giftback_hash')
+              .val(giftbackHash),
+          );
+        }
+
+        window.$openpix.push(['close']);
+        formSubmit.setFormSubmit(true);
+
+        // add a hiden input with correlation id used
+        $('input[name=openpix_correlation_id]', form).remove();
+        form.append(
+          $('<input name="openpix_correlation_id" type="hidden" />').val(
+            wcOpenpixParams.correlationID,
+          ),
+        );
+
+        form.trigger('submit');
+        break;
+      // inactive event
+      case EntryType.GIFTBACK_INACTIVE:
+        // eslint-disable-next-line
+        console.log('inactive: ', e);
+        // window.$openpix.push(['close']);
+        formSubmit.setFormSubmit(true);
+
+        // add a hiden input with correlation id used
+        $('input[name=openpix_correlation_id]', form).remove();
+        form.append(
+          $('<input name="openpix_correlation_id" type="hidden" />').val(
+            wcOpenpixParams.correlationID,
+          ),
+        );
+
+        form.trigger('submit');
+        break;
+      // complete event
+      case EntryType.GIFTBACK_COMPLETE:
+        // eslint-disable-next-line
+        console.log('complete: ', e);
+
+        const { shopper } = data;
+
+        appendCustomerTaxId(shopper);
+
+        // window.$openpix.push(['close']);
+        formSubmit.setFormSubmit(true);
+
+        // add a hiden input with correlation id used
+        $('input[name=openpix_correlation_id]', form).remove();
+        form.append(
+          $('<input name="openpix_correlation_id" type="hidden" />').val(
+            wcOpenpixParams.correlationID,
+          ),
+        );
+
+        form.trigger('submit');
+        break;
+      case EntryType.PAY_AS_GUEST:
+        // eslint-disable-next-line
+        console.log('guest: ', e);
+        // window.$openpix.push(['close']);
+        formSubmit.setFormSubmit(true);
+
+        // add a hiden input with correlation id used
+        $('input[name=openpix_correlation_id]', form).remove();
+        form.append(
+          $('<input name="openpix_correlation_id" type="hidden" />').val(
+            wcOpenpixParams.correlationID,
+          ),
+        );
+
+        form.trigger('submit');
+        break;
+
+      default:
         return;
-      }
-
-      if (giftbackValue && !giftbackValueInput) {
-        form.append(
-          $<HTMLInputElement>('<input hidden/>')
-            .attr('name', 'openpix_giftback_value')
-            .val(giftbackValue),
-        );
-      }
-
-      if (shopper?.id && !shopperIdInput) {
-        form.append(
-          $<HTMLInputElement>('<input hidden/>')
-            .attr('name', 'openpix_shopper_id')
-            .val(shopper.id),
-        );
-      }
-
-      if (giftbackHash && !giftbackHashInput) {
-        form.append(
-          $<HTMLInputElement>('<input hidden/>')
-            .attr('name', 'openpix_giftback_hash')
-            .val(giftbackHash),
-        );
-      }
-
-      window.$openpix.push(['close']);
-      formSubmit.setFormSubmit(true);
-
-      // add a hiden input with correlation id used
-      $('input[name=openpix_correlation_id]', form).remove();
-      form.append(
-        $('<input name="openpix_correlation_id" type="hidden" />').val(
-          wcOpenpixParams.correlationID,
-        ),
-      );
-
-      form.trigger('submit');
-    }
-  };
-
-  const onGiftbackInactiveEvent = (e) => {
-    if (e.type === 'GIFTBACK_INACTIVE') {
-      // eslint-disable-next-line
-      console.log('inactive: ', e);
-      // window.$openpix.push(['close']);
-      formSubmit.setFormSubmit(true);
-
-      // add a hiden input with correlation id used
-      $('input[name=openpix_correlation_id]', form).remove();
-      form.append(
-        $('<input name="openpix_correlation_id" type="hidden" />').val(
-          wcOpenpixParams.correlationID,
-        ),
-      );
-
-      form.trigger('submit');
-    }
-  };
-
-  const onGiftbackCompleteEvent = (e) => {
-    if (e.type === 'GIFTBACK_COMPLETE') {
-      // eslint-disable-next-line
-      console.log('complete: ', e);
-
-      const { shopper } = e.data;
-
-      appendCustomerTaxId(shopper);
-
-      // window.$openpix.push(['close']);
-      formSubmit.setFormSubmit(true);
-
-      // add a hiden input with correlation id used
-      $('input[name=openpix_correlation_id]', form).remove();
-      form.append(
-        $('<input name="openpix_correlation_id" type="hidden" />').val(
-          wcOpenpixParams.correlationID,
-        ),
-      );
-
-      form.trigger('submit');
-    }
-  };
-
-  const onPayAsGuestEvent = (e) => {
-    if (e.type === 'PAY_AS_GUEST') {
-      // eslint-disable-next-line
-      console.log('guest: ', e);
-      // window.$openpix.push(['close']);
-      formSubmit.setFormSubmit(true);
-
-      // add a hiden input with correlation id used
-      $('input[name=openpix_correlation_id]', form).remove();
-      form.append(
-        $('<input name="openpix_correlation_id" type="hidden" />').val(
-          wcOpenpixParams.correlationID,
-        ),
-      );
-
-      form.trigger('submit');
     }
   };
 
   const props: AppProps = {
     onSuccess,
-    onGiftbackApplyEvent,
-    onGiftbackInactiveEvent,
-    onGiftbackCompleteEvent,
-    onPayAsGuestEvent,
+    onEvent,
     value: inlineData.data('total'),
     description: wcOpenpixParams.storeName,
     customer,

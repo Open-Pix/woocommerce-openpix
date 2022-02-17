@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { useOpenPix } from './useOpenPix';
 import { usePrevious } from './usePrevious';
+import EntryType from './EntryType';
 
 export const getDefaultTransactionId = () =>
   uuidv4().toString().replace(/-/g, '');
@@ -17,10 +18,7 @@ export type Customer = {
 export type AppProps = {
   // eslint-disable-next-line
   onSuccess: (correlationID: string) => void;
-  onGiftbackApplyEvent: (event: any) => void;
-  onGiftbackInactiveEvent: (event: any) => void;
-  onGiftbackCompleteEvent: (event: any) => void;
-  onPayAsGuestEvent: (event: any) => void;
+  onEvent: (event: any) => void;
   value: number;
   description?: string;
   customer?: Customer;
@@ -30,10 +28,7 @@ export type AppProps = {
 };
 const Checkout = ({
   onSuccess,
-  onGiftbackApplyEvent,
-  onGiftbackInactiveEvent,
-  onGiftbackCompleteEvent,
-  onPayAsGuestEvent,
+  onEvent,
   value,
   description,
   customer,
@@ -77,7 +72,7 @@ const Checkout = ({
         // eslint-disable-next-line
         console.log('logEvents: ', e);
 
-        if (e.type === 'PAYMENT_STATUS') {
+        if (e.type === EntryType.PAYMENT_STATUS) {
           if (e.data.status === 'COMPLETED') {
             // setCorrelationID(getDefaultTransactionId());
 
@@ -88,23 +83,11 @@ const Checkout = ({
       };
 
       const unsubscribe = window.$openpix.addEventListener(logEvents);
-      const giftbackUnsubscribe =
-        window.$openpix.addEventListener(onGiftbackApplyEvent);
-      const giftbackInactiveUnsubscribe = window.$openpix.addEventListener(
-        onGiftbackInactiveEvent,
-      );
-      const giftbackCompleteUnsubscribe = window.$openpix.addEventListener(
-        onGiftbackCompleteEvent,
-      );
-      const payAsGuestEvent =
-        window.$openpix.addEventListener(onPayAsGuestEvent);
+      const event = window.$openpix.addEventListener(onEvent);
 
       return () => {
         unsubscribe && unsubscribe();
-        giftbackUnsubscribe && giftbackUnsubscribe();
-        giftbackInactiveUnsubscribe && giftbackInactiveUnsubscribe();
-        giftbackCompleteUnsubscribe && giftbackCompleteUnsubscribe();
-        payAsGuestEvent && payAsGuestEvent();
+        event && event();
       };
     }
   }, [isOpenPixLoaded]);
