@@ -1,3 +1,35 @@
+#### 2.0.3 (2022-02-18)
+
+##### Build System / Dependencies
+
+* **deps-dev:**
+  *  bump simple-git from 3.2.4 to 3.2.6 (#308) (072c070c)
+  *  bump webpack from 5.69.0 to 5.69.1 (#307) (630ec0c7)
+  *  bump @types/styled-components from 5.1.22 to 5.1.23 (#306) (eff58927)
+  *  bump @babel/core from 7.17.4 to 7.17.5 (#305) (af59d73e)
+  *  bump @babel/core from 7.17.2 to 7.17.4 (#298) (431592d6)
+  *  bump @testing-library/react from 12.1.2 to 12.1.3 (#299) (795ccbe4)
+  *  bump @babel/cli from 7.17.0 to 7.17.3 (#297) (26242312)
+  *  bump webpack from 5.68.0 to 5.69.0 (#295) (3e05efe3)
+* **deps:**
+  *  bump core-js from 3.21.0 to 3.21.1 (#301) (658a9b9d)
+  *  bump vite from 2.8.2 to 2.8.3 (#296) (eb8ed476)
+
+##### New Features
+
+* **changelog:**  changelog (8f17928b)
+* **tests:**  more tests on checkout (2dabc943)
+* **infra:**  test like end user (51af06e2)
+* **warning:**  remove warning (38d7aa83)
+* **giftback:**  remove warning to access the array data (140749e3)
+* **svn:**  svn release (fbb49010)
+* **readme:**  readme (a8d98da1)
+* **main:**  main instead of master (d84167e7)
+
+##### Bug Fixes
+
+* **checkout:**  add event pay as a guest (cb30413e)
+
 #### 2.0.2 (2022-02-15)
 
 ##### Build System / Dependencies
