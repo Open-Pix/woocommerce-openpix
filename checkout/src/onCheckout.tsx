@@ -364,6 +364,7 @@ export const onCheckout = () => {
       );
 
       form.trigger('submit');
+      window.$openpix.push(['close']);
     }
   };
 
