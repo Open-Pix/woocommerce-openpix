@@ -158,6 +158,8 @@
     "serve": "node server.js",
     "start": "webpack serve --hot --config webpack.config.js --progress",
     "test": "yarn jest",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "pack:prod": "sh pack.sh prod",
+    "pack:staging": "sh pack.sh staging"
   }
 }
