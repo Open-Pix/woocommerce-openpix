@@ -4,6 +4,8 @@ if (!defined('ABSPATH')) {
     exit();
 }
 
+require_once 'config/config.php';
+
 add_action('admin_footer', 'embedWebhookConfigButton');
 
 function embedWebhookConfigButton()
@@ -140,11 +142,11 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
     public function get_checkout_js_url()
     {
-        if (WC_OpenPix::OPENPIX_ENV === 'development') {
+        if (OpenPixConfig::getEnv() === 'development') {
             return 'http://localhost:6688/main.js';
         }
 
-        if (WC_OpenPix::OPENPIX_ENV === 'staging') {
+        if (OpenPixConfig::getEnv() === 'staging') {
             return plugins_url(
                 'assets/js/woo-openpix-dev.js',
                 plugin_dir_path(__FILE__)
@@ -649,34 +651,6 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         echo '></div>';
     }
 
-    public static function getOpenPixApiUrl()
-    {
-        if (WC_OpenPix::OPENPIX_ENV === 'development') {
-            return 'http://localhost:5001';
-        }
-
-        if (WC_OpenPix::OPENPIX_ENV === 'staging') {
-            return 'https://api.openpix.dev';
-        }
-
-        // production
-        return 'https://api.openpix.com.br';
-    }
-
-    public static function getOpenPixPluginUrlScript()
-    {
-        if (WC_OpenPix::OPENPIX_ENV === 'development') {
-            return 'http://localhost:4444/openpix.js';
-        }
-
-        if (WC_OpenPix::OPENPIX_ENV === 'staging') {
-            return 'https://plugin.openpix.com.br/v1/openpix-dev.js';
-        }
-
-        // production
-        return 'https://plugin.openpix.com.br/v1/openpix.js';
-    }
-
     public function get_openpix_amount($total)
     {
         return absint(
@@ -872,7 +846,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
         $correlationID = WC_OpenPix::uuid_v4();
 
-        $url = $this->getOpenPixApiUrl() . '/api/openpix/v1/charge';
+        $url = OpenPixConfig::getApiUrl() . '/api/openpix/v1/charge';
 
         $cart_total = $this->get_order_total();
         $total_cents = $this->get_openpix_amount($cart_total);
@@ -923,7 +897,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                 )
         );
 
-        if (WC_OpenPix::OPENPIX_ENV === 'development') {
+        if (OpenPixConfig::getEnv() === 'development') {
             $response = wp_remote_post($url, $params);
         } else {
             $response = wp_safe_remote_post($url, $params);
@@ -1037,7 +1011,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
     }
     public static function getWebhookUrl()
     {
-        if (WC_OpenPix::OPENPIX_ENV == 'development') {
+        if (OpenPixConfig::getEnv() == 'development') {
             $webhookUrl = str_replace(
                 'https:',
                 'http:',
@@ -1051,7 +1025,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
     {
         $webhookUrl = self::getWebhookUrl();
 
-        $url = self::getOpenPixApiUrl() . '/api/openpix/v1/webhook';
+        $url = OpenPixConfig::getApiUrl() . '/api/openpix/v1/webhook';
         $openpixSettings = get_option(
             'woocommerce_woocommerce_openpix_pix_settings'
         );
@@ -1257,9 +1231,9 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             true
         );
 
-        $environment = WC_OpenPix::OPENPIX_ENV;
+        $environment = OpenPixConfig::getEnv();
         $queryString = "appID={$this->appID}&correlationID={$correlationID}&node=openpix-order";
-        $pluginUrl = self::getOpenPixPluginUrlScript();
+        $pluginUrl = OpenPixConfig::getPluginUrl();
         wc_get_template(
             'payment-instructions.php',
             [
