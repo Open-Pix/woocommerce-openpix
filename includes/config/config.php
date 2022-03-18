@@ -1,10 +1,10 @@
+<?php
 
-
-<?php class OpenPixConfig
+class OpenPixConfig
 {
-    public static $OPENPIX_ENV = 'staging';
-    public static $OPENPIX_API_URL = 'https://api.openpix.dev';
-    public static $OPENPIX_PLUGIN_URL = 'https://plugin.openpix.com.br/v1/openpix-dev.js';
+    public static $OPENPIX_ENV = 'production';
+    public static $OPENPIX_API_URL = 'https://api.openpix.com.br';
+    public static $OPENPIX_PLUGIN_URL = 'https://plugin.openpix.com.br/v1/openpix.js';
 
     public static function getApiUrl()
     {

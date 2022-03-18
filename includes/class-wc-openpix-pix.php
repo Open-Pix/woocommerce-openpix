@@ -1,5 +1,9 @@
 <?php
 
+if (!defined('ABSPATH')) {
+    exit();
+}
+
 require_once 'config/config.php';
 
 add_action('admin_footer', 'embedWebhookConfigButton');
