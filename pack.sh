@@ -3,7 +3,7 @@
 rm **/*.po~ **/*.pot~
 cp includes/config/config-$1.php includes/config/config.php
 yarn build:$1
-zip -r woocommerce-openpix-$(date "+%Y-%m-%d:%H:%M").zip \
+zip -r woocommerce-openpix-$1-$(date "+%Y-%m-%d:%H:%M").zip \
   assets/images \
   assets/thankyou.css \
   assets/js/woo-openpix.js \
