@@ -101,7 +101,8 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         if (is_checkout()) {
             wp_enqueue_script(
                 'openpix-checkout',
-                $this->get_checkout_js_url(),
+                OpenPixConfig::getCheckoutUrl(),
+                [],
                 ['jquery', 'jquery-blockui'],
                 WC_OpenPix::VERSION,
                 true
@@ -138,26 +139,6 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         WC()->session->set('correlationID', $correlationID);
 
         return $correlationID;
-    }
-
-    public function get_checkout_js_url()
-    {
-        if (OpenPixConfig::getEnv() === 'development') {
-            return 'http://localhost:6688/main.js';
-        }
-
-        if (OpenPixConfig::getEnv() === 'staging') {
-            return plugins_url(
-                'assets/js/woo-openpix-dev.js',
-                plugin_dir_path(__FILE__)
-            );
-        }
-
-        // production
-        return plugins_url(
-            'assets/js/woo-openpix.js',
-            plugin_dir_path(__FILE__)
-        );
     }
 
     // move ipn to another file
@@ -476,7 +457,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
     public function init_form_fields()
     {
-        $webhookUrl = self::getWebhookUrl();
+        $webhookUrl = OpenPixConfig::getWebhookUrl();
         $this->form_fields = [
             'enabled' => [
                 'title' => __('Enable/Disable', 'woocommerce-openpix'),
@@ -1009,21 +990,9 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             'redirect' => $this->get_return_url($order),
         ];
     }
-    public static function getWebhookUrl()
-    {
-        if (OpenPixConfig::getEnv() == 'development') {
-            $webhookUrl = str_replace(
-                'https:',
-                'http:',
-                home_url('/') . 'wc-api/' . 'WC_OpenPix_Pix_Gateway'
-            );
-            return $webhookUrl;
-        }
-        return home_url('/') . 'wc-api/' . 'WC_OpenPix_Pix_Gateway';
-    }
     public static function openpix_configure_webhook()
     {
-        $webhookUrl = self::getWebhookUrl();
+        $webhookUrl = OpenPixConfig::getWebhookUrl();
 
         $url = OpenPixConfig::getApiUrl() . '/api/openpix/v1/webhook';
         $openpixSettings = get_option(

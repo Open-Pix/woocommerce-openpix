@@ -20,6 +20,22 @@
     {
         return OpenPixConfig::$OPENPIX_ENV;
     }
+
+    public static function getCheckoutUrl()
+    {
+        return 'http://localhost:6688/main.js';
+    }
+
+    public static function getWebhookUrl()
+    {
+        $webhookUrl = str_replace(
+            'https:',
+            'http:',
+            home_url('/') . 'wc-api/' . 'WC_OpenPix_Pix_Gateway'
+        );
+
+        return $webhookUrl;
+    }
 }
 
 ?>

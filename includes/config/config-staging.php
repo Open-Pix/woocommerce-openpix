@@ -20,6 +20,19 @@
     {
         return OpenPixConfig::$OPENPIX_ENV;
     }
+
+    public static function getCheckoutUrl()
+    {
+        return plugins_url(
+            'assets/js/woo-openpix-dev.js',
+            plugin_dir_path(__FILE__)
+        );
+    }
+
+    public static function getWebhookUrl()
+    {
+        return home_url('/') . 'wc-api/' . 'WC_OpenPix_Pix_Gateway';
+    }
 }
 
 ?>
