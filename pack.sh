@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # remove backup files
 rm **/*.po~ **/*.pot~
-yarn build:prod
+cp includes/config/config-$1.php includes/config/config.php
+yarn build:$1
 zip -r woocommerce-openpix-$(date "+%Y-%m-%d:%H:%M").zip \
   assets/images \
   assets/thankyou.css \
@@ -10,9 +11,10 @@ zip -r woocommerce-openpix-$(date "+%Y-%m-%d:%H:%M").zip \
   assets/js/woo-openpix-dev.js \
   assets/js/woo-openpix-dev.js.LICENSE.txt \
   includes/class-wc-openpix-pix.php \
-   includes/class-giftback-coupon.php \
-   languages \
-   templates \
-   woocommerce-openpix.php \
-   readme.txt \
-   LICENSE.txt
+  includes/class-giftback-coupon.php \
+  includes/config/config.php \
+  languages \
+  templates \
+  woocommerce-openpix.php \
+  readme.txt \
+  LICENSE.txt
