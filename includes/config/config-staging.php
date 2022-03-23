@@ -4,7 +4,7 @@
 {
     public static $OPENPIX_ENV = 'staging';
     public static $OPENPIX_API_URL = 'https://api.openpix.dev';
-    public static $OPENPIX_PLUGIN_URL = 'https://plugin.openpix.com.br/v1/openpix-dev.js';
+    public static $OPENPIX_PLUGIN_URL = 'https://plugin.openpix.dev/v1/openpix-dev.js';
 
     public static function getApiUrl()
     {
@@ -19,14 +19,6 @@
     public static function getEnv()
     {
         return OpenPixConfig::$OPENPIX_ENV;
-    }
-
-    public static function getCheckoutUrl()
-    {
-        return plugins_url(
-            'assets/js/woo-openpix-dev.js',
-            plugin_dir_path(__FILE__)
-        );
     }
 
     public static function getWebhookUrl()
