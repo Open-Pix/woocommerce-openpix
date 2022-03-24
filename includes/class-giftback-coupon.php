@@ -44,7 +44,16 @@ class AWPCustomDiscount
             'post_author' => 1,
             'post_type' => 'shop_coupon',
         ];
-
+        WC_OpenPix::debug(
+            "Coupon data: \n" .
+                json_encode(
+                    [$amount, $coupon],
+                    JSON_UNESCAPED_UNICODE |
+                        JSON_UNESCAPED_SLASHES |
+                        JSON_NUMERIC_CHECK |
+                        JSON_PRETTY_PRINT
+                )
+        );
         $new_coupon_id = wp_insert_post($coupon);
 
         // Add meta
