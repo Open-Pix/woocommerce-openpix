@@ -4,7 +4,7 @@ if (!defined('ABSPATH')) {
     exit();
 }
 
-require_once 'config/config.php';
+require_once 'config/config-development.php';
 
 add_action('admin_footer', 'embedWebhookConfigButton');
 
@@ -20,6 +20,7 @@ function embedWebhookConfigButton()
                 action: 'openpix_configure_webhook',
                 appID: jQuery('#woocommerce_woocommerce_openpix_pix_appID').val()
             };
+
             jQuery.post(ajaxurl,data,function(response) {
                 if(response?.message) {
                     alert(response.message);
@@ -99,14 +100,14 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
     public function checkout_scripts()
     {
         if (is_checkout()) {
-            wp_enqueue_script(
-                'openpix-checkout',
-                $this->getCheckoutUrl(),
-                [],
-                ['jquery', 'jquery-blockui'],
-                WC_OpenPix::VERSION,
-                true
-            );
+            //             wp_enqueue_script(
+            //                 'openpix-checkout',
+            //                 $this->getCheckoutUrl(),
+            //                 [],
+            //                 ['jquery', 'jquery-blockui'],
+            //                 WC_OpenPix::VERSION,
+            //                 true
+            //             );
 
             $name = get_bloginfo('name');
 
@@ -1223,6 +1224,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         $environment = OpenPixConfig::getEnv();
         $queryString = "appID={$this->appID}&correlationID={$correlationID}&node=openpix-order";
         $pluginUrl = OpenPixConfig::getPluginUrl();
+
         wc_get_template(
             'payment-instructions.php',
             [
