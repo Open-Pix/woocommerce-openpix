@@ -1285,7 +1285,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             $roundedGiftbackValue = round($nonNegativeGiftback / 100, 2);
 
             $coupon = new AWPCustomDiscount(
-                'cshbck-' . $order_id,
+                'giftback-' . $order_id,
                 $roundedGiftbackValue,
                 'fixed_cart'
             );
