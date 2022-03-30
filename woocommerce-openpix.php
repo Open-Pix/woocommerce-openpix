@@ -93,6 +93,24 @@ class WC_OpenPix
         $logger->debug($message, $context);
     }
 
+    public static function debugJson($message, $objectToBeEncoded)
+    {
+        $logger = wc_get_logger();
+        $context = [
+            'source' => 'woocommerce_openpix',
+        ];
+
+        $jsonEncodedObject = json_encode(
+            json_decode($objectToBeEncoded, true),
+            JSON_UNESCAPED_UNICODE |
+                JSON_UNESCAPED_SLASHES |
+                JSON_NUMERIC_CHECK |
+                JSON_PRETTY_PRINT
+        );
+
+        $logger->debug($message . "\n" . $jsonEncodedObject, $context);
+    }
+
     public static function uuid_v4()
     {
         return sprintf(

@@ -786,15 +786,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             'shopperId' => $order_shopper_id,
         ];
 
-        WC_OpenPix::debug(
-            'Giftback data: ' .
-                json_encode(
-                    $giftback,
-                    JSON_UNESCAPED_UNICODE |
-                        JSON_UNESCAPED_SLASHES |
-                        JSON_NUMERIC_CHECK
-                )
-        );
+        WC_OpenPix::debugJson('Giftback data', $giftback);
 
         return $giftback;
     }
@@ -888,16 +880,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             'method' => 'POST',
             'data_format' => 'body',
         ];
-
-        WC_OpenPix::debug(
-            'Charge post payload: ' .
-                json_encode(
-                    $payload,
-                    JSON_UNESCAPED_UNICODE |
-                        JSON_UNESCAPED_SLASHES |
-                        JSON_NUMERIC_CHECK
-                )
-        );
+        WC_OpenPix::debugJson('Charge post payload:', $payload);
 
         if (OpenPixConfig::getEnv() === 'development') {
             $response = wp_remote_post($url, $params);
@@ -905,30 +888,15 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             $response = wp_safe_remote_post($url, $params);
         }
 
-        WC_OpenPix::debug(
-            'Charge post response: ' .
-                json_encode(
-                    json_decode($response['body'], true),
-                    JSON_UNESCAPED_UNICODE |
-                        JSON_UNESCAPED_SLASHES |
-                        JSON_NUMERIC_CHECK
-                )
-        );
+        WC_OpenPix::debugJson('Charge post response:', $response['body']);
 
         if (is_wp_error($response)) {
             wc_add_notice(
                 __('Error creating Pix, try again', 'woocommerce-openpix'),
                 'error'
             );
-            WC_OpenPix::debug(
-                'Error creating pix:' .
-                    json_encode(
-                        $response,
-                        JSON_UNESCAPED_UNICODE |
-                            JSON_UNESCAPED_SLASHES |
-                            JSON_NUMERIC_CHECK
-                    )
-            );
+            WC_OpenPix::debugJson('Error creating pix:', $response);
+
             return [
                 'result' => 'fail',
             ];
@@ -936,30 +904,17 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
         if ($response['response']['code'] === 401) {
             wc_add_notice(__('Invalid AppID', 'woocommerce-openpix'), 'error');
-            WC_OpenPix::debug(
-                'Error creating pix:' .
-                    json_encode(
-                        $response,
-                        JSON_UNESCAPED_UNICODE |
-                            JSON_UNESCAPED_SLASHES |
-                            JSON_NUMERIC_CHECK
-                    )
-            );
+
+            WC_OpenPix::debugJson('Error creating pix:', $response);
+
             return [
                 'result' => 'fail',
             ];
         }
 
         if ($response['response']['code'] !== 200) {
-            WC_OpenPix::debug(
-                'Error creating pix:' .
-                    json_encode(
-                        $response,
-                        JSON_UNESCAPED_UNICODE |
-                            JSON_UNESCAPED_SLASHES |
-                            JSON_NUMERIC_CHECK
-                    )
-            );
+            WC_OpenPix::debugJson('Error creating pix:', $response);
+
             wc_add_notice(
                 __('Error creating Pix, try again', 'woocommerce-openpix'),
                 'error'
