@@ -833,6 +833,18 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         return null;
     }
 
+    public function shouldApplyGiftback($data)
+    {
+        WC_OpenPix::debugJson('Giftback data', $data);
+        if (
+            isset($data['charge']['giftbackAppliedValue']) &&
+            !empty($data['charge']['giftbackAppliedValue']) &&
+            $data['charge']['giftbackAppliedValue'] > 0
+        ) {
+            return true;
+        }
+        return false;
+    }
     public function process_payment($order_id)
     {
         global $woocommerce;
@@ -935,6 +947,21 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                 'pixKey' => $data['charge']['pixKey'],
             ],
         ];
+
+        if ($this->shouldApplyGiftback($data)) {
+            $giftbackAppliedValueOnCharge =
+                $data['charge']['giftbackAppliedValue'];
+            $nonNegativeGiftback = absint($giftbackAppliedValueOnCharge);
+            $roundedGiftbackValue = round($nonNegativeGiftback / 100, 2);
+
+            $coupon = new AWPCustomDiscount(
+                'giftback-' . $order_id,
+                $roundedGiftbackValue,
+                'fixed_cart'
+            );
+
+            $coupon->addDiscount($order);
+        }
 
         // WooCommerce 3.0 or later
         if (!method_exists($order, 'update_meta_data')) {
@@ -1232,25 +1259,6 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         if ($customer) {
             $payload['customer'] = $customer;
         }
-
-        $giftback = $this->getGiftbackData();
-
-        if ($giftback) {
-            $nonNegativeGiftback = absint($giftback['giftbackValue']);
-            $roundedGiftbackValue = round($nonNegativeGiftback / 100, 2);
-
-            $coupon = new AWPCustomDiscount(
-                'giftback-' . $order_id,
-                $roundedGiftbackValue,
-                'fixed_cart'
-            );
-            $coupon->addDiscount($order);
-
-            $payload['giftbackHash'] = $giftback['giftbackHash'];
-            $payload['giftbackValue'] = $giftback['giftbackValue'];
-            $payload['shopperId'] = $giftback['shopperId'];
-        }
-
         return $payload;
     }
 
