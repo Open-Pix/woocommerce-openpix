@@ -838,7 +838,8 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         WC_OpenPix::debugJson('Giftback data', $data);
         if (
             isset($data['charge']['giftbackAppliedValue']) &&
-            !empty($data['charge']['giftbackAppliedValue'])
+            !empty($data['charge']['giftbackAppliedValue']) &&
+            $data['charge']['giftbackAppliedValue'] > 0
         ) {
             return true;
         }
@@ -1258,8 +1259,6 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         if ($customer) {
             $payload['customer'] = $customer;
         }
-        WC_OpenPix::debugJson('payload', $payload);
-        WC_OpenPix::debug($payload);
         return $payload;
     }
 
