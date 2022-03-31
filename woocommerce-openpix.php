@@ -64,11 +64,13 @@ class WC_OpenPix
     private function includes()
     {
         include_once dirname(__FILE__) . '/includes/class-wc-openpix-pix.php';
+        // include_once dirname(__FILE__) .'/includes/class-wc-openpix-prod.php';
         include_once dirname(__FILE__) . '/includes/class-giftback-coupon.php';
     }
 
     public function add_gateway($methods)
     {
+        // $methods[] = 'WC_OpenPix_Pix_Prod_Gateway';
         $methods[] = 'WC_OpenPix_Pix_Gateway';
 
         return $methods;
