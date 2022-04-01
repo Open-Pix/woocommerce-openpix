@@ -146,7 +146,9 @@
   "scripts": {
     "build:prod": "cross-env NODE_ENV=production COMMIT_SHA=$(git rev-parse HEAD) webpack --config webpack.prod.config.js --progress",
     "build:staging": "cross-env NODE_ENV=production COMMIT_SHA=$(git rev-parse HEAD) webpack --config webpack.staging.config.js --progress",
-    "config:local": "cp .env.local .env",
+    "config:local": "cp .env.local .env && cp includes/config/config-development.php includes/config/config.php",
+    "config:staging": "cp .env.local .env && cp includes/config/config-staging.php includes/config/config.php",
+    "config:prod": "cp .env.local .env && cp includes/config/config-prod.php includes/config/config.php",
     "es": "node -r esbuild-register",
     "lint": "eslint --ext .ts --ext .tsx 'checkout/src/**'",
     "order": "vite order",
