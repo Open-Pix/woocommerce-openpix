@@ -103,7 +103,7 @@ class WC_OpenPix
         ];
 
         $jsonEncodedObject = json_encode(
-            json_decode($objectToBeEncoded, true),
+            $objectToBeEncoded,
             JSON_UNESCAPED_UNICODE |
                 JSON_UNESCAPED_SLASHES |
                 JSON_NUMERIC_CHECK |
