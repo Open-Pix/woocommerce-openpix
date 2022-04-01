@@ -4,7 +4,7 @@ Tags: woocommerce, openpix, payment
 Requires at least: 4.0
 Tested up to: 5.9
 Requires PHP: 5.6
-Stable tag: 2.0.3
+Stable tag: 2.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -35,6 +35,10 @@ Para questões relacionadas a integração e plugin, acesse o [Portal do Desenvo
 2. Exemplo da Ordem de Pagamento com o QRCode Pix
 
 == Changelog ==
+
+= 2.1.0 - 2022-04-01 =
+
+* Cupom Giftback
 
 = 2.0.3 - 2022-02-18 =
 
