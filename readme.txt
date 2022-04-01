@@ -39,6 +39,7 @@ Para questões relacionadas a integração e plugin, acesse o [Portal do Desenvo
 = 2.1.0 - 2022-04-01 =
 
 * Cupom Giftback
+* Improved logs
 
 = 2.0.3 - 2022-02-18 =
 
