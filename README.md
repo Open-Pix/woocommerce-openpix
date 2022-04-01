@@ -66,3 +66,17 @@ svn add *
 svn ci -m "version 1.1.0"
 svn cp trunk tags/1.1.0
 ```
+
+## Tests
+- change sibelius to your password
+```
+./bin/install-wp-tests.sh wordpress_test root sibelius localhost $WP_VERSION
+```
+
+Read these blogposts
+
+https://sanjeebaryal.com.np/fixing-issues-while-setting-up-php-unit-tests-for-wordpress-plugins/
+
+https://github.com/w3guy/wp-meta-verify
+
+https://www.smashingmagazine.com/2017/12/automated-testing-wordpress-plugins-phpunit/
