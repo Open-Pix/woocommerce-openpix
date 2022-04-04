@@ -1,3 +1,22 @@
+#### 2.1.1 (2022-04-04)
+
+##### New Features
+
+* **blank-param:**  check os to run sed (#406) (3664bf15)
+* **readme:**
+  *  readme 2.1.1 (#405) (bb38c731)
+  *  readme 2.1.0 (ceeddd20)
+* **tests:**  try to add tests (e1466e27)
+* **improve:**  improved logs (70d1d379)
+* **split-plugins:**
+  *  conditional zip (b26522ce)
+  *  try to split the prod and staging (ffd15b17)
+
+##### Bug Fixes
+
+* **coupon:**  limit usage to 1 (99a1c8b5)
+* **bug:**  do not decode a param, fix entria/woovi#31325 (712c2834)
+
 #### 2.1.0 (2022-04-01)
 
 ##### Build System / Dependencies
