@@ -64,11 +64,12 @@ const createPullRequest = async (branchName, tag) => {
 };
 
 const updatePhp = async (latestVersion: string, newVersion: string) => {
+  const blankParamForMac = process.platform == 'darwin' ? "''" : '';
   // Version: 2.0.1
-  const headerSedExp = `sed -i '' s/"Version: ${latestVersion}"/"Version: ${newVersion}"/g woocommerce-openpix.php`;
+  const headerSedExp = `sed -i ${blankParamForMac} s/"Version: ${latestVersion}"/"Version: ${newVersion}"/g woocommerce-openpix.php`;
 
   // const VERSION = '2.0.1';
-  const constSedExp = `sed -i '' s/"VERSION = '${latestVersion}'"/"VERSION = '${newVersion}'"/g woocommerce-openpix.php`;
+  const constSedExp = `sed -i ${blankParamForMac} s/"VERSION = '${latestVersion}'"/"VERSION = '${newVersion}'"/g woocommerce-openpix.php`;
 
   await exec(headerSedExp);
   await exec(constSedExp);
