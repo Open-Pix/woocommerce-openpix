@@ -105,7 +105,7 @@
     "jest": "^27.5.1",
     "jest-fetch-mock": "^3.0.3",
     "lint-staged": "12.3.7",
-    "moment": "^2.29.2",
+    "moment": "^2.29.3",
     "npmlog": "^6.0.1",
     "octonode": "^0.10.2",
     "prettier": "^2.6.2",
