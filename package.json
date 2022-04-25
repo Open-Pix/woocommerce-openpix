@@ -10,7 +10,7 @@
     "jquery": "3.6.0",
     "koa": "2.13.4",
     "koa-static": "5.0.0",
-    "libphonenumber-js": "^1.9.51",
+    "libphonenumber-js": "^1.9.52",
     "qrcode.react": "^3.0.1",
     "react": "18.0.0",
     "react-dom": "18.0.0",
