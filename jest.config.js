@@ -1,7 +1,6 @@
-const pkg = require('./package');
+const pkg = require('./package.json');
 
 module.exports = {
-  name: pkg.name,
   displayName: pkg.name,
   transform: {
     '^.+\\.(js|ts|tsx)?$': 'babel-jest',
