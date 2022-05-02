@@ -103,7 +103,7 @@
     "html-webpack-plugin": "5.5.0",
     "husky": "^7.0.2",
     "jest": "^28.0.1",
-    "jest-environment-jsdom": "^28.0.1",
+    "jest-environment-jsdom": "^28.0.2",
     "jest-fetch-mock": "^3.0.3",
     "lint-staged": "12.4.0",
     "moment": "^2.29.3",
