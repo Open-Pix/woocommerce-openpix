@@ -750,9 +750,10 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
         $taxID = $this->getTaxID($order);
 
-        $phone = isset($order_billing_cellphone)
-            ? sanitize_text_field($order_billing_cellphone)
-            : sanitize_text_field($order_billing_phone);
+        $phone =
+            isset($order_billing_cellphone) && !empty($order_billing_cellphone)
+                ? sanitize_text_field($order_billing_cellphone)
+                : sanitize_text_field($order_billing_phone);
 
         $customer = [
             'name' => $name,
