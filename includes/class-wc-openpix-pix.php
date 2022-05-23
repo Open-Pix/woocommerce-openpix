@@ -999,7 +999,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
         $order->add_order_note(
             __(
-                'OpenPix: Payment link: ' . $data['charge']['paymentLinkUrl'],
+                "OpenPix: Payment link: <a href='{$data['charge']['paymentLinkUrl']}'>{$data['charge']['paymentLinkUrl']}</a>",
                 'woocommerce-openpix'
             )
         );
