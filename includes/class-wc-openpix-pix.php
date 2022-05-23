@@ -93,6 +93,12 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
         // inject openpix react - giftback plugin
         add_action('wp_enqueue_scripts', [$this, 'checkout_scripts']);
+
+        add_action('woocommerce_after_order_details', [
+            $this,
+            'afterOrderDetailHook',
+        ]);
+
         // $this->registerHooks();
     }
 
@@ -1196,7 +1202,27 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
     }
     public function thankyou_page($order_id)
     {
-        $order = wc_get_order($order_id);
+        $data = $this->getPluginSrc($order_id);
+
+        wc_get_template(
+            'payment-instructions.php',
+            [
+                'paymentLinkUrl' => $data['orderData']['paymentLinkUrl'],
+                'qrCodeImage' => $data['orderData']['qrCodeImage'],
+                'brCode' => $data['orderData']['brCode'],
+                'correlationID' => $data['correlationID'],
+                'environment' => $data['environment'],
+                'appID' => $this->appID,
+                'pluginUrl' => WC_OpenPix::get_assets_url(),
+                'src' => $data['src'],
+            ],
+            WC_OpenPix::get_templates_path(),
+            WC_OpenPix::get_templates_path()
+        );
+    }
+
+    public function getPluginSrc($order_id)
+    {
         $data = get_post_meta($order_id, 'openpix_transaction', true);
         $correlationID = get_post_meta(
             $order_id,
@@ -1207,22 +1233,14 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         $environment = OpenPixConfig::getEnv();
         $queryString = "appID={$this->appID}&correlationID={$correlationID}&node=openpix-order";
         $pluginUrl = OpenPixConfig::getPluginUrl();
-
-        wc_get_template(
-            'payment-instructions.php',
-            [
-                'paymentLinkUrl' => $data['paymentLinkUrl'],
-                'qrCodeImage' => $data['qrCodeImage'],
-                'brCode' => $data['brCode'],
-                'correlationID' => $correlationID,
-                'environment' => $environment,
-                'appID' => $this->appID,
-                'pluginUrl' => WC_OpenPix::get_assets_url(),
-                'src' => "$pluginUrl?$queryString",
-            ],
-            WC_OpenPIx::get_templates_path(),
-            WC_OpenPIx::get_templates_path()
-        );
+        return [
+            'orderData' => $data,
+            'correlationID' => $correlationID,
+            'environment' => $environment,
+            'queryString' => $queryString,
+            'pluginUrl' => $pluginUrl,
+            'src' => "$pluginUrl?$queryString",
+        ];
     }
 
     /**
@@ -1300,5 +1318,19 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         foreach ($actions as $action) {
             add_action($action, [$this, 'ceHandlerWooCommerceNewOrder']);
         }
+    }
+
+    public function afterOrderDetailHook($order)
+    {
+        $page = get_post();
+        if ($page->post_name != 'my-account' || $page->ID != 9) {
+            return;
+        }
+
+        $data = $this->getPluginSrc($order->get_id());
+        ?>
+        <div id="openpix-order"></div>
+        <script src="<?= $data['src'] ?>" async></script>
+        <?php
     }
 }
