@@ -98,10 +98,6 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             $this,
             'afterOrderDetailHook',
         ]);
-        add_action('woocommerce_admin_meta_boxes_variations_per_page', [
-            $this,
-            'afterOrderDetailAdminHook',
-        ]);
 
         // $this->registerHooks();
     }
@@ -1332,19 +1328,6 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
     }
 
     public function afterOrderDetailHook($order)
-    {
-        $page = get_post();
-        if ($page->post_name != 'my-account' || $page->ID != 9) {
-            return;
-        }
-
-        $data = $this->getPluginSrc($order->get_id());
-        ?>
-        <div id="openpix-order"></div>
-        <script src="<?= $data['src'] ?>" async></script>
-        <?php
-    }
-    public function afterOrderDetailAdminHook($order)
     {
         $page = get_post();
         if ($page->post_name != 'my-account' || $page->ID != 9) {
