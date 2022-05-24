@@ -36,6 +36,12 @@ Para questões relacionadas a integração e plugin, acesse o [Portal do Desenvo
 
 == Changelog ==
 
+= 2.1.2 - 2022-05-24 =
+
+* Melhoria na integração do telefone
+* Adição do QrCode na visualização do pedido
+* Adição do link de pagamento na edição do pedido
+
 = 2.1.1 - 2022-04-04 =
 
 * Melhoria no cupom de Giftback
