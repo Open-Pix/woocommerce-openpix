@@ -7092,10 +7092,10 @@ levn@~0.3.0:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
 
-libphonenumber-js@^1.10.4:
-  version "1.10.4"
-  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.10.4.tgz#90397f0ed620262570a32244c9fbc389cc417ce4"
-  integrity sha512-9QWxEk4GW5RDnFzt8UtyRENfFpAN8u7Sbf9wf32tcXY9tdtnz1dKHIBwW2Wnfx8ypXJb9zUnTpK9aQJ/B8AlnA==
+libphonenumber-js@^1.10.5:
+  version "1.10.5"
+  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.10.5.tgz#11684cc91ed1448bb87c96f642a1aab4ecc4abda"
+  integrity sha512-ZEyoBhKL06fG2rcnzwOc2MXtk+klDoE5vfTwMDh9br+aJ8zV53uMPSaFm8tmWnILpQavg3o4r/XG8P1KuVtPEg==
 
 lilconfig@2.0.4:
   version "2.0.4"
