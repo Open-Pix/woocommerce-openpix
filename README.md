@@ -56,7 +56,7 @@ yarn start
 
 ## How to Release
 ```jsx
-svn co https://plugins.svn.wordpress.org/woocommerce-openpix
+svn co https://plugins.svn.wordpress.org/openpix-for-woocommerce
 cp Open-Pix/woocommerce-openpix content to svn woocommerce-openpix/trunk
 unzip woocommerce-openpix.zip -d w1.1.0
 cp w1.1.0/* woocommerce-openpix/thunk/.
