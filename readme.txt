@@ -35,7 +35,7 @@ O Plugin Pix para Woocommerce - OpenPix permite que seus clientes realizem pagam
 ## Para começar a utilizar Pix no Woocommerce
 
 1. Instale o plugin em seu site Wordpress
-2. Crie uma conta na OpenPix (Criar conta)
+2. Crie uma conta na OpenPix [Criar conta](https://openpix.com.br/register?tags=from-woocommerce)
 3. Copie o ID de Cliente em sua conta OpenPix e clique em “Integrar com um clique”
 
 Pronto! Após esses passos sua loja virtual pode aceitar pagamentos pelo Pix
