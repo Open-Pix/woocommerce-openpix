@@ -1,3 +1,53 @@
+#### 2.1.3 (2022-06-08)
+
+##### Build System / Dependencies
+
+* **deps-dev:**
+  *  bump @typescript-eslint/parser from 5.27.0 to 5.27.1 (#574) (ebad06af)
+  *  bump webpack-dev-server from 4.9.1 to 4.9.2 (#572) (9be46fdc)
+  *  bump @typescript-eslint/eslint-plugin (#571) (a00bb51a)
+  *  bump esbuild-register from 3.3.2 to 3.3.3 (#568) (f8484060)
+  *  bump @types/react from 18.0.9 to 18.0.12 (#570) (89d1adaf)
+  *  bump typescript from 4.7.2 to 4.7.3 (#569) (52164426)
+  *  bump eslint from 8.16.0 to 8.17.0 (#567) (47d49e8a)
+  *  bump webpack from 5.72.1 to 5.73.0 (#566) (740c0fd0)
+  *  bump terser-webpack-plugin from 5.3.2 to 5.3.3 (#565) (ef17cbf7)
+  *  bump webpack-dev-server from 4.9.0 to 4.9.1 (#564) (4a7c370a)
+  *  bump terser-webpack-plugin from 5.3.1 to 5.3.2 (#560) (72a7e387)
+  *  bump @typescript-eslint/eslint-plugin (#558) (cfe9860a)
+  *  bump @testing-library/react from 13.2.0 to 13.3.0 (#554) (46f8afe6)
+  *  bump @prettier/plugin-php from 0.18.6 to 0.18.7 (#559) (313a3ba4)
+  *  bump lint-staged from 12.4.2 to 12.4.3 (#556) (847253a6)
+  *  bump @typescript-eslint/parser from 5.26.0 to 5.27.0 (#557) (ac298cf2)
+  *  bump @types/prettier from 2.6.1 to 2.6.3 (#555) (a2a084b1)
+  *  bump @babel/plugin-transform-typescript (#553) (b80bbd16)
+  *  bump lint-staged from 12.4.1 to 12.4.2 (#551) (5e9414d1)
+  *  bump @babel/preset-env from 7.18.0 to 7.18.2 (#549) (63be6523)
+  *  bump @babel/core from 7.18.0 to 7.18.2 (#548) (52e2a248)
+  *  bump @babel/plugin-transform-runtime (#547) (bd8c633a)
+  *  bump @prettier/plugin-php from 0.18.5 to 0.18.6 (#546) (ad9ee249)
+  *  bump typescript from 4.6.4 to 4.7.2 (#544) (5220eae4)
+  *  bump husky from 7.0.4 to 8.0.1 (6c16af7b)
+* **deps:**
+  *  bump vite from 2.9.9 to 2.9.10 (#573) (5e56b1bd)
+  *  bump core-js from 3.22.7 to 3.22.8 (#561) (53296a4a)
+  *  bump core-js from 3.22.6 to 3.22.7 (#550) (1cde666d)
+  *  bump libphonenumber-js from 1.10.5 to 1.10.6 (#545) (f5baadcf)
+* **change-log:**  v2.1.2 (#540) (b93aefc5)
+
+##### Chores
+
+* **register:**  fix link tags (42dc6f01)
+* **changelog:**  add the changes of 2.1.2 (#541) (d5a6a3be)
+
+##### New Features
+
+* **description:**  improve description (#552) (286faf29)
+
+##### Bug Fixes
+
+* **stable:**  fix stable release (38f4ea57)
+
 #### 2.1.2 (2022-05-24)
 
 ##### Build System / Dependencies
