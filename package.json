@@ -35,7 +35,7 @@
     "@babel/preset-typescript": "7.17.12",
     "@octokit/rest": "^18.11.0",
     "@pmmmwh/react-refresh-webpack-plugin": "0.5.7",
-    "@prettier/plugin-php": "^0.18.7",
+    "@prettier/plugin-php": "^0.18.8",
     "@testing-library/dom": "^8.13.0",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
