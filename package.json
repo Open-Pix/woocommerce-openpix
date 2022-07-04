@@ -11,7 +11,7 @@
     "koa": "2.13.4",
     "koa-static": "5.0.0",
     "libphonenumber-js": "^1.10.7",
-    "qrcode.react": "^3.0.2",
+    "qrcode.react": "^3.1.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "rebass": "^4.0.7",
