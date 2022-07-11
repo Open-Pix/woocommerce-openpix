@@ -76,7 +76,7 @@
     "cross-env": "7.0.3",
     "css-loader": "^6.7.1",
     "dotenv-safe": "^8.2.0",
-    "dotenv-webpack": "^7.1.1",
+    "dotenv-webpack": "^8.0.0",
     "esbuild-register": "^3.3.3",
     "eslint": "8.18.0",
     "eslint-config-airbnb": "19.0.4",
