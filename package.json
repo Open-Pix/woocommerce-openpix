@@ -106,7 +106,7 @@
     "jest-environment-jsdom": "^28.1.2",
     "jest-fetch-mock": "^3.0.3",
     "lint-staged": "12.4.3",
-    "moment": "^2.29.3",
+    "moment": "^2.29.4",
     "npmlog": "^6.0.2",
     "octonode": "^0.10.2",
     "prettier": "^2.7.1",
