@@ -36,7 +36,7 @@
     "@octokit/rest": "^18.11.0",
     "@pmmmwh/react-refresh-webpack-plugin": "0.5.7",
     "@prettier/plugin-php": "^0.18.9",
-    "@testing-library/dom": "^8.15.0",
+    "@testing-library/dom": "^8.16.0",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^14.2.1",
