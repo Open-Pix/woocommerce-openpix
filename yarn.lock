@@ -203,10 +203,10 @@
   dependencies:
     "@babel/types" "^7.18.6"
 
-"@babel/helper-plugin-utils@^7.0.0", "@babel/helper-plugin-utils@^7.10.4", "@babel/helper-plugin-utils@^7.12.13", "@babel/helper-plugin-utils@^7.13.0", "@babel/helper-plugin-utils@^7.14.5", "@babel/helper-plugin-utils@^7.18.6", "@babel/helper-plugin-utils@^7.8.0", "@babel/helper-plugin-utils@^7.8.3":
-  version "7.18.6"
-  resolved "https://registry.yarnpkg.com/@babel/helper-plugin-utils/-/helper-plugin-utils-7.18.6.tgz#9448974dd4fb1d80fefe72e8a0af37809cd30d6d"
-  integrity sha512-gvZnm1YAAxh13eJdkb9EWHBnF3eAub3XTLCZEehHT2kWxiKVRL64+ae5Y6Ivne0mVHmMYKT+xWgZO+gQhuLUBg==
+"@babel/helper-plugin-utils@^7.0.0", "@babel/helper-plugin-utils@^7.10.4", "@babel/helper-plugin-utils@^7.12.13", "@babel/helper-plugin-utils@^7.13.0", "@babel/helper-plugin-utils@^7.14.5", "@babel/helper-plugin-utils@^7.18.6", "@babel/helper-plugin-utils@^7.18.9", "@babel/helper-plugin-utils@^7.8.0", "@babel/helper-plugin-utils@^7.8.3":
+  version "7.18.9"
+  resolved "https://registry.yarnpkg.com/@babel/helper-plugin-utils/-/helper-plugin-utils-7.18.9.tgz#4b8aea3b069d8cb8a72cdfe28ddf5ceca695ef2f"
+  integrity sha512-aBXPT3bmtLryXaoJLyYPXPlSD4p1ld9aYeR+sJNOZjJJGiOpb+fKfh3NkcCu7J54nUJwCERPBExCCpyCOHnu/w==
 
 "@babel/helper-remap-async-to-generator@^7.18.6":
   version "7.18.6"
@@ -366,12 +366,12 @@
     "@babel/helper-plugin-utils" "^7.18.6"
     "@babel/plugin-syntax-export-default-from" "^7.18.6"
 
-"@babel/plugin-proposal-export-namespace-from@7.18.6", "@babel/plugin-proposal-export-namespace-from@^7.18.6":
-  version "7.18.6"
-  resolved "https://registry.yarnpkg.com/@babel/plugin-proposal-export-namespace-from/-/plugin-proposal-export-namespace-from-7.18.6.tgz#1016f0aa5ab383bbf8b3a85a2dcaedf6c8ee7491"
-  integrity sha512-zr/QcUlUo7GPo6+X1wC98NJADqmy5QTFWWhqeQWiki4XHafJtLl/YMGkmRB2szDD2IYJCCdBTd4ElwhId9T7Xw==
+"@babel/plugin-proposal-export-namespace-from@7.18.9", "@babel/plugin-proposal-export-namespace-from@^7.18.6":
+  version "7.18.9"
+  resolved "https://registry.yarnpkg.com/@babel/plugin-proposal-export-namespace-from/-/plugin-proposal-export-namespace-from-7.18.9.tgz#5f7313ab348cdb19d590145f9247540e94761203"
+  integrity sha512-k1NtHyOMvlDDFeb9G5PhUXuGj8m/wiwojgQVEhJ/fsVsMCpLyOP4h0uGEjYJKrRI+EVPlb5Jk+Gt9P97lOGwtA==
   dependencies:
-    "@babel/helper-plugin-utils" "^7.18.6"
+    "@babel/helper-plugin-utils" "^7.18.9"
     "@babel/plugin-syntax-export-namespace-from" "^7.8.3"
 
 "@babel/plugin-proposal-json-strings@^7.18.6":
@@ -1448,7 +1448,7 @@
     slash "^3.0.0"
     write-file-atomic "^4.0.1"
 
-"@jest/types@^28.1.1", "@jest/types@^28.1.3":
+"@jest/types@^28.1.3":
   version "28.1.3"
   resolved "https://registry.yarnpkg.com/@jest/types/-/types-28.1.3.tgz#b05de80996ff12512bc5ceb1d208285a7d11748b"
   integrity sha512-RyjiyMUZrKz/c+zlMFO1pm70DcIlST8AeWTkoUdZevew44wcNZQHsEVOiCVtgVnlFFD82FPaXycys58cf2muVQ==
@@ -6710,7 +6710,7 @@ jest-snapshot@^28.1.3:
     pretty-format "^28.1.3"
     semver "^7.3.5"
 
-jest-util@^28.1.1, jest-util@^28.1.3:
+jest-util@^28.1.3:
   version "28.1.3"
   resolved "https://registry.yarnpkg.com/jest-util/-/jest-util-28.1.3.tgz#f4f932aa0074f0679943220ff9cbba7e497028b0"
   integrity sha512-XdqfpHwpcSRko/C35uLYFM2emRAltIIKZiJ9eAmhjsj0CqZMa0p1ib0R5fWIqGhn1a103DebTbpqIaP1qCQ6tQ==
