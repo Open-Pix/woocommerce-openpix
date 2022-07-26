@@ -17,7 +17,7 @@
     "rebass": "^4.0.7",
     "styled-components": "^5.3.5",
     "styled-system": "^5.1.5",
-    "vite": "2.9.14"
+    "vite": "3.0.3"
   },
   "devDependencies": {
     "@babel/cli": "7.18.9",
