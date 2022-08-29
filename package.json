@@ -7,7 +7,7 @@
     "@material-ui/styles": "4.11.5",
     "core-js": "^3.25.0",
     "isomorphic-fetch": "^3.0.0",
-    "jquery": "3.6.0",
+    "jquery": "3.6.1",
     "koa": "2.13.4",
     "koa-static": "5.0.0",
     "libphonenumber-js": "^1.10.13",
