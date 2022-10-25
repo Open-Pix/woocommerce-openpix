@@ -954,7 +954,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
             if(isset($errorMessage) && !empty($errorMessage)) {
                 wc_add_notice(
-                    __($errorMessage, 'woocommerce-openpix'),
+                    $errorMessage,
                     'error'
                 );
             }
