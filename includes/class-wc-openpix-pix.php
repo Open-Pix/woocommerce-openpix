@@ -852,6 +852,17 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         }
         return false;
     }
+
+    public function getErrorFromResponse($response) {
+        $body = json_decode($response['body'], true);
+
+        if (isset($body['error'])) {
+            return $body['error'];
+        }
+
+        return '';
+    }
+
     public function process_payment($order_id)
     {
         global $woocommerce;
@@ -934,10 +945,20 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         if ($response['response']['code'] !== 200) {
             WC_OpenPix::debugJson('Error creating pix:', $response);
 
+            $errorMessage = $this->getErrorFromResponse($response);
+            
             wc_add_notice(
                 __('Error creating Pix, try again', 'woocommerce-openpix'),
                 'error'
             );
+
+            if(isset($errorMessage) && !empty($errorMessage)) {
+                wc_add_notice(
+                    $errorMessage,
+                    'error'
+                );
+            }
+
             return [
                 'result' => 'fail',
             ];
