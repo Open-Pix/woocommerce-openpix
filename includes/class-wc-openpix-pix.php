@@ -853,7 +853,8 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         return false;
     }
 
-    public function getErrorFromResponse($response) {
+    public function getErrorFromResponse($response)
+    {
         $body = json_decode($response['body'], true);
 
         if (isset($body['error'])) {
@@ -918,19 +919,22 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             $response = wp_safe_remote_post($url, $params);
         }
 
-        WC_OpenPix::debugJson('Charge post response:', $response['body']);
-
         if (is_wp_error($response)) {
             wc_add_notice(
                 __('Error creating Pix, try again', 'woocommerce-openpix'),
                 'error'
             );
-            WC_OpenPix::debugJson('Error creating pix:', $response);
+
+            $error_message = $response->get_error_message();
+
+            WC_OpenPix::debug('Error creating pix: ' . $error_message);
 
             return [
                 'result' => 'fail',
             ];
         }
+
+        WC_OpenPix::debugJson('Charge post response:', $response['body']);
 
         if ($response['response']['code'] === 401) {
             wc_add_notice(__('Invalid AppID', 'woocommerce-openpix'), 'error');
@@ -946,17 +950,14 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             WC_OpenPix::debugJson('Error creating pix:', $response);
 
             $errorMessage = $this->getErrorFromResponse($response);
-            
+
             wc_add_notice(
                 __('Error creating Pix, try again', 'woocommerce-openpix'),
                 'error'
             );
 
-            if(isset($errorMessage) && !empty($errorMessage)) {
-                wc_add_notice(
-                    $errorMessage,
-                    'error'
-                );
+            if (isset($errorMessage) && !empty($errorMessage)) {
+                wc_add_notice($errorMessage, 'error');
             }
 
             return [
