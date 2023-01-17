@@ -2,7 +2,7 @@
 Contributors: openpix
 Tags: woocommerce, openpix, payment
 Requires at least: 4.0
-Tested up to: 6.0.2
+Tested up to: 6.1.1
 Requires PHP: 5.6
 Stable tag: 2.1.4
 License: GPLv2 or later
@@ -79,6 +79,10 @@ Para questões relacionadas a integração e plugin, acesse o [Portal do Desenvo
 5. Exemplo da Ordem de Pagamento Expirada
 
 == Changelog ==
+
+= 2.1.5 - 2022-10-25 =
+
+* Melhoria ao lidar com bad requests
 
 = 2.1.4 - 2022-10-25 =
 
