@@ -101,7 +101,7 @@
     "generate-changelog": "^1.8.0",
     "hard-source-webpack-plugin": "0.13.1",
     "html-webpack-plugin": "5.5.0",
-    "husky": "^8.0.1",
+    "husky": "^8.0.3",
     "jest": "^29.3.1",
     "jest-environment-jsdom": "^29.3.1",
     "jest-fetch-mock": "^3.0.3",
