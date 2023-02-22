@@ -1,8 +1,8 @@
-=== OpenPix for WooCommerce ===
+=== Pix para Woocommerce – OpenPix ===
 Contributors: openpix
 Tags: woocommerce, openpix, payment
 Requires at least: 4.0
-Tested up to: 6.1.1
+Tested up to: 6.0.2
 Requires PHP: 5.6
 Stable tag: 2.1.4
 License: GPLv2 or later
@@ -11,12 +11,15 @@ License URI: <http://www.gnu.org/licenses/gpl-2.0.html>
 Receba pagamentos via Pix usando a OpenPix
 
 == Description ==
-O Plugin Pix para Woocommerce - OpenPix permite que seus clientes realizem pagamentos utilizando o Pix dentro da sua loja virtual, 24 horas por dia, 7 dias por semana, via QR code ou "copiar e colar".
 
-É prático, rápido, seguro para o cliente e para a sua loja. A confirmação do pagamento é realizada em até 5 segundos, o que aumenta as conversões do seu ecommerce e reduz o custo com boletos e crédito à vista.
+O Plugin Pix para Woocommerce – OpenPix permite que seus clientes realizem pagamentos utilizando o Pix dentro da sua loja virtual, 24 horas por dia, 7 dias por semana, via QR code ou “copiar e colar".
 
-## Recursos que a OpenPix possui
+É prático, rápido, seguro para o cliente e para a sua loja. **A confirmação do pagamento é realizada em tempo real**, o que aumenta as conversões do seu ecommerce e reduz o custo com boletos e crédito à vista.
 
+## **VANTAGENS DO PLUGIN PIX PARA WOOCOMMERCE - OPENPIX**
+
+* Atualização em tempo real após pagamento
+* Mais conversão
 * Depósitos via Pix no seu CNPJ
 * Integração em 1 clique
 * WebHook: Aviso de recebimento em tempo real
@@ -28,47 +31,53 @@ O Plugin Pix para Woocommerce - OpenPix permite que seus clientes realizem pagam
 * Envio via WhatsApp, Email e SMS
 * Geração QrCode Pix em Tempo Real
 * Pague somente por Pix recebido
-* Cobrança Recorrente
+* Cobrança Recorrente e assinaturas
+* Pix parcelado
 * Anti-fraude nativo sem custos adicionais
 * Painel para acompanhamento de todas as transações e conciliação bancária
 
-## Para começar a utilizar Pix no Woocommerce
+## **COMECE JÁ A ACEITAR PIX NO SEU WOOCOMMERCE E OFEREÇA A OPÇÃO DE PAGAMENTO MAIS PRÁTICA DO MERCADO**
 
-1. Instale o plugin em seu site Wordpress
-2. Crie uma conta na OpenPix [Criar conta](https://openpix.com.br/register?tags=from-woocommerce)
-3. Copie o ID de Cliente em sua conta OpenPix e clique em “Integrar com um clique”
+1 - Instale o plugin Pix Woocommerce - OpenPix em seu site WordPress
+2 - Crie uma conta na OpenPix [Criar conta](https://openpix.com.br/register?tags=from-woocommerce)
+3 - Copie o ID de Cliente em sua conta OpenPix e clique em “Integrar com um clique”
 
 Pronto! Após esses passos sua loja virtual pode aceitar pagamentos pelo Pix
 
-## Perguntas frequentes
+Se precisar de ajuda você pode falar com nosso suporte via chat ou acessa a [documentação.](https://developers.openpix.com.br/docs/ecommerce/woocommerce-plugin)
 
-### O plugin possui custo ou mensalidade?
+## **PERGUNTAS FREQUENTES**
 
-Não, o plugin é 100% grátis, você só paga um percentual de 0,8% por Pix recebido.
+**O PLUGIN POSSUI CUSTO OU MENSALIDADE?**
 
-### Qual a configuração necessária para utilizar o plugin?
+Não, o plugin é 100% grátis, você só paga um percentual de **0,8% por Pix recebido.**
 
-* Ter instalado o WordPress 4.0 ou superior;
-* Ter instalado o plugin WooCommerce 3.0 ou superior;
-* Utilizar a versão 5.6 ou maior do PHP;
-** Ter uma conta ativa na OpenPix
+**QUAL A CONFIGURAÇÃO NECESSÁRIA PARA UTILIZAR O PLUGIN?**
 
-### Posso utilizar o plugin Pix junto com outros gateways de pagamento?
+- Ter instalado o WordPress 4.0 ou superior;
+- Ter instalado o plugin WooCommerce 3.0 ou superior;
+- Utilizar a versão 5.6 ou maior do PHP;
+- Ter uma conta ativa na OpenPix
+
+**POSSO UTILIZAR O PLUGIN PIX JUNTO COM OUTROS GATEWAYS DE PAGAMENTO?**
 
 Sim, o plugin Pix para Woocommerce - OpenPix pode ser utilizado junto com outros gateways complementares como processadores de cartão, boleto, etc.
-Onde as transações recebidas são depositadas?
 
-As transações são depositadas diretamente na chave Pix veiculada ao seu CNPJ. No painel OpenPix, na opção “Contas” você pode solicitar o saque grátis uma vez por dia
+**ONDE AS TRANSAÇÕES RECEBIDAS SÃO DEPOSITADAS?**
 
-### Como confirmar o pagamento pelo Pix?
+As transações são depositadas diretamente na chave Pix veiculada ao seu CNPJ todos os dias. No painel OpenPix, na opção “Contas” você pode personalizar as configurações de depósito.
 
-O Plugin informa automaticamente o Woocommerce o status do pagamento, mas caso você precise verificar e confirmar uma transação específica basta acessar o seu painel OpenPix na opção "Transações".
+**COMO CONFIRMAR O PAGAMENTO PELO PIX?**
 
-Lá você encontrará todas as transações geradas e poderá ver todos os detalhes.
+O Plugin informa automaticamente o Woocommerce o status do pagamento, mas caso você precise verificar e confirmar uma transação específica basta acessar o seu painel OpenPix na opção “Transações”.
 
-# Suporte
+Dentro da plataforma você encontrará todas as transações geradas e poderá ver todos os detalhes, realizar reembolsos e muito mais.
+
+**SUPORTE**
 
 Para questões relacionadas a integração e plugin, acesse o [Portal do Desenvolver OpenPix](https://developers.openpix.com.br/)
+
+Se precisar falar com nosso time, acesse o chat disponível em nosso site.
 
 == Screenshots ==
 
@@ -79,10 +88,6 @@ Para questões relacionadas a integração e plugin, acesse o [Portal do Desenvo
 5. Exemplo da Ordem de Pagamento Expirada
 
 == Changelog ==
-
-= 2.1.5 - 2022-10-25 =
-
-* Melhoria ao lidar com bad requests
 
 = 2.1.4 - 2022-10-25 =
 
