@@ -871,7 +871,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
         $correlationID = WC_OpenPix::uuid_v4();
 
-        $url = OpenPixConfig::getApiUrl() . '/api/openpix/v1/charge';
+        $url = OpenPixConfig::getApiUrl() . '/api/v1/charge';
 
         $cart_total = $this->get_order_total();
         $total_cents = $this->get_openpix_amount($cart_total);
@@ -1033,7 +1033,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
     {
         $webhookUrl = OpenPixConfig::getWebhookUrl();
 
-        $url = OpenPixConfig::getApiUrl() . '/api/openpix/v1/webhook';
+        $url = OpenPixConfig::getApiUrl() . '/api/v1/webhook';
         $openpixSettings = get_option(
             'woocommerce_woocommerce_openpix_pix_settings'
         );

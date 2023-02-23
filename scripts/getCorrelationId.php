@@ -40,7 +40,7 @@ function getOpenPixApiUrl()
 
 $correlationID = '8d6df0db26ed49f9a6953c89aaabdea4';
 
-$url = getOpenPixApiUrl() . '/api/openpix/v1/charge/' . $correlationID;
+$url = getOpenPixApiUrl() . '/api/v1/charge/' . $correlationID;
 
 echo '\n\n';
 echo $url;
