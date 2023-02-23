@@ -317,7 +317,7 @@ class WC_OpenPix_Installment_Gateway extends WC_Payment_Gateway
     {
         $url =
             $this->getOpenPixApiUrl() .
-            '/api/openpix/v1/charge/' .
+            '/api/v1/charge/' .
             $correlationID;
 
         $params = [
