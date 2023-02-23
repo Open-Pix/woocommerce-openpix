@@ -74,7 +74,7 @@
     "babel-loader": "9.1.2",
     "cache-loader": "4.1.0",
     "cross-env": "7.0.3",
-    "css-loader": "^6.7.1",
+    "css-loader": "^6.7.3",
     "dotenv-safe": "^8.2.0",
     "dotenv-webpack": "^8.0.1",
     "esbuild-register": "^3.4.2",
