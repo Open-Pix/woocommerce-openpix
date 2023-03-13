@@ -1,3 +1,52 @@
+#### 2.1.6 (2023-03-13)
+
+##### Build System / Dependencies
+
+* **deps-dev:**
+  *  bump eslint-plugin-jsx-a11y from 6.6.1 to 6.7.1 (#820) (e152c372)
+  *  bump terser-webpack-plugin from 5.3.5 to 5.3.6 (#821) (584d0871)
+  *  bump css-loader from 6.7.1 to 6.7.3 (#823) (cc364b12)
+  *  bump husky from 8.0.1 to 8.0.3 (#825) (8d9625c5)
+  *  bump @types/styled-system from 5.1.15 to 5.1.16 (#826) (14a4cba3)
+  *  bump @babel/plugin-proposal-optional-chaining (#833) (54ada80a)
+  *  bump @typescript-eslint/eslint-plugin (#834) (25fe0a18)
+  *  bump @babel/preset-env from 7.18.10 to 7.20.2 (03b6756b)
+  *  bump @prettier/plugin-php from 0.18.9 to 0.19.2 (5092500b)
+  *  bump webpack from 5.74.0 to 5.75.0 (#809) (138bf299)
+  *  bump prettier and @types/prettier (#811) (a04a5294)
+  *  bump @babel/plugin-transform-typescript (#813) (3881ae5f)
+  *  bump eslint-plugin-import from 2.26.0 to 2.27.5 (#814) (e333b992)
+  *  bump @pmmmwh/react-refresh-webpack-plugin (#816) (1bf1d46b)
+  *  bump babel-loader from 8.2.5 to 9.1.2 (#817) (79e67ebb)
+  *  bump esbuild-register from 3.3.3 to 3.4.2 (#818) (6c1edd9f)
+  *  bump jest from 28.1.3 to 29.3.1 (7f5fd72d)
+  *  bump eslint and @types/eslint (3b472647)
+  *  bump dotenv-webpack from 7.1.1 to 8.0.1 (#728) (86d1e6c4)
+  *  bump @octokit/rest from 18.12.0 to 19.0.5 (#774) (7fb0256e)
+  *  bump eslint-plugin-no-only-tests from 2.6.0 to 3.1.0 (#776) (b4bbf2a6)
+  *  bump babel-jest from 28.1.3 to 29.3.1 (#793) (8a508c91)
+  *  bump jest-environment-jsdom from 28.1.3 to 29.3.1 (#794) (469f6629)
+  *  bump eslint-import-resolver-typescript (#805) (82049839)
+* **deps:**
+  *  bump jquery and @types/jquery (#812) (b19ec474)
+  *  bump vite from 2.9.14 to 4.0.4 (#804) (469ffeb2)
+* **change-log:**  v2.1.4 (#785) (d49ec371)
+
+##### Chores
+
+* **version:**  update readme.txt (#786) (2c9c2b69)
+
+##### New Features
+
+* **endpoint:**  update endpoint (d0cc49f5)
+* **release:**  v2.1.5 (#837) (72590844)
+* **readme:**  new readme (#835) (b4b2c457)
+* **bump:**  bump (8922771a)
+
+##### Bug Fixes
+
+* **error:**  fix error handling for lovtok, fix entria/woovi#41526 (ba664062)
+
 #### 2.1.4 (2022-10-25)
 
 ##### Build System / Dependencies
