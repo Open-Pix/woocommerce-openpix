@@ -89,6 +89,11 @@ Se precisar falar com nosso time, acesse o chat disponível em nosso site.
 
 == Changelog ==
 
+= 2.1.8 - 2023-03-14 =
+
+* Melhoria e otimização do Plugin de checkout
+* Atualização de dependencias
+
 = 2.1.7 - 2023-03-14 =
 
 * Melhoria e otimização do Plugin de checkout
