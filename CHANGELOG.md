@@ -1,3 +1,25 @@
+#### 2.1.7 (2023-03-14)
+
+##### Build System / Dependencies
+
+* **deps-dev:**
+  *  bump @babel/core and @types/babel__core (#852) (18cb33e5)
+  *  bump @types/uuid from 8.3.4 to 9.0.1 (#836) (94380d63)
+  *  bump regenerator-runtime from 0.13.9 to 0.13.11 (#819) (ad99b810)
+  *  bump eslint-plugin-compat from 4.0.2 to 4.1.2 (#839) (a608bdb7)
+  *  bump @prettier/plugin-php from 0.19.2 to 0.19.3 (#842) (1f2f657c)
+  *  bump @types/react from 18.0.17 to 18.0.28 (#843) (7d28092e)
+  *  bump @babel/cli from 7.18.10 to 7.21.0 (#845) (41618324)
+* **deps:**
+  *  bump koa from 2.13.4 to 2.14.1 (#844) (f11c4cd3)
+  *  bump libphonenumber-js from 1.10.13 to 1.10.21 (#846) (75108d2e)
+  *  bump styled-components from 5.3.5 to 5.3.9 (#849) (5cb3134a)
+* **change-log:**  v2.1.6 (#850) (bc38f6fc)
+
+##### Bug Fixes
+
+* **changelog:**  update (#853) (93c5a3cc)
+
 #### 2.1.6 (2023-03-13)
 
 ##### Build System / Dependencies
