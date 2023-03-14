@@ -1,0 +1,85 @@
+.openpix-content {
+  margin: 0 auto;
+  max-width: 50em;
+}
+.openpix-text-align-center {
+  text-align: center;
+}
+.openpix-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-contente: center;
+}
+.openpix-qrcode-container {
+  flex: 1 1 250px;
+  display: flex;
+  margin: 0 2em;
+}
+.openpix-qrcode-image {
+  height: auto;
+  max-width: 100%;
+  display: block;
+  border-radius: 3px;
+}
+.openpix-instructions {
+  flex-direction: column;
+  justify-content: center;
+  display: flex;
+  flex: 1 1 250px;
+}
+.openpix-copy-paste-container {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+.openpix-copy-button {
+  border: unset;
+  display: inline-block;
+  padding: 0.25em 0.4em;
+  font-size: 75%;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 0.25rem;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  color: #fff;
+  background-color: #17a2b8;
+  text-transform: uppercase;
+}
+.openpix-textarea-container {
+  background-color: #e2e3e5;
+  border: 1px solid #dee2e6 !important;
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1rem;
+  border-radius: 0.25rem;
+}
+.openpix-copy-textarea {
+  color: #333;
+  width: 100%;
+  background: 0 0;
+  border: none;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.openpix-pix-completed {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+  height: 695px;
+  margin: auto;
+}
+
+.openpix-pix-completed .label-completed {
+  color: #008852;
+  text-align: center;
+}
+
+.openpix-pix-completed .descr-completed {
+  text-align: center;
+}
