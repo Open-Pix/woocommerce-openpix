@@ -1,10 +1,10 @@
-<?php
 
-class OpenPixConfig
+
+<?php class OpenPixConfig
 {
-    public static $OPENPIX_ENV = 'production';
-    public static $OPENPIX_API_URL = 'https://api.openpix.com.br';
-    public static $OPENPIX_PLUGIN_URL = 'https://plugin.openpix.com.br/v1/openpix.js';
+    public static $OPENPIX_ENV = 'development';
+    public static $OPENPIX_API_URL = 'http://localhost:5001';
+    public static $OPENPIX_PLUGIN_URL = 'http://localhost:4444/openpix.js';
 
     public static function getApiUrl()
     {
@@ -23,7 +23,13 @@ class OpenPixConfig
 
     public static function getWebhookUrl()
     {
-        return home_url('/') . 'wc-api/' . 'WC_OpenPix_Pix_Gateway';
+        $webhookUrl = str_replace(
+            'https:',
+            'http:',
+            home_url('/') . 'wc-api/' . 'WC_OpenPix_Pix_Gateway'
+        );
+
+        return $webhookUrl;
     }
 }
 
