@@ -1,27 +1,23 @@
 {
   "name": "woocommerce-openpix",
   "version": "2.1.7",
-  "dependencies": {
-    "@material-ui/core": "4.12.4",
-    "@material-ui/icons": "4.11.3",
-    "@material-ui/styles": "4.11.5",
-    "core-js": "^3.25.0",
-    "isomorphic-fetch": "^3.0.0",
-    "jquery": "3.6.3",
-    "koa": "2.14.1",
-    "koa-static": "5.0.0",
-    "libphonenumber-js": "^1.10.21",
-    "qrcode.react": "^3.1.0",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "rebass": "^4.0.7",
-    "styled-components": "^5.3.9",
-    "styled-system": "^5.1.5",
-    "vite": "4.0.4"
+  "license": "MIT",
+  "main": "index.js",
+  "scripts": {
+    "config:local": "cp .env.local .env && cp includes/config/config-development.php includes/config/config.php",
+    "config:prod": "cp .env.local .env && cp includes/config/config-prod.php includes/config/config.php",
+    "config:staging": "cp .env.local .env && cp includes/config/config-staging.php includes/config/config.php",
+    "es": "node -r esbuild-register",
+    "pack:prod": "sh pack.sh prod",
+    "pack:staging": "sh pack.sh staging",
+    "prepare": "husky install",
+    "prettier": "prettier --write",
+    "release:major": "yarn es ./scripts/changelog --major",
+    "release:minor": "yarn es ./scripts/changelog --minor",
+    "release:patch": "yarn es ./scripts/changelog --patch",
+    "type-check": "tsc --noEmit"
   },
   "devDependencies": {
-    "@babel/cli": "7.21.0",
-    "@babel/core": "7.21.0",
     "@babel/plugin-proposal-class-properties": "7.18.6",
     "@babel/plugin-proposal-export-default-from": "7.18.10",
     "@babel/plugin-proposal-export-namespace-from": "7.18.9",
@@ -124,7 +120,6 @@
     "webpack-merge": "5.8.0",
     "webpack-plugin-serve": "1.6.0"
   },
-  "license": "MIT",
   "lint-staged": {
     "*.{js,ts,tsx}": [
       "yarn prettier",
@@ -142,27 +137,5 @@
     "*.php": [
       "prettier --write"
     ]
-  },
-  "main": "index.js",
-  "scripts": {
-    "build:prod": "cross-env NODE_ENV=production COMMIT_SHA=$(git rev-parse HEAD) webpack --config webpack.prod.config.js --progress",
-    "build:staging": "cross-env NODE_ENV=production COMMIT_SHA=$(git rev-parse HEAD) webpack --config webpack.staging.config.js --progress",
-    "config:local": "cp .env.local .env && cp includes/config/config-development.php includes/config/config.php",
-    "config:staging": "cp .env.local .env && cp includes/config/config-staging.php includes/config/config.php",
-    "config:prod": "cp .env.local .env && cp includes/config/config-prod.php includes/config/config.php",
-    "es": "node -r esbuild-register",
-    "lint": "eslint --ext .ts --ext .tsx 'checkout/src/**'",
-    "order": "vite order",
-    "prepare": "husky install",
-    "prettier": "prettier --write",
-    "release:major": "yarn es ./scripts/changelog --major",
-    "release:minor": "yarn es ./scripts/changelog --minor",
-    "release:patch": "yarn es ./scripts/changelog --patch",
-    "serve": "node server.js",
-    "start": "webpack serve --hot --config webpack.config.js --progress",
-    "test": "yarn jest",
-    "type-check": "tsc --noEmit",
-    "pack:prod": "sh pack.sh prod",
-    "pack:staging": "sh pack.sh staging"
   }
 }
