@@ -89,6 +89,14 @@ Se precisar falar com nosso time, acesse o chat disponível em nosso site.
 
 == Changelog ==
 
+= 2.1.7 - 2023-03-14 =
+
+* Melhoria do changelog do plugin
+
+= 2.1.6 - 2023-03-14 =
+
+* Melhoria dos endpoints
+
 = 2.1.5 - 2023-02-23 =
 
 * Melhoria na descrição do plugin
