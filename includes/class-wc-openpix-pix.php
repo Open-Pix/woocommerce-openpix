@@ -120,6 +120,14 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         }
     }
 
+    function verifySignature($payload, $signature) {
+        $publicKey = base64_decode(OpenPixConfig::$OPENPIX_PUBLIC_KEY_BASE64);
+
+        $verify = openssl_verify($payload, base64_decode($signature), $publicKey, "sha256WithRSAEncryption");
+
+        return $verify === 1 ? true : false;
+    }
+
     public function getCorrelationID()
     {
         $correlationIDFromSession = WC()->session->get('correlationID');
@@ -228,6 +236,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         @ob_clean();
         $body = file_get_contents('php://input', true);
         $data = json_decode($body, true);
+        $signature = $_SERVER['HTTP_X_WEBHOOK_SIGNATURE'] ?? null;
 
         if (!$this->validateRequest()) {
             header('HTTP/1.2 400 Bad Request');
@@ -262,6 +271,15 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             header('HTTP/1.2 400 Bad Request');
             $response = [
                 'error' => 'Invalid Webhook Payload',
+            ];
+            echo json_encode($response);
+            exit();
+        }
+
+        if(!$signature || !$this->verifySignature($body, $signature)) {
+            header('HTTP/1.2 400 Bad Request');
+            $response = [
+                'error' => 'Invalid Webhook signature',
             ];
             echo json_encode($response);
             exit();
