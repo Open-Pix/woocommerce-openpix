@@ -2218,10 +2218,10 @@
   dependencies:
     source-map "^0.6.1"
 
-"@types/unused-files-webpack-plugin@3.4.3":
-  version "3.4.3"
-  resolved "https://registry.yarnpkg.com/@types/unused-files-webpack-plugin/-/unused-files-webpack-plugin-3.4.3.tgz#704c55b6df834e36bfa2d5622e25feab2cc9dc4e"
-  integrity sha512-XDW3qnrMiKxOB0EPULlWl9IBK6EfCCQFNnJxHBKUbUP0LEwnuIyl8xJBXKPZNNw3qrnMnmbegaT4NkqCrWemzg==
+"@types/unused-files-webpack-plugin@3.4.4":
+  version "3.4.4"
+  resolved "https://registry.yarnpkg.com/@types/unused-files-webpack-plugin/-/unused-files-webpack-plugin-3.4.4.tgz#0c0fee9674a1472ce1649b01a58ef9c7a47ba308"
+  integrity sha512-0V+siLETuH/gRseCw+UW/KC4XxOPaOc6ZCRQN0CBMhQ/Ul+IMtLo3XwNsTsHb/p0y7zhw5usqwLKjrspRunrow==
   dependencies:
     "@types/webpack" "^4"
 
