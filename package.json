@@ -1,22 +1,6 @@
 {
   "name": "woocommerce-openpix",
   "version": "2.1.7",
-  "license": "MIT",
-  "main": "index.js",
-  "scripts": {
-    "config:local": "cp .env.local .env && cp includes/config/config-development.php includes/config/config.php",
-    "config:prod": "cp .env.local .env && cp includes/config/config-prod.php includes/config/config.php",
-    "config:staging": "cp .env.local .env && cp includes/config/config-staging.php includes/config/config.php",
-    "es": "node -r esbuild-register",
-    "pack:prod": "sh pack.sh prod",
-    "pack:staging": "sh pack.sh staging",
-    "prepare": "husky install",
-    "prettier": "prettier --write",
-    "release:major": "yarn es ./scripts/changelog --major",
-    "release:minor": "yarn es ./scripts/changelog --minor",
-    "release:patch": "yarn es ./scripts/changelog --patch",
-    "type-check": "tsc --noEmit"
-  },
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "7.18.6",
     "@babel/plugin-proposal-export-default-from": "7.18.10",
@@ -120,6 +104,7 @@
     "webpack-merge": "5.8.0",
     "webpack-plugin-serve": "1.6.0"
   },
+  "license": "MIT",
   "lint-staged": {
     "*.{js,ts,tsx}": [
       "yarn prettier",
@@ -137,5 +122,20 @@
     "*.php": [
       "prettier --write"
     ]
+  },
+  "main": "index.js",
+  "scripts": {
+    "config:local": "cp .env.local .env && cp includes/config/config-development.php includes/config/config.php",
+    "config:prod": "cp .env.local .env && cp includes/config/config-prod.php includes/config/config.php",
+    "config:staging": "cp .env.local .env && cp includes/config/config-staging.php includes/config/config.php",
+    "es": "node -r esbuild-register",
+    "pack:prod": "sh pack.sh prod",
+    "pack:staging": "sh pack.sh staging",
+    "prepare": "husky install",
+    "prettier": "prettier --write",
+    "release:major": "yarn es ./scripts/changelog --major",
+    "release:minor": "yarn es ./scripts/changelog --minor",
+    "release:patch": "yarn es ./scripts/changelog --patch",
+    "type-check": "tsc --noEmit"
   }
 }
