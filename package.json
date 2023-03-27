@@ -89,7 +89,7 @@
     "moment": "^2.29.4",
     "npmlog": "^7.0.1",
     "octonode": "^0.10.2",
-    "prettier": "^2.8.6",
+    "prettier": "^2.8.7",
     "react-refresh": "0.14.0",
     "regenerator-runtime": "^0.13.11",
     "semver": "^7.3.7",
