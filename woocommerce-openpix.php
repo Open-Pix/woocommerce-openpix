@@ -46,6 +46,7 @@ class WC_OpenPix
         }
 
         $this->includes();
+        add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'plugin_action_links' ) );
 
         add_filter('woocommerce_payment_gateways', [$this, 'add_gateway']);
         add_action('wp_enqueue_scripts', [$this, 'load_plugin_assets']);
@@ -68,6 +69,20 @@ class WC_OpenPix
         include_once dirname(__FILE__) . '/includes/class-giftback-coupon.php';
     }
 
+	/**
+	 * Action links.
+	 *
+	 * @param  array $links Default plugin links.
+	 *
+	 * @return array
+	 */
+	public function plugin_action_links( $links ) {
+		$plugin_links   = array();
+		$plugin_links[] = '<a href="' . esc_url( admin_url( 'admin.php?page=wc-settings&tab=checkout&section=woocommerce_openpix_pix' ) ) . '">' . __( 'Settings', 'woocommerce-openpix' ) . '</a>';
+
+		return array_merge( $plugin_links, $links );
+	}
+    
     public function add_gateway($methods)
     {
         // $methods[] = 'WC_OpenPix_Pix_Prod_Gateway';
