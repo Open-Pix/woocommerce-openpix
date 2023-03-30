@@ -165,11 +165,6 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         return true;
     }
 
-    public function validateRequest()
-    {
-        //Todo: put signature here
-    }
-
     public function get_order_id_by_correlation_id($correlation_id)
     {
         global $wpdb;
@@ -214,10 +209,10 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         $data = json_decode($body, true);
         $signature = $_SERVER['HTTP_X_WEBHOOK_SIGNATURE'] ?? null;
 
-        if (!$this->validateRequest()) {
+        if(!$signature || !$this->verifySignature($body, $signature)) {
             header('HTTP/1.2 400 Bad Request');
             $response = [
-                'error' => 'Invalid Webhook Authorization',
+                'error' => 'Invalid Webhook signature',
             ];
             echo json_encode($response);
             exit();
@@ -247,15 +242,6 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             header('HTTP/1.2 400 Bad Request');
             $response = [
                 'error' => 'Invalid Webhook Payload',
-            ];
-            echo json_encode($response);
-            exit();
-        }
-
-        if(!$signature || !$this->verifySignature($body, $signature)) {
-            header('HTTP/1.2 400 Bad Request');
-            $response = [
-                'error' => 'Invalid Webhook signature',
             ];
             echo json_encode($response);
             exit();
