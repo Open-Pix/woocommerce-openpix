@@ -201,6 +201,21 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         return true;
     }
 
+    public function isValidConfigurationPayload($data ): bool {
+        $hasEventValidEvent = isset($data['event']) && $data['event'] === 'woocommerce-configure';
+        $hasAppID = isset($data['appID']);
+
+        if(!$hasEventValidEvent || !$hasAppID) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function configureIntegration($data) {
+        $this->update_option('appID', $data['appID']);
+    }
+
     public function ipn_handler()
     {
         global $wpdb;
@@ -224,6 +239,19 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             $response = [
                 'message' => 'success',
             ];
+            echo json_encode($response);
+            exit();
+        }
+
+        if($this->isValidConfigurationPayload($data)) {
+            $this->configureIntegration($data);
+
+            header('HTTP/1.1 200 OK');
+
+            $response = [
+                'message' => 'success',
+            ];
+
             echo json_encode($response);
             exit();
         }
