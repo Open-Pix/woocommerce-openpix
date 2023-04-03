@@ -1,3 +1,13 @@
+#### 2.3.0 (2023-04-03)
+
+##### Build System / Dependencies
+
+* **change-log:**  v2.2.0 (#928) (cab483f2)
+
+##### New Features
+
+* **readme:**  readme (#929) (b89a7ec0)
+
 #### 2.2.0 (2023-04-03)
 
 ##### Build System / Dependencies

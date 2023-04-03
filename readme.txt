@@ -4,7 +4,7 @@ Tags: woocommerce, openpix, payment
 Requires at least: 4.0
 Tested up to: 6.1.1
 Requires PHP: 5.6
-Stable tag: 2.2.0
+Stable tag: 2.3.0
 License: GPLv2 or later
 License URI: <http://www.gnu.org/licenses/gpl-2.0.html>
 
@@ -89,11 +89,16 @@ Se precisar falar com nosso time, acesse o chat disponível em nosso site.
 
 == Changelog ==
 
+= 2.3.0 – 2023-04-03 =
+
+* Melhoria na exibição do plugin nos plugins NextMove e Elementor
+* Melhoria na segurança para a aprovação de pedidos
+* Melhoria na integração dos webhooks
+
 = 2.2.0 – 2023-03-16 =
 
 * Melhoria na exibição do plugin
 * Melhoria na função de Copiar e Colar QrCode
-
 
 = 2.1.9 – 2023-03-16 =
 
