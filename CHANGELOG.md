@@ -1,3 +1,19 @@
+#### 2.2.0 (2023-04-03)
+
+##### Build System / Dependencies
+
+* **change-log:**  v2.1.9 (#922) (cd838286)
+
+##### New Features
+
+* **release:**
+  *  also add readme.txt (#927) (80c64f67)
+  *  also updates readme.txt (#925) (3a90a29d)
+
+##### Bug Fixes
+
+* **version:**  sync version of node and php (#923) (5c3e2593)
+
 #### 2.1.9 (2023-04-03)
 
 ##### Build System / Dependencies
