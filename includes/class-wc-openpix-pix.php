@@ -115,10 +115,16 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         }
     }
 
-    function verifySignature($payload, $signature) {
+    function verifySignature($payload, $signature)
+    {
         $publicKey = base64_decode(OpenPixConfig::$OPENPIX_PUBLIC_KEY_BASE64);
 
-        $verify = openssl_verify($payload, base64_decode($signature), $publicKey, "sha256WithRSAEncryption");
+        $verify = openssl_verify(
+            $payload,
+            base64_decode($signature),
+            $publicKey,
+            'sha256WithRSAEncryption'
+        );
 
         return $verify === 1 ? true : false;
     }
@@ -201,18 +207,21 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         return true;
     }
 
-    public function isValidConfigurationPayload($data ): bool {
-        $hasEventValidEvent = isset($data['event']) && $data['event'] === 'woocommerce-configure';
+    public function isValidConfigurationPayload($data): bool
+    {
+        $hasEventValidEvent =
+            isset($data['event']) && $data['event'] === 'woocommerce-configure';
         $hasAppID = isset($data['appID']);
 
-        if(!$hasEventValidEvent || !$hasAppID) {
+        if (!$hasEventValidEvent || !$hasAppID) {
             return false;
         }
 
         return true;
     }
 
-    public function configureIntegration($data) {
+    public function configureIntegration($data)
+    {
         $this->update_option('appID', $data['appID']);
     }
 
@@ -224,7 +233,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         $data = json_decode($body, true);
         $signature = $_SERVER['HTTP_X_WEBHOOK_SIGNATURE'] ?? null;
 
-        if(!$signature || !$this->verifySignature($body, $signature)) {
+        if (!$signature || !$this->verifySignature($body, $signature)) {
             header('HTTP/1.2 400 Bad Request');
             $response = [
                 'error' => 'Invalid Webhook signature',
@@ -243,18 +252,18 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             exit();
         }
 
-        if($this->isValidConfigurationPayload($data)) {
-            $this->configureIntegration($data);
+        // if($this->isValidConfigurationPayload($data)) {
+        //     $this->configureIntegration($data);
 
-            header('HTTP/1.1 200 OK');
+        //     header('HTTP/1.1 200 OK');
 
-            $response = [
-                'message' => 'success',
-            ];
+        //     $response = [
+        //         'message' => 'success',
+        //     ];
 
-            echo json_encode($response);
-            exit();
-        }
+        //     echo json_encode($response);
+        //     exit();
+        // }
 
         if ($this->isPixDetachedPayload($data)) {
             header('HTTP/1.1 200 OK');
@@ -1097,7 +1106,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         ];
         $oldOpenpixSettings = $openpixSettings;
         // because iph_handler validade request
-        
+
         // @todo: put signature here
 
         update_option(
