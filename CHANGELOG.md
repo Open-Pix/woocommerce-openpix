@@ -1,3 +1,13 @@
+#### 2.1.9 (2023-04-03)
+
+##### Build System / Dependencies
+
+* **change-log:**  v2.1.8 (#920) (b742fc07)
+
+##### Chores
+
+* **esbuild:**  add esbuild to package.json to run script of release (#921) (e99243c2)
+
 #### 2.1.8 (2023-04-03)
 
 ##### Build System / Dependencies
