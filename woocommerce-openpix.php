@@ -4,7 +4,7 @@
  * Description: WooCommerce OpenPix Payment Gateway
  * Author: OpenPix
  * Author URI: https://openpix.com.br/
- * Version: 2.2.0
+ * Version: 2.3.0
  * Text Domain: woocommerce-openpix
  *
  * @package WooCommerce_OpenPix
@@ -34,7 +34,7 @@ function woocommerce_openpix_init()
 
 class WC_OpenPix
 {
-    const VERSION = '2.2.0';
+    const VERSION = '2.3.0';
 
     protected static $instance = null;
 
