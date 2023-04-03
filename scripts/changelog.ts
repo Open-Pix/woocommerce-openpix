@@ -125,7 +125,12 @@ const run = async () => {
   await updatePhp(latestVersion, newVersion);
 
   await git().checkout(['-B', branchName]);
-  await git().add(['package.json', 'CHANGELOG.md', 'woocommerce-openpix.php']);
+  await git().add([
+    'package.json',
+    'CHANGELOG.md',
+    'woocommerce-openpix.php',
+    'readme.txt',
+  ]);
   await git().commit(`build(change-log): ${tag}`, [], '-n');
   await git().addAnnotatedTag(`${tag}`, `build(tag): ${tag}`);
   await git().push(['--follow-tags', '-u', 'origin', branchName]);
