@@ -1,3 +1,82 @@
+#### 2.1.8 (2023-04-03)
+
+##### Build System / Dependencies
+
+* **deps-dev:**
+  *  bump @babel/preset-typescript from 7.21.0 to 7.21.4 (#917) (c40e2fb7)
+  *  bump @babel/plugin-transform-runtime (#919) (74a37c55)
+  *  bump webpack-dev-server from 4.13.1 to 4.13.2 (#918) (8bf65cc7)
+  *  bump @types/react from 18.0.31 to 18.0.32 (#916) (a52e2850)
+  *  bump @babel/preset-env from 7.20.2 to 7.21.4 (#915) (247a10eb)
+  *  bump typescript from 5.0.2 to 5.0.3 (#913) (706aab1b)
+  *  bump eslint and @types/eslint (76673930)
+  *  bump @typescript-eslint/eslint-plugin (#910) (5d5693ab)
+  *  bump @types/koa from 2.13.5 to 2.13.6 (#911) (e4a30f6a)
+  *  bump eslint-import-resolver-typescript (#909) (66e0413b)
+  *  bump webpack from 5.76.3 to 5.77.0 (#908) (5f3b5e78)
+  *  bump @types/react from 18.0.29 to 18.0.31 (#907) (9fc59343)
+  *  bump eslint-plugin-cypress from 2.12.1 to 2.13.2 (#905) (0dd444ad)
+  *  bump @typescript-eslint/parser from 5.56.0 to 5.57.0 (#904) (8883eedd)
+  *  bump prettier from 2.8.6 to 2.8.7 (#902) (74964d19)
+  *  bump @testing-library/dom from 9.0.1 to 9.2.0 (#901) (08822faf)
+  *  bump @types/react from 18.0.28 to 18.0.29 (#900) (edc89ae8)
+  *  bump webpack from 5.76.2 to 5.76.3 (#899) (aa81257e)
+  *  bump @typescript-eslint/parser from 5.55.0 to 5.56.0 (#897) (8895afe4)
+  *  bump eslint-config-prettier from 8.7.0 to 8.8.0 (#898) (fbc4a6d5)
+  *  bump prettier from 2.8.5 to 2.8.6 (#896) (5d95ddcd)
+  *  bump @typescript-eslint/eslint-plugin (#895) (67ad03fd)
+  *  bump typescript from 4.9.5 to 5.0.2 (72085038)
+  *  bump @babel/plugin-transform-runtime (#889) (6463f0d2)
+  *  bump @testing-library/dom from 8.17.1 to 9.0.1 (eadcd2ee)
+  *  bump eslint and @types/eslint (0dafda0d)
+  *  bump style-loader from 3.3.1 to 3.3.2 (#891) (eb2e9489)
+  *  bump webpack-dev-server from 4.10.0 to 4.13.1 (#890) (7c7cee55)
+  *  bump jest-environment-jsdom from 29.3.1 to 29.5.0 (#888) (387e5066)
+  *  bump @octokit/rest from 19.0.5 to 19.0.7 (#887) (5762b6b5)
+  *  bump @babel/plugin-transform-react-jsx-source (#885) (9270675a)
+  *  bump eslint-config-prettier from 8.5.0 to 8.7.0 (#884) (0155476e)
+  *  bump jest from 29.3.1 to 29.5.0 (#867) (1f9e6401)
+  *  bump @babel/plugin-transform-typescript (#881) (8c61184e)
+  *  bump eslint-plugin-react from 7.31.1 to 7.32.2 (#880) (222edb2b)
+  *  bump npmlog from 6.0.2 to 7.0.1 (269bedd8)
+  *  bump terser-webpack-plugin from 5.3.6 to 5.3.7 (#878) (cc59a540)
+  *  bump @typescript-eslint/parser from 5.35.1 to 5.55.0 (#876) (71d3dfd3)
+  *  bump prettier from 2.8.3 to 2.8.4 (#871) (647b257c)
+  *  bump simple-git from 3.13.0 to 3.17.0 (#875) (9d438125)
+  *  bump @types/react-dom from 18.0.6 to 18.0.11 (#874) (84e5dd80)
+  *  bump @types/unused-files-webpack-plugin (#873) (22d04c82)
+  *  bump @prettier/plugin-php from 0.19.3 to 0.19.4 (#868) (6ccc0747)
+  *  bump webpack from 5.75.0 to 5.76.2 (#863) (41efbfef)
+  *  bump @typescript-eslint/eslint-plugin (#866) (90e32a0f)
+  *  bump babel-jest from 29.3.1 to 29.5.0 (#865) (56b1c219)
+  *  bump @babel/preset-typescript from 7.18.6 to 7.21.0 (#864) (7780bfaf)
+  *  bump lint-staged from 13.1.0 to 13.2.0 (#862) (d57f943b)
+  *  bump typescript from 4.7.4 to 4.9.5 (#861) (73a8ed61)
+* **change-log:**  v2.1.7 (#854) (4e993008)
+
+##### New Features
+
+* **one-click:**  configure appID and webhook (#914) (771327a9)
+* **auth:**  remove headers of webhook (#903) (726f05ec)
+* **link:**  settings tab into woocommerce (#912) (14a33339)
+* **clean:**
+  *  remove unused php code (f3c54a05)
+  *  more (#857) (55d6ab8e)
+  *  clean (#856) (23f021c1)
+* **update:**
+  *  update all (ad52969c)
+  *  update all (8169f05c)
+* **codeowners:**  add (#892) (fe7caecb)
+* **assets:**  improve (#882) (f16a9a80)
+* **security:**  add public key signature validation (#860) (62df4b5b)
+* **version:**  v2.1.8 (#858) (d94106f4)
+* **release:**  release v2.1.8 (#855) (9462e4a9)
+
+##### Bug Fixes
+
+* **config:**  staging (#883) (beb8fc87)
+* **config-version:**  fix the config and the version (#859) (63336b0f)
+
 #### 2.1.7 (2023-03-14)
 
 ##### Build System / Dependencies
