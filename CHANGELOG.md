@@ -1,3 +1,13 @@
+#### 2.2.0 (2023-04-03)
+
+##### Build System / Dependencies
+
+* **change-log:**  v2.1.9 (#922) (cd838286)
+
+##### Bug Fixes
+
+* **version:**  sync version of node and php (#923) (5c3e2593)
+
 #### 2.1.9 (2023-04-03)
 
 ##### Build System / Dependencies
