@@ -89,6 +89,12 @@ Se precisar falar com nosso time, acesse o chat disponível em nosso site.
 
 == Changelog ==
 
+= 2.2.0 – 2023-03-16 =
+
+* Melhoria na exibição do plugin
+* Melhoria na função de Copiar e Colar QrCode
+
+
 = 2.1.9 – 2023-03-16 =
 
 * Melhoria na exibição do plugin
