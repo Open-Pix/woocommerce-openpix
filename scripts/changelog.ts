@@ -71,7 +71,7 @@ const updatePhp = async (latestVersion: string, newVersion: string) => {
   // const VERSION = '2.0.1';
   const constSedExp = `sed -i ${blankParamForMac} s/"VERSION = '${latestVersion}'"/"VERSION = '${newVersion}'"/g woocommerce-openpix.php`;
 
-  const readmeSedExp = `sed -i ${blankParamForMac} s/"Stable tag: '${latestVersion}'"/"Stable tag: '${newVersion}'"/g readme.txt`;
+  const readmeSedExp = `sed -i ${blankParamForMac} s/"Stable tag: ${latestVersion}"/"Stable tag: ${newVersion}"/g readme.txt`;
 
   await exec(headerSedExp);
   await exec(constSedExp);
