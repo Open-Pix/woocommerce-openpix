@@ -252,18 +252,18 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             exit();
         }
 
-        // if($this->isValidConfigurationPayload($data)) {
-        //     $this->configureIntegration($data);
+        if($this->isValidConfigurationPayload($data)) {
+            $this->configureIntegration($data);
 
-        //     header('HTTP/1.1 200 OK');
+            header('HTTP/1.1 200 OK');
 
-        //     $response = [
-        //         'message' => 'success',
-        //     ];
+            $response = [
+                'message' => 'success',
+            ];
 
-        //     echo json_encode($response);
-        //     exit();
-        // }
+            echo json_encode($response);
+            exit();
+        }
 
         if ($this->isPixDetachedPayload($data)) {
             header('HTTP/1.1 200 OK');
