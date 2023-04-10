@@ -544,14 +544,13 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                 'type' => 'title',
                 'description' => sprintf(
                     __(
-                        'Follow documentation to configure Webhook on OpenPix here %s.',
+                        'Use this Webhook URL to be registered at OpenPix: %s',
                         'woocommerce-openpix'
                     ),
-                    '<a target="_blank" href="https://developers.openpix.com.br/docs/ecommerce/woocommerce-plugin/">' .
-                        __(
-                            'Woocommerce Plugin Documentation',
-                            'woocommerce-openpix'
-                        ) .
+                    '<a target="_blank" href="' .
+                        $webhookUrl .
+                        '">' .
+                        $webhookUrl .
                         '</a>'
                 ),
             ],
@@ -559,9 +558,17 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                 'type' => 'button',
                 'title' => __('One Click Configuration', 'woocommerce-openpix'),
                 'class' => 'button-primary',
-                'description' => __(
-                    'Configure webhook on your site with OpenPix in one click',
-                    'woocommerce-openpix'
+                'description' => sprintf(
+                    __(
+                        'Follow documentation to configure Webhook on OpenPix here %s.',
+                        'woocommerce-openpix'
+                    ),
+                    '<a target="_blank" href="https://developers.openpix.com.br/docs/ecommerce/woocommerce-plugin/">' .
+                        __(
+                            'Documentation',
+                            'woocommerce-openpix'
+                        ) .
+                        '</a>'
                 ),
             ],
             'webhook_status' => [
