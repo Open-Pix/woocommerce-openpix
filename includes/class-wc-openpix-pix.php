@@ -54,29 +54,10 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
     {
         $this->id = 'woocommerce_openpix_pix';
         $this->method_title = __('OpenPix', 'woocommerce-openpix');
-        $webhookUrl = OpenPixConfig::getWebhookUrl();
-
-        $webhookLabel = sprintf(
-            __(
-                'Use this Webhook URL to be registered at OpenPix: %s',
-                'woocommerce-openpix'
-            ),
-            '<a target="_blank" href="' .
-                $webhookUrl .
-                '">' .
-                $webhookUrl .
-                '</a>'
+        $this->method_description = __(
+            'Accept Pix payments with real-time updates, seamless checkout, and automatic order status updates.',
+            'woocommerce-openpix'
         );
-
-        $registerLabel = sprintf(
-            __(
-                'Open your account now %s',
-                'woocommerce-openpix'
-            ),
-            '<a target="_blank" href="https://app.openpix.com/register">https://app.openpix.com/register</a>'
-        );
-
-        $this->method_description = "<p>$webhookLabel</p><p>$registerLabel</p>";
         $this->has_fields = true; // direct payment
         $this->supports = ['products'];
 
@@ -497,13 +478,36 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
     public function init_form_fields()
     {
+        
         $webhookUrl = OpenPixConfig::getWebhookUrl();
+
+        $webhookLabel = sprintf(
+            __(
+                'Use this Webhook URL to be registered at OpenPix: %s',
+                'woocommerce-openpix'
+            ),
+            '<a target="_blank" href="' .
+                $webhookUrl .
+                '">' .
+                $webhookUrl .
+                '</a>'
+        );
+
+        $registerLabel = sprintf(
+            __(
+                'Open your account now %s',
+                'woocommerce-openpix'
+            ),
+            '<a target="_blank" href="https://app.openpix.com/register">https://app.openpix.com/register</a>'
+        );
+        
         $this->form_fields = [
             'enabled' => [
                 'title' => __('Enable/Disable', 'woocommerce-openpix'),
                 'type' => 'checkbox',
                 'label' => __('Enable OpenPix', 'woocommerce-openpix'),
                 'default' => 'no',
+                'description' => "<p>$webhookLabel</p><p>$registerLabel</p>"
             ],
             'api_section' => [
                 'title' => __('OpenPix Integration API', 'woocommerce-openpix'),
