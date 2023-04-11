@@ -56,7 +56,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         $this->method_title = __('OpenPix', 'woocommerce-openpix');
         $webhookUrl = OpenPixConfig::getWebhookUrl();
 
-        $this->method_description = sprintf(
+        $webhookLabel = sprintf(
             __(
                 'Use this Webhook URL to be registered at OpenPix: %s',
                 'woocommerce-openpix'
@@ -67,6 +67,16 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                 $webhookUrl .
                 '</a>'
         );
+
+        $registerLabel = sprintf(
+            __(
+                'Open your account now %s',
+                'woocommerce-openpix'
+            ),
+            '<a target="_blank" href="https://app.openpix.com/register">https://app.openpix.com/register</a>'
+        );
+
+        $this->method_description = "<p>$webhookLabel</p><p>$registerLabel</p>";
         $this->has_fields = true; // direct payment
         $this->supports = ['products'];
 
