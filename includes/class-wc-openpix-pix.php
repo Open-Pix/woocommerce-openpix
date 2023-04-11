@@ -54,9 +54,18 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
     {
         $this->id = 'woocommerce_openpix_pix';
         $this->method_title = __('OpenPix', 'woocommerce-openpix');
-        $this->method_description = __(
-            'WooCommerce OpenPix Payment Gateway',
-            'woocommerce-openpix'
+        $webhookUrl = OpenPixConfig::getWebhookUrl();
+
+        $this->method_description = sprintf(
+            __(
+                'Use this Webhook URL to be registered at OpenPix: %s',
+                'woocommerce-openpix'
+            ),
+            '<a target="_blank" href="' .
+                $webhookUrl .
+                '">' .
+                $webhookUrl .
+                '</a>'
         );
         $this->has_fields = true; // direct payment
         $this->supports = ['products'];
@@ -542,17 +551,6 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                     'woocommerce-openpix'
                 ),
                 'type' => 'title',
-                'description' => sprintf(
-                    __(
-                        'Use this Webhook URL to be registered at OpenPix: %s',
-                        'woocommerce-openpix'
-                    ),
-                    '<a target="_blank" href="' .
-                        $webhookUrl .
-                        '">' .
-                        $webhookUrl .
-                        '</a>'
-                ),
             ],
             'webhook_button' => [
                 'type' => 'button',
