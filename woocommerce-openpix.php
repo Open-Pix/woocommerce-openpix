@@ -102,8 +102,6 @@ class WC_OpenPix
             '<a href="https://app.openpix.com/register/?src=wordpress">' .
             __('Sign up', 'woocommerce-openpix') .
             '</a>';
-        
-            echo $plugin_links;
         return array_merge($plugin_links, $links);
     }
 
