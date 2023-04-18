@@ -94,12 +94,12 @@ class WC_OpenPix
             __('Settings', 'woocommerce-openpix') .
             '</a>';
         $plugin_links[] =
-            '<a href="https://developers.openpix.com.br/docs/ecommerce/woocommerce/woocommerce-plugin">' .
+            '<a  target="_blank" href="https://developers.openpix.com.br/docs/ecommerce/woocommerce/woocommerce-plugin">' .
             __('Documentation', 'woocommerce-openpix') .
             '</a>';
 
         $plugin_links[] =
-            '<a href="https://app.openpix.com/register/?src=wordpress">' .
+            '<a  target="_blank" href="https://app.openpix.com/register/?src=wordpress"> ' .
             __('Sign up', 'woocommerce-openpix') .
             '</a>';
         return array_merge($plugin_links, $links);
