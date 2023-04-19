@@ -115,7 +115,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         }
     }
 
-    function verifySignature($payload, $signature)
+    function validSignature($payload, $signature)
     {
         $publicKey = base64_decode(OpenPixConfig::$OPENPIX_PUBLIC_KEY_BASE64);
 
@@ -148,7 +148,13 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         return $correlationID;
     }
 
-    // move ipn to another file
+    /**
+     * Check if the provided data is a valid test webhook payload.
+     *
+     * @param array $data The data to be validated.
+     *
+     * @return bool Returns true if the data contains the required 'evento' field, otherwise returns false.
+     */
     public function isValidTestWebhookPayload($data)
     {
         if (isset($data['evento'])) {
@@ -158,17 +164,20 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         return false;
     }
 
+    /**
+     * Check if the provided data is a valid webhook payload.
+     *
+     * @param array $data The data to be validated.
+     *
+     * @return bool Returns true if the data contains any of the required keys (charge, pix, or event), otherwise returns false.
+     */
     public function isValidWebhookPayload($data)
     {
-        $findedKeysIntoPayload = ['charge', 'pix', 'event'];
-
-        foreach ($findedKeysIntoPayload as $key) {
-            if (isset($data[$key])) {
-                return true;
-            }
+        if(!isset($data['event']) || empty($data['event'])) {
+            return false;
         }
 
-        return false;
+        return true;
     }
 
     public function get_order_id_by_correlation_id($correlation_id)
@@ -207,17 +216,44 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         return true;
     }
 
-    public function isValidConfigurationPayload($data): bool
-    {        
-        $hasEventValidEvent =
-            isset($data['event']) && $data['event'] === 'woocommerce-configure';
+    /**
+     * Check if the provided data is a valid webhook payload.
+     *
+     * @param array $data The data to be validated.
+     *
+     * @return bool Returns true if the data contains any of the required keys (charge, pix, or event), otherwise returns false.
+     */
+    public function handleIntegrationConfiguration($data): bool
+    {
         $hasAppID = isset($data['appID']);
-
-        if (!$hasEventValidEvent || !$hasAppID) {
-            return false;
+        $alreadyHasAppID = $this->get_option('appID');
+            
+        if($alreadyHasAppID) {
+            header('HTTP/1.1 400 Bad Request');
+            $response = [
+                'message' => __('App ID already configured', 'openpix'),
+            ];
+            echo json_encode($response);
+            exit();
         }
 
-        return true;
+        if(!$hasAppID) {
+            header('HTTP/1.1 400 Bad Request');
+            $response = [
+                'message' => __('App ID is required', 'openpix'),
+            ];
+            echo json_encode($response);
+            exit();
+        }
+
+        $this->configureIntegration($data);
+
+        header('HTTP/1.1 200 OK');
+        $response = [
+            'message' => 'success',
+        ];
+        echo json_encode($response);
+        exit();
     }
 
     public function configureIntegration($data)
@@ -225,78 +261,18 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         $this->update_option('appID', $data['appID']);
     }
 
-    public function ipn_handler()
+    public function handleTestWebhook($data)
     {
-        global $wpdb;
-        @ob_clean();
-        $body = file_get_contents('php://input', true);
-        $data = json_decode($body, true);
-        $signature = $_SERVER['HTTP_X_WEBHOOK_SIGNATURE'] ?? null;
+        WC_OpenPix::debug('handleTestWebhook');
+        header('HTTP/1.1 200 OK');
+        $response = [
+            'message' => 'success',
+        ];
+        echo json_encode($response);
+        exit();
+    }
 
-        if (!$signature || !$this->verifySignature($body, $signature)) {
-            header('HTTP/1.2 400 Bad Request');
-            $response = [
-                'error' => 'Invalid Webhook signature',
-            ];
-            echo json_encode($response);
-            exit();
-        }
-
-        if ($this->isValidTestWebhookPayload($data)) {
-            header('HTTP/1.1 200 OK');
-
-            $response = [
-                'message' => 'success',
-            ];
-            echo json_encode($response);
-            exit();
-        }
-
-        if (!$this->isValidWebhookPayload($data)) {
-            header('HTTP/1.2 400 Bad Request');
-            $response = [
-                'error' => 'Invalid Webhook Payload',
-            ];
-            echo json_encode($response);
-            exit();
-        }
-
-        if($this->isValidConfigurationPayload($data)) {
-            $alreadyHasAppID = $this->get_option('appID');
-
-            if($alreadyHasAppID) {
-                header('HTTP/1.1 400 Bad Request');
-
-                $response = [
-                    'message' => __('App ID already configured', 'openpix'),
-                ];
-
-                echo json_encode($response);
-
-                exit();
-            }
-            $this->configureIntegration($data);
-
-            header('HTTP/1.1 200 OK');
-
-            $response = [
-                'message' => 'success',
-            ];
-
-            echo json_encode($response);
-            exit();
-        }
-
-        if ($this->isPixDetachedPayload($data)) {
-            header('HTTP/1.1 200 OK');
-
-            $response = [
-                'message' => 'Pix Detached',
-            ];
-            echo json_encode($response);
-            exit();
-        }
-
+    public function handleWebhookOrderUpdate($data) {
         global $wpdb;
         $correlationID = $data['charge']['correlationID'];
         $status = $data['charge']['status'];
@@ -460,6 +436,77 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
         echo json_encode($response);
         exit();
+    }
+
+    public function handleWebhookEvents($data, $body) {
+        $event = $data['event'];
+        // @todo: refactor this to follow event instead evento
+        $evento = $data['evento'];
+
+        if($evento === 'teste_webhook') {
+            $this->handleTestWebhook($data);
+        }
+
+        if($event === 'woocommerce-configure') {
+            $this->handleIntegrationConfiguration($data);
+            return;
+        }
+
+        if($event === 'OPENPIX:TRANSACTION_RECEIVED' || $event === 'OPENPIX:CHARGE_COMPLETED') {
+            $this->handleWebhookOrderUpdate($data);
+            return;
+        }
+    }
+
+    public function validateWebhook($data, $body)
+    {
+        $signature = $_SERVER['HTTP_X_WEBHOOK_SIGNATURE'] ?? null;
+
+        if (!$signature || !$this->validSignature($body, $signature)) {
+            header('HTTP/1.2 400 Bad Request');
+            $response = [
+                'error' => 'Invalid Webhook signature',
+            ];
+            echo json_encode($response);
+            exit();
+        }
+
+        if (!$this->isValidWebhookPayload($data)) {
+            header('HTTP/1.2 400 Bad Request');
+            $response = [
+                'error' => 'Invalid Webhook Payload',
+            ];
+            echo json_encode($response);
+            exit();
+        }
+
+        if ($this->isPixDetachedPayload($data)) {
+            header('HTTP/1.1 200 OK');
+
+            $response = [
+                'message' => 'Pix Detached',
+            ];
+            echo json_encode($response);
+            exit();
+        }
+    }
+    /**
+     * Handles incoming IPN (Instant Payment Notification) requests.
+     * 
+     * This is the main entry point for the IPN requests.
+     *
+     * @return void
+     */
+    public function ipn_handler()
+    {
+        global $wpdb;
+        @ob_clean();
+        $body = file_get_contents('php://input', true);
+        $data = json_decode($body, true);
+
+        $this->validateWebhook($data, $body);
+
+        $this->handleWebhookEvents($data, $body);
     }
     // ipn end
 
