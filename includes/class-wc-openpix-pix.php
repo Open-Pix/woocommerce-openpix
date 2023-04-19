@@ -211,9 +211,6 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
     {
         $alreadyHasAppID = $this->get_option('appID');
 
-        if($alreadyHasAppID) {
-            return false;
-        }
         
         $hasEventValidEvent =
             isset($data['event']) && $data['event'] === 'woocommerce-configure';
@@ -500,6 +497,14 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             ),
             '<a target="_blank" href="https://app.openpix.com/register">https://app.openpix.com/register</a>'
         );
+
+        $documentationLabel = sprintf(
+            __(
+                'OpenPix integration %s with Woocommerce',
+                'woocommerce-openpix'
+            ),
+            '<a target="_blank" href="https://developers.openpix.com.br/docs/ecommerce/woocommerce/woocommerce-plugin#instale-o-plugin-openpix-na-sua-inst%C3%A2ncia-woocommerce-utilizando-one-click">documentation</a>'
+        );
         
         $this->form_fields = [
             'enabled' => [
@@ -507,7 +512,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                 'type' => 'checkbox',
                 'label' => __('Enable OpenPix', 'woocommerce-openpix'),
                 'default' => 'no',
-                'description' => "<p>$webhookLabel</p><p>$registerLabel</p>"
+                'description' => "<p>$webhookLabel</p><p>$registerLabel</p><p>$documentationLabel</p>"
             ],
             'api_section' => [
                 'title' => __('OpenPix Integration API', 'woocommerce-openpix'),
