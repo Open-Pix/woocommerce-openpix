@@ -208,10 +208,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
     }
 
     public function isValidConfigurationPayload($data): bool
-    {
-        $alreadyHasAppID = $this->get_option('appID');
-
-        
+    {        
         $hasEventValidEvent =
             isset($data['event']) && $data['event'] === 'woocommerce-configure';
         $hasAppID = isset($data['appID']);
@@ -256,6 +253,19 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         }
 
         if($this->isValidConfigurationPayload($data)) {
+            $alreadyHasAppID = $this->get_option('appID');
+
+            if($alreadyHasAppID) {
+                header('HTTP/1.1 400 Bad Request');
+
+                $response = [
+                    'message' => __('App ID already configured', 'openpix'),
+                ];
+
+                echo json_encode($response);
+
+                exit();
+            }
             $this->configureIntegration($data);
 
             header('HTTP/1.1 200 OK');
