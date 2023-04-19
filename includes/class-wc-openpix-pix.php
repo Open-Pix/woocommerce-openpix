@@ -160,15 +160,15 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
     public function isValidWebhookPayload($data)
     {
-        if (!isset($data['charge'])) {
-            return false;
+        $findedKeysIntoPayload = ['charge', 'pix', 'event'];
+
+        foreach ($findedKeysIntoPayload as $key) {
+            if (isset($data[$key])) {
+                return true;
+            }
         }
 
-        if (!isset($data['pix'])) {
-            return false;
-        }
-
-        return true;
+        return false;
     }
 
     public function get_order_id_by_correlation_id($correlation_id)
@@ -252,6 +252,15 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             exit();
         }
 
+        if (!$this->isValidWebhookPayload($data)) {
+            header('HTTP/1.2 400 Bad Request');
+            $response = [
+                'error' => 'Invalid Webhook22 Payload',
+            ];
+            echo json_encode($response);
+            exit();
+        }
+
         if($this->isValidConfigurationPayload($data)) {
             $alreadyHasAppID = $this->get_option('appID');
 
@@ -283,15 +292,6 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
             $response = [
                 'message' => 'Pix Detached',
-            ];
-            echo json_encode($response);
-            exit();
-        }
-
-        if (!$this->isValidWebhookPayload($data)) {
-            header('HTTP/1.2 400 Bad Request');
-            $response = [
-                'error' => 'Invalid Webhook Payload',
             ];
             echo json_encode($response);
             exit();
