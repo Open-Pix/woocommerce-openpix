@@ -177,6 +177,11 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             return false;
         }
 
+        // @todo remove it and update evento to event
+        if(!isset($data['evento']) || empty($data['evento'])) {
+            return false;
+        }
+
         return true;
     }
 
