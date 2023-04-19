@@ -255,7 +255,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         if (!$this->isValidWebhookPayload($data)) {
             header('HTTP/1.2 400 Bad Request');
             $response = [
-                'error' => 'Invalid Webhook22 Payload',
+                'error' => 'Invalid Webhook Payload',
             ];
             echo json_encode($response);
             exit();
