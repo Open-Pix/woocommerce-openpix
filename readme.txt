@@ -89,7 +89,7 @@ Se precisar falar com nosso time, acesse o chat disponível em nosso site.
 
 == Changelog ==
 
-= 2.3.0 – 2023-04-20 =
+= 2.4.0 – 2023-04-20 =
 
 * Melhoria na configuração do plugin
 * Melhoria no recebimento de Webhooks
