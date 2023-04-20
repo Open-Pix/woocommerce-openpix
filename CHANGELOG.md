@@ -1,3 +1,57 @@
+#### 2.4.0 (2023-04-20)
+
+##### Build System / Dependencies
+
+* **deps-dev:**
+  *  bump @typescript-eslint/eslint-plugin (#962) (84b15959)
+  *  bump @types/react from 18.0.35 to 18.0.37 (#961) (4dfa8154)
+  *  bump @typescript-eslint/parser from 5.58.0 to 5.59.0 (#960) (1ad9b62d)
+  *  bump semver from 7.4.0 to 7.5.0 (#959) (34ad6ccf)
+  *  bump html-webpack-plugin from 5.5.0 to 5.5.1 (#957) (3f6847ee)
+  *  bump webpack-dev-server from 4.13.2 to 4.13.3 (#956) (b4322413)
+  *  bump esbuild from 0.17.16 to 0.17.17 (#955) (57f0ba22)
+  *  bump webpack from 5.78.0 to 5.79.0 (#950) (6bb47830)
+  *  bump @typescript-eslint/parser from 5.57.1 to 5.58.0 (#951) (6cab8802)
+  *  bump semver from 7.3.8 to 7.4.0 (#953) (fc02f3b2)
+  *  bump esbuild from 0.17.15 to 0.17.16 (#952) (05cafcda)
+  *  bump @types/react from 18.0.33 to 18.0.35 (#949) (cd272750)
+  *  bump @typescript-eslint/eslint-plugin (#948) (32f992db)
+  *  bump eslint-plugin-compat from 4.1.2 to 4.1.4 (#940) (668137e6)
+  *  bump lint-staged from 13.2.0 to 13.2.1 (#939) (8b52133a)
+  *  bump typescript from 5.0.3 to 5.0.4 (#938) (287872d8)
+  *  bump eslint from 8.37.0 to 8.38.0 (#937) (b10b40c8)
+  *  bump webpack from 5.77.0 to 5.78.0 (#935) (f85e0e16)
+  *  bump eslint-import-resolver-typescript (#936) (51a7a1a5)
+  *  bump @typescript-eslint/eslint-plugin (#932) (e161a001)
+  *  bump @types/react from 18.0.32 to 18.0.33 (#933) (fc2e8f6f)
+  *  bump @typescript-eslint/parser from 5.57.0 to 5.57.1 (#931) (4f64fcee)
+* **change-log:**  v2.3.0 (#930) (bd3de157)
+
+##### Chores
+
+* **refactor:**  refactor how works the webhook event type (#965) (a36596cb)
+
+##### New Features
+
+* **docs:**  update link of doc (#963) (b626839f)
+* **one-click:**
+  *  not register another appID if already have one (#946) (587a4eb8)
+  *  one click uncomment code (#934) (462fc14d)
+* **link:**
+  *  register link (#945) (72f60393)
+  *  move the link to the top (#944) (3bcc58cf)
+* **links:**
+  *  Add OpenPix documentation and registration links to plugin (#943) (a6398449)
+  *  Add OpenPix documentation and registration links to plugin (#942) (f16e741b)
+
+##### Bug Fixes
+
+* **appid:**  fix appid check order (#964) (7032dec6)
+* **link:**  fix blank (#958) (c5e54d04)
+* **woo:**  remove wrong echo, fix entria/woovi#45982 (409a3ab7)
+* **links:**  fix links (#947) (f7b14b45)
+* **webhook-url:**  bring back the webhook url (#941) (b5f18a1f)
+
 #### 2.3.0 (2023-04-03)
 
 ##### Build System / Dependencies
