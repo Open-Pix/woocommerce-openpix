@@ -59,7 +59,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             'woocommerce-openpix'
         );
         $this->has_fields = true; // direct payment
-        $this->supports = ['products'];
+        $this->supports = ['products', 'refunds'];
 
         $this->init_form_fields();
         $this->init_settings();
@@ -95,6 +95,97 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         ]);
 
         // $this->registerHooks();
+    }
+
+    public function can_refund_order($order)
+    {
+        return true;
+    }
+
+    public function process_refund($order_id, $amount = null, $reason = '')
+    {
+        $order = wc_get_order($order_id);
+
+        $chargeCorrelationID = get_post_meta(
+            $order->id,
+            'openpix_correlation_id',
+            true
+        );
+
+        $url =
+            OpenPixConfig::getApiUrl() .
+            "/api/v1/charge/$chargeCorrelationID/refund";
+
+        $total_cents = $this->get_openpix_amount($amount);
+
+        $payload = [
+            'correlationID' => WC_OpenPix::uuid_v4(),
+            'value' => $total_cents,
+        ];
+
+        $params = [
+            'timeout' => 60,
+            'headers' => [
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json',
+                'Authorization' => $this->appID,
+                'version' => WC_OpenPix::VERSION,
+                'platform' => 'WOOCOMMERCE',
+            ],
+            'body' => json_encode($payload),
+            'method' => 'POST',
+            'data_format' => 'body',
+        ];
+
+        WC_OpenPix::debugJson('Charge refund payload:', $payload);
+
+        if (OpenPixConfig::getEnv() === 'development') {
+            $response = wp_remote_post($url, $params);
+        } else {
+            $response = wp_safe_remote_post($url, $params);
+        }
+
+        if (is_wp_error($response)) {
+            wc_add_notice(
+                __('Error refunding charge', 'woocommerce-openpix'),
+                'error'
+            );
+
+            $error_message = $response->get_error_message();
+
+            WC_OpenPix::debug('Error refunding charge: ' . $error_message);
+
+            return false;
+        }
+
+        WC_OpenPix::debugJson('Charge refund response:', $response['body']);
+
+        if ($response['response']['code'] === 401) {
+            wc_add_notice(__('Invalid AppID', 'woocommerce-openpix'), 'error');
+
+            WC_OpenPix::debugJson('Error refunding charge:', $response);
+
+            return false;
+        }
+
+        if ($response['response']['code'] !== 200) {
+            WC_OpenPix::debugJson('Error refunding charge:', $response);
+
+            $errorMessage = $this->getErrorFromResponse($response);
+
+            wc_add_notice(
+                __('Error refunding charge', 'woocommerce-openpix'),
+                'error'
+            );
+
+            if (isset($errorMessage) && !empty($errorMessage)) {
+                wc_add_notice($errorMessage, 'error');
+            }
+
+            return false;
+        }
+
+        return true;
     }
 
     // giftback
@@ -173,8 +264,8 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
      */
     public function isValidWebhookPayload($data)
     {
-        if(!isset($data['event']) || empty($data['event'])) {
-            if(!isset($data['evento']) || empty($data['evento'])) {
+        if (!isset($data['event']) || empty($data['event'])) {
+            if (!isset($data['evento']) || empty($data['evento'])) {
                 return false;
             }
         }
@@ -231,8 +322,8 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
     {
         $hasAppID = isset($data['appID']);
         $alreadyHasAppID = $this->get_option('appID');
-            
-        if($alreadyHasAppID) {
+
+        if ($alreadyHasAppID) {
             header('HTTP/1.1 400 Bad Request');
             $response = [
                 'message' => __('App ID already configured', 'openpix'),
@@ -241,7 +332,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             exit();
         }
 
-        if(!$hasAppID) {
+        if (!$hasAppID) {
             header('HTTP/1.1 400 Bad Request');
             $response = [
                 'message' => __('App ID is required', 'openpix'),
@@ -276,7 +367,8 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         exit();
     }
 
-    public function handleWebhookOrderUpdate($data) {
+    public function handleWebhookOrderUpdate($data)
+    {
         global $wpdb;
         $correlationID = $data['charge']['correlationID'];
         $status = $data['charge']['status'];
@@ -442,21 +534,25 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         exit();
     }
 
-    public function handleWebhookEvents($data, $body) {
+    public function handleWebhookEvents($data, $body)
+    {
         $event = $data['event'];
         // @todo: refactor this to follow event instead evento
         $evento = $data['evento'];
 
-        if($evento === 'teste_webhook') {
+        if ($evento === 'teste_webhook') {
             $this->handleTestWebhook($data);
         }
 
-        if($event === 'woocommerce-configure') {
+        if ($event === 'woocommerce-configure') {
             $this->handleIntegrationConfiguration($data);
             return;
         }
 
-        if($event === 'OPENPIX:TRANSACTION_RECEIVED' || $event === 'OPENPIX:CHARGE_COMPLETED') {
+        if (
+            $event === 'OPENPIX:TRANSACTION_RECEIVED' ||
+            $event === 'OPENPIX:CHARGE_COMPLETED'
+        ) {
             $this->handleWebhookOrderUpdate($data);
             return;
         }
@@ -496,7 +592,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
     }
     /**
      * Handles incoming IPN (Instant Payment Notification) requests.
-     * 
+     *
      * This is the main entry point for the IPN requests.
      *
      * @return void
@@ -536,7 +632,6 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
     public function init_form_fields()
     {
-        
         $webhookUrl = OpenPixConfig::getWebhookUrl();
 
         $webhookLabel = sprintf(
@@ -552,10 +647,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         );
 
         $registerLabel = sprintf(
-            __(
-                'Open your account now %s',
-                'woocommerce-openpix'
-            ),
+            __('Open your account now %s', 'woocommerce-openpix'),
             '<a target="_blank" href="https://app.openpix.com/register">https://app.openpix.com/register</a>'
         );
 
@@ -566,14 +658,14 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             ),
             '<a target="_blank" href="https://developers.openpix.com.br/docs/ecommerce/woocommerce/woocommerce-plugin#instale-o-plugin-openpix-na-sua-inst%C3%A2ncia-woocommerce-utilizando-one-click">documentation</a>'
         );
-        
+
         $this->form_fields = [
             'enabled' => [
                 'title' => __('Enable/Disable', 'woocommerce-openpix'),
                 'type' => 'checkbox',
                 'label' => __('Enable OpenPix', 'woocommerce-openpix'),
                 'default' => 'no',
-                'description' => "<p>$webhookLabel</p><p>$registerLabel</p><p>$documentationLabel</p>"
+                'description' => "<p>$webhookLabel</p><p>$registerLabel</p><p>$documentationLabel</p>",
             ],
             'api_section' => [
                 'title' => __('OpenPix Integration API', 'woocommerce-openpix'),
@@ -648,10 +740,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                         'woocommerce-openpix'
                     ),
                     '<a target="_blank" href="https://developers.openpix.com.br/docs/ecommerce/woocommerce-plugin/">' .
-                        __(
-                            'Documentation',
-                            'woocommerce-openpix'
-                        ) .
+                        __('Documentation', 'woocommerce-openpix') .
                         '</a>'
                 ),
             ],
