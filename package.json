@@ -122,10 +122,14 @@
     ],
     "*.php": [
       "prettier --write"
+    ],
+    "./includes/config/config.php": [
+      "yarn blockNotMergeable"
     ]
   },
   "main": "index.js",
   "scripts": {
+    "blockNotMergeable": "yarn es ./scripts/blockNotMergeable",
     "config:local": "cp .env.local .env && cp includes/config/config-development.php includes/config/config.php",
     "config:prod": "cp .env.local .env && cp includes/config/config-prod.php includes/config/config.php",
     "config:staging": "cp .env.local .env && cp includes/config/config-staging.php includes/config/config.php",

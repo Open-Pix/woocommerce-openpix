@@ -1,6 +1,8 @@
+<?php
 
+// @woovi/do-not-merge
 
-<?php class OpenPixConfig
+class OpenPixConfig
 {
     public static $OPENPIX_ENV = 'staging';
     public static $OPENPIX_API_URL = 'https://api.woovi.dev';
