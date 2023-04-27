@@ -160,16 +160,18 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
         WC_OpenPix::debugJson('Charge refund response:', $response['body']);
 
-        if ($response['response']['code'] === 401) {
+        $code = $response['response']['code'];
+
+        if ($code === 401) {
             wc_add_notice(__('Invalid AppID', 'woocommerce-openpix'), 'error');
 
-            WC_OpenPix::debugJson('Error refunding charge:', $response);
+            WC_OpenPix::debugJson("Error refunding charge $code:", $response);
 
             return false;
         }
 
-        if ($response['response']['code'] !== 200) {
-            WC_OpenPix::debugJson('Error refunding charge:', $response);
+        if ($code !== 200) {
+            WC_OpenPix::debugJson('Error refunding charge $code:', $response);
 
             $errorMessage = $this->getErrorFromResponse($response);
 
