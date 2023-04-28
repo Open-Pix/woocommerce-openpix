@@ -171,7 +171,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         }
 
         if ($code !== 200) {
-            WC_OpenPix::debugJson('Error refunding charge $code:', $response);
+            WC_OpenPix::debugJson("Error refunding charge $code:", $response);
 
             $errorMessage = $this->getErrorFromResponse($response);
 
