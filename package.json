@@ -94,7 +94,7 @@
     "react-refresh": "0.14.0",
     "regenerator-runtime": "^0.13.11",
     "semver": "^7.5.0",
-    "simple-git": "^3.17.0",
+    "simple-git": "^3.18.0",
     "style-loader": "3.3.2",
     "terser-webpack-plugin": "5.3.7",
     "typescript": "^5.0.4",
