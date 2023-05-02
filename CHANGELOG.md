@@ -1,3 +1,30 @@
+#### 2.6.0 (2023-05-02)
+
+##### Build System / Dependencies
+
+* **deps-dev:**
+  *  bump @types/react-dom from 18.0.11 to 18.2.1 (#987) (f1428ae9)
+  *  bump @typescript-eslint/eslint-plugin (#985) (2fbfb300)
+  *  bump @babel/preset-typescript from 7.21.4 to 7.21.5 (#984) (dd077286)
+  *  bump webpack from 5.80.0 to 5.81.0 (#986) (c1d6f02a)
+  *  bump @babel/preset-env from 7.21.4 to 7.21.5 (#983) (1919f3b6)
+  *  bump @types/react from 18.0.38 to 18.2.0 (#982) (eb616f24)
+  *  bump @typescript-eslint/parser from 5.59.0 to 5.59.1 (#981) (0aa7c6a2)
+  *  bump lint-staged from 13.2.1 to 13.2.2 (#980) (1b162cbf)
+  *  bump eslint-plugin-cypress from 2.13.2 to 2.13.3 (#979) (27f11a98)
+  *  bump simple-git from 3.17.0 to 3.18.0 (#978) (74d0e8dc)
+* **change-log:**  v2.5.0 (#976) (4780a799)
+
+##### New Features
+
+* **refund:**
+  *  return error from body (#989) (ebe64a87)
+  *  add comment (#988) (a2f8764c)
+
+##### Bug Fixes
+
+* **refund:**  fix code in error log (#977) (9f6f55ad)
+
 #### 2.5.0 (2023-04-27)
 
 ##### Build System / Dependencies
