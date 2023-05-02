@@ -102,7 +102,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         return true;
     }
 
-    public function process_refund($order_id, $amount = null, $reason = '')
+    public function process_refund($order_id, $amount = null, $reason = null)
     {
         $order = wc_get_order($order_id);
 
@@ -121,6 +121,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         $payload = [
             'correlationID' => WC_OpenPix::uuid_v4(),
             'value' => $total_cents,
+            'comment' => $reason,
         ];
 
         $params = [
