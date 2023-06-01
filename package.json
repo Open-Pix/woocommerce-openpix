@@ -32,7 +32,7 @@
     "@types/jquery": "3.5.16",
     "@types/koa": "2.13.6",
     "@types/koa-static": "4.0.2",
-    "@types/prettier": "^2.7.2",
+    "@types/prettier": "^2.7.3",
     "@types/qrcode.react": "^1.0.2",
     "@types/react": "18.2.7",
     "@types/react-dom": "18.2.4",
