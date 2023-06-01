@@ -46,7 +46,7 @@
     "@types/uuid": "^9.0.1",
     "@types/webpack-dev-server": "4.7.2",
     "@types/webpack-plugin-serve": "1.4.2",
-    "@typescript-eslint/eslint-plugin": "5.59.7",
+    "@typescript-eslint/eslint-plugin": "5.59.8",
     "@typescript-eslint/parser": "5.59.7",
     "@webpack-cli/serve": "1.7.0",
     "autodll-webpack-plugin": "^0.4.2",
