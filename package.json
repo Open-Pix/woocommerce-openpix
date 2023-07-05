@@ -50,7 +50,7 @@
     "@typescript-eslint/parser": "5.61.0",
     "@webpack-cli/serve": "1.7.0",
     "autodll-webpack-plugin": "^0.4.2",
-    "babel-jest": "^29.5.0",
+    "babel-jest": "^29.6.0",
     "babel-loader": "9.1.2",
     "cache-loader": "4.1.0",
     "cross-env": "7.0.3",
