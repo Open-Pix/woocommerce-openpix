@@ -93,7 +93,7 @@
     "prettier": "^2.8.8",
     "react-refresh": "0.14.0",
     "regenerator-runtime": "^0.13.11",
-    "semver": "^7.5.3",
+    "semver": "^7.5.4",
     "simple-git": "^3.19.1",
     "style-loader": "3.3.3",
     "terser-webpack-plugin": "5.3.9",
