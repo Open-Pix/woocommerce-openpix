@@ -6,43 +6,10 @@ if (!defined('ABSPATH')) {
 
 require_once 'config/config.php';
 
-add_action('admin_footer', 'embedWebhookConfigButton');
-
-function embedWebhookConfigButton()
-{
-    ?>
-
-    <script type="text/javascript" >
-        jQuery(document).ready(function($) {
-
-            jQuery("#woocommerce_woocommerce_openpix_pix_webhook_button").click(() => {
-                var data = {
-                    action: 'openpix_configure_webhook',
-                    appID: jQuery('#woocommerce_woocommerce_openpix_pix_appID').val()
-                };
-
-                jQuery.post(ajaxurl,data,function(response) {
-                    if(response?.message) {
-                        alert(response.message);
-                    }
-                    if(response?.success) {
-                        if(response?.body?.webhook_status) {
-                            jQuery("#woocommerce_woocommerce_openpix_pix_webhook_status").val(response.body.webhook_status);
-                        }
-                    }
-                })
-            })
-        });
-    </script> <?php
-}
 add_action('wp_ajax_openpix_configure_webhook', [
     'WC_OpenPix_Pix_Gateway',
     'openpix_configure_webhook',
 ]);
-function wc_openpix_assets_url()
-{
-    return plugin_dir_url(dirname(__FILE__)) . 'assets/';
-}
 
 class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
 {
