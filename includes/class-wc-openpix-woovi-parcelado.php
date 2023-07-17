@@ -5,11 +5,7 @@ if (!defined('ABSPATH')) {
 }
 
 require_once 'config/config.php';
-
-add_action('wp_ajax_openpix_configure_webhook', [
-    'WC_OpenPix_Pix_Gateway',
-    'openpix_configure_webhook',
-]);
+require_once 'class-wc-openpix-pix.php';
 
 class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
 {
@@ -87,12 +83,14 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
             'comment' => $reason,
         ];
 
+        $wc_openpix_pix_gateway = new WC_OpenPix_Pix_Gateway();
+
         $params = [
             'timeout' => 60,
             'headers' => [
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
-                'Authorization' => $this->appID,
+                'Authorization' => $wc_openpix_pix_gateway->appID,
                 'version' => WC_OpenPix::VERSION,
                 'platform' => 'WOOCOMMERCE',
             ],
@@ -170,8 +168,10 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
 
             WC_OpenPix::debug('get correlationID result ' . $correlationID);
 
+            $wc_openpix_pix_gateway = new WC_OpenPix_Pix_Gateway();
+
             wp_localize_script('openpix-checkout', 'wcOpenpixParams', [
-                'appID' => $this->appID,
+                'appID' => $wc_openpix_pix_gateway->appID,
                 'storeName' => $name,
                 'correlationID' => $correlationID,
             ]);
@@ -567,12 +567,14 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
             $order
         );
 
+        $wc_openpix_pix_gateway = new WC_OpenPix_Pix_Gateway();
+
         $params = [
             'timeout' => 60,
             'headers' => [
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
-                'Authorization' => $this->appID,
+                'Authorization' => $wc_openpix_pix_gateway->getAppID(),
                 'version' => WC_OpenPix::VERSION,
                 'platform' => 'WOOCOMMERCE',
             ],
@@ -702,6 +704,7 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
     public function thankyou_page($order_id)
     {
         $data = $this->getPluginSrc($order_id);
+        $wc_openpix_pix_gateway = new WC_OpenPix_Pix_Gateway();
 
         wc_get_template(
             'payment-instructions.php',
@@ -711,7 +714,7 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
                 'brCode' => $data['orderData']['brCode'],
                 'correlationID' => $data['correlationID'],
                 'environment' => $data['environment'],
-                'appID' => $this->appID,
+                'appID' => $wc_openpix_pix_gateway->appID,
                 'pluginUrl' => WC_OpenPix::get_assets_url(),
                 'src' => $data['src'],
             ],
@@ -730,7 +733,9 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
         );
 
         $environment = OpenPixConfig::getEnv();
-        $queryString = "appID={$this->appID}&correlationID={$correlationID}&node=openpix-order";
+        $wc_openpix_pix_gateway = new WC_OpenPix_Pix_Gateway();
+
+        $queryString = "appID={$wc_openpix_pix_gateway->appID}&correlationID={$correlationID}&node=openpix-order";
         $pluginUrl = OpenPixConfig::getPluginUrl();
         return [
             'orderData' => $data,
@@ -770,6 +775,7 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
             'value' => $total_cents,
             'comment' => $comment_trimmed,
             'additionalInfo' => $additionalInformation,
+            'type' => 'PIX_CREDIT'
         ];
 
         $customer = $this->getCustomerData($order);
@@ -787,12 +793,15 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
             if (is_numeric($order)) {
                 $order = wc_get_order($order);
             }
+
+            $wc_openpix_pix_gateway = new WC_OpenPix_Pix_Gateway();
+
             $params = [
                 'timeout' => 60,
                 'headers' => [
                     'Accept' => 'application/json',
                     'Content-Type' => 'application/json',
-                    'Authorization' => $this->appID,
+                    'Authorization' => $wc_openpix_pix_gateway->appID,
                     'version' => WC_OpenPix::VERSION,
                     'platform' => 'WOOCOMMERCE',
                 ],

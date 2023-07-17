@@ -1502,4 +1502,8 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         <script src="<?= $data['src'] ?>" async></script>
         <?php
     }
+
+    public function getAppID(): string {
+        return $this->appID;
+    }
 }
