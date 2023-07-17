@@ -91,7 +91,17 @@ class WC_OpenPix
                 )
             ) .
             '">' .
-            __('Settings', 'woocommerce-openpix') .
+            __('Settings Pix', 'woocommerce-openpix') .
+            '</a>';
+        $plugin_links[] =
+            '<a href="' .
+            esc_url(
+                admin_url(
+                    'admin.php?page=wc-settings&tab=checkout&section=woocommerce_openpix_pix_parcelado'
+                )
+            ) .
+            '">' .
+            __('Settings Parcelado', 'woocommerce-openpix') .
             '</a>';
         $plugin_links[] =
             '<a  target="_blank" href="https://developers.openpix.com.br/docs/ecommerce/woocommerce/woocommerce-plugin">' .
