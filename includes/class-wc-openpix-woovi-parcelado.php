@@ -19,7 +19,7 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
         $this->id = 'woocommerce_openpix_pix_parcelado';
         $this->method_title = __('OpenPix Parcelado', 'woocommerce-openpix');
         $this->method_description = __(
-            'Accept Pix payments with real-time updates, seamless checkout, and automatic order status updates.',
+            'OpenPix Parcelado is an innovative payment method that allows your customers to pay a 50% down payment for the Pix and divide the remainder of the purchase up to 4x on the card. The process is completely online, fast and easy, with a native anti-fraud system for total security.',
             'woocommerce-openpix'
         );
         $this->has_fields = true; // direct payment
@@ -269,7 +269,7 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
                     'woocommerce-openpix'
                 ),
                 'desc_tip' => true,
-                'default' => __('Pay with Pix', 'woocommerce-openpix'),
+                'default' => __('Pay with Pix and Credit Card', 'woocommerce-openpix'),
             ],
             'description' => [
                 'title' => __('Description', 'woocommerce-openpix'),
@@ -279,7 +279,7 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
                     'woocommerce-openpix'
                 ),
                 'desc_tip' => true,
-                'default' => __('Pay with Pix', 'woocommerce-openpix'),
+                'default' => __('Pay with Pix and Credit Card', 'woocommerce-openpix'),
             ],
             'order_button_text' => [
                 'title' => __('Order Button Text', 'woocommerce-openpix'),
@@ -289,7 +289,7 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
                     'woocommerce-openpix'
                 ),
                 'desc_tip' => true,
-                'default' => __('Pay with Pix', 'woocommerce-openpix'),
+                'default' => __('Pay with Pix and Credit Card', 'woocommerce-openpix'),
             ],
             'status_section' => [
                 'title' => __('Configure order status', 'woocommerce-openpix'),

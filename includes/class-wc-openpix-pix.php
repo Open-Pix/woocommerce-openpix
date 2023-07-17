@@ -53,7 +53,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
     public function __construct()
     {
         $this->id = 'woocommerce_openpix_pix';
-        $this->method_title = __('OpenPix', 'woocommerce-openpix');
+        $this->method_title = __('OpenPix Pix', 'woocommerce-openpix');
         $this->method_description = __(
             'Accept Pix payments with real-time updates, seamless checkout, and automatic order status updates.',
             'woocommerce-openpix'
