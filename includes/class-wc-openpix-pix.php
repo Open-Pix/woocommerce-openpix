@@ -346,6 +346,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             $response = [
                 'message' => __('App ID is required', 'openpix'),
             ];
+            $this->update_option('webhook_status', 'Not Configured');
             echo json_encode($response);
             exit();
         }
@@ -363,6 +364,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
     public function configureIntegration($data)
     {
         $this->update_option('appID', $data['appID']);
+        $this->update_option('webhook_status', 'Configured');
     }
 
     public function handleTestWebhook($data)
@@ -1503,7 +1505,8 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         <?php
     }
 
-    public function getAppID(): string {
+    public function getAppID(): string
+    {
         return $this->appID;
     }
 }
