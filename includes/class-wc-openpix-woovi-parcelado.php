@@ -9,7 +9,6 @@ require_once 'config/config.php';
 class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
 {
     public $appID;
-//    public $openpix_webhook;
     public $status_when_waiting;
     public $status_when_paid;
 
@@ -57,8 +56,6 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
             $this,
             'afterOrderDetailHook',
         ]);
-
-//        $this->openpix_webhook = new WC_OpenPix_Webhook();
 
         // $this->registerHooks();
     }
