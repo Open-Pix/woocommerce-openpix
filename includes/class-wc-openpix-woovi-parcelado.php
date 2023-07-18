@@ -6,10 +6,12 @@ if (!defined('ABSPATH')) {
 
 require_once 'config/config.php';
 require_once 'class-wc-openpix-pix.php';
+require_once 'webhook/class-wc-openpix-webhook.php';
 
 class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
 {
     public $appID;
+    public $openpix_webhook;
     public $status_when_waiting;
     public $status_when_paid;
 
@@ -52,6 +54,8 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
             $this,
             'afterOrderDetailHook',
         ]);
+
+        $this->openpix_webhook = new WC_OpenPix_Webhook();
 
         // $this->registerHooks();
     }
@@ -841,4 +845,24 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
         <script src="<?= $data['src'] ?>" async></script>
         <?php
     }
+
+    /**
+     * Handles incoming IPN (Instant Payment Notification) requests.
+     *
+     * This is the main entry point for the IPN requests.
+     *
+     * @return void
+     */
+    public function ipn_handler()
+    {
+        global $wpdb;
+        @ob_clean();
+        $body = file_get_contents('php://input', true);
+        $data = json_decode($body, true);
+
+        $this->openpix_webhook->validateWebhook($data, $body);
+
+        $this->openpix_webhook->handleWebhookEvents($data, $body);
+    }
+    // ipn end
 }
