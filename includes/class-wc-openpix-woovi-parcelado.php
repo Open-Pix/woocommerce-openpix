@@ -5,7 +5,6 @@ if (!defined('ABSPATH')) {
 }
 
 require_once 'config/config.php';
-require_once 'class-wc-openpix-pix.php';
 
 class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
 {
@@ -33,6 +32,7 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
         $this->description = $this->get_option('description');
 
         $this->order_button_text = $this->get_option('order_button_text');
+        $this->appID = $this->get_option('appID');
 
         $this->status_when_waiting = $this->get_option('status_when_waiting');
         $this->status_when_paid = $this->get_option('status_when_paid');
@@ -40,6 +40,10 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
         add_action('woocommerce_update_options_payment_gateways_' . $this->id, [
             $this,
             'process_admin_options',
+        ]);
+        add_action('woocommerce_api_wc_openpix_pix_gateway', [
+            $this,
+            'ipn_handler',
         ]);
         add_action('woocommerce_thankyou_' . $this->id, [
             $this,
@@ -86,14 +90,13 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
             'comment' => $reason,
         ];
 
-        $wc_openpix_pix_gateway = new WC_OpenPix_Pix_Gateway();
 
         $params = [
             'timeout' => 60,
             'headers' => [
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
-                'Authorization' => $wc_openpix_pix_gateway->appID,
+                'Authorization' => $this->appID,
                 'version' => WC_OpenPix::VERSION,
                 'platform' => 'WOOCOMMERCE',
             ],
@@ -171,10 +174,9 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
 
             WC_OpenPix::debug('get correlationID result ' . $correlationID);
 
-            $wc_openpix_pix_gateway = new WC_OpenPix_Pix_Gateway();
 
             wp_localize_script('openpix-checkout', 'wcOpenpixParams', [
-                'appID' => $wc_openpix_pix_gateway->appID,
+                'appID' => $this->appID,
                 'storeName' => $name,
                 'correlationID' => $correlationID,
             ]);
@@ -221,9 +223,28 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
 
     public function init_form_fields()
     {
+        $webhookUrl = OpenPixConfig::getWebhookUrl('WC_OpenPix_Pix_Parcelado_Gateway');
+
+        $webhookLabel = sprintf(
+            __(
+                'Use this Webhook URL to be registered at OpenPix: %s',
+                'woocommerce-openpix'
+            ),
+            '<a target="_blank" href="' .
+            $webhookUrl .
+            '">' .
+            $webhookUrl .
+            '</a>'
+        );
+
+        $registerLabel = sprintf(
+            __('Open your account now %s', 'woocommerce-openpix'),
+            '<a target="_blank" href="https://app.openpix.com/register">https://app.openpix.com/register</a>'
+        );
+
         $documentationLabel = sprintf(
             __(
-                'See more %s',
+                'See more about OpenPix Parcelado %s',
                 'woocommerce-openpix'
             ),
             '<a target="_blank" href="https://woovi.com/pix/woovi-parcelado">here</a>'
@@ -235,7 +256,29 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
                 'type' => 'checkbox',
                 'label' => __('Enable OpenPix', 'woocommerce-openpix'),
                 'default' => 'no',
-                'description' => "<p>$documentationLabel</p>",
+                'description' => "<p>$webhookLabel</p><p>$registerLabel</p><p>$documentationLabel</p>",
+            ],
+            'api_section' => [
+                'title' => __('OpenPix Integration API', 'woocommerce-openpix'),
+                'type' => 'title',
+                'description' => sprintf(
+                    __(
+                        'Follow documentation to get your OpenPix AppID here %s.',
+                        'woocommerce-openpix'
+                    ),
+                    '<a target="_blank" href="https://developers.openpix.com.br/docs/apis/api-getting-started/">' .
+                    __(
+                        'OpenPix API Getting Started',
+                        'woocommerce-openpix'
+                    ) .
+                    '</a>'
+                ),
+            ],
+            'appID' => [
+                'title' => __('AppID OpenPix', 'woocommerce-openpix'),
+                'type' => 'text',
+                'description' => 'AppID OpenPix',
+                'default' => '',
             ],
             'label_section' => [
                 'title' => __('Configure labels', 'woocommerce-openpix'),
@@ -270,6 +313,18 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
                 ),
                 'desc_tip' => true,
                 'default' => __('Pay with Pix and Credit Card', 'woocommerce-openpix'),
+            ],
+            'webhook_section' => [
+                'title' => __(
+                    'Configure Webhook integration',
+                    'woocommerce-openpix'
+                ),
+                'type' => 'title',
+            ],
+            'webhook_status' => [
+                'type' => 'text',
+                'title' => __('Webhook Status', 'woocommerce-openpix'),
+                'description' => __('Status ', 'woocommerce-openpix'),
             ],
             'status_section' => [
                 'title' => __('Configure order status', 'woocommerce-openpix'),
@@ -547,7 +602,6 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
             $order
         );
 
-        $wc_openpix_pix_gateway = new WC_OpenPix_Pix_Gateway();
 
         $params = [
             'timeout' => 60,
@@ -684,7 +738,6 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
     public function thankyou_page($order_id)
     {
         $data = $this->getPluginSrc($order_id);
-        $wc_openpix_pix_gateway = new WC_OpenPix_Pix_Gateway();
 
         wc_get_template(
             'payment-instructions.php',
@@ -694,7 +747,7 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
                 'brCode' => $data['orderData']['brCode'],
                 'correlationID' => $data['correlationID'],
                 'environment' => $data['environment'],
-                'appID' => $wc_openpix_pix_gateway->appID,
+                'appID' => $this->appID,
                 'pluginUrl' => WC_OpenPix::get_assets_url(),
                 'src' => $data['src'],
             ],
@@ -713,9 +766,8 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
         );
 
         $environment = OpenPixConfig::getEnv();
-        $wc_openpix_pix_gateway = new WC_OpenPix_Pix_Gateway();
 
-        $queryString = "appID={$wc_openpix_pix_gateway->appID}&correlationID={$correlationID}&node=openpix-order";
+        $queryString = "appID={$this->appID}&correlationID={$correlationID}&node=openpix-order";
         $pluginUrl = OpenPixConfig::getPluginUrl();
         return [
             'orderData' => $data,
@@ -774,14 +826,13 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
                 $order = wc_get_order($order);
             }
 
-            $wc_openpix_pix_gateway = new WC_OpenPix_Pix_Gateway();
 
             $params = [
                 'timeout' => 60,
                 'headers' => [
                     'Accept' => 'application/json',
                     'Content-Type' => 'application/json',
-                    'Authorization' => $wc_openpix_pix_gateway->appID,
+                    'Authorization' => $this->appID,
                     'version' => WC_OpenPix::VERSION,
                     'platform' => 'WOOCOMMERCE',
                 ],

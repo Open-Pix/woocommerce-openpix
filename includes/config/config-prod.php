@@ -22,9 +22,9 @@ class OpenPixConfig
         return OpenPixConfig::$OPENPIX_ENV;
     }
 
-    public static function getWebhookUrl()
+    public static function getWebhookUrl($gatewayClass = 'WC_OpenPix_Pix_Gateway'): string
     {
-        return home_url('/') . 'wc-api/' . 'WC_OpenPix_Pix_Gateway';
+        return home_url('/') . 'wc-api/' . $gatewayClass;
     }
 }
 
