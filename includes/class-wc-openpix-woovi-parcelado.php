@@ -87,7 +87,6 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
             'comment' => $reason,
         ];
 
-
         $params = [
             'timeout' => 60,
             'headers' => [
@@ -171,7 +170,6 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
 
             WC_OpenPix::debug('get correlationID result ' . $correlationID);
 
-
             wp_localize_script('openpix-checkout', 'wcOpenpixParams', [
                 'appID' => $this->appID,
                 'storeName' => $name,
@@ -220,7 +218,9 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
 
     public function init_form_fields()
     {
-        $webhookUrl = OpenPixConfig::getWebhookUrl('WC_OpenPix_Pix_Parcelado_Gateway');
+        $webhookUrl = OpenPixConfig::getWebhookUrl(
+            'WC_OpenPix_Pix_Parcelado_Gateway'
+        );
 
         $webhookLabel = sprintf(
             __(
@@ -228,10 +228,10 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
                 'woocommerce-openpix'
             ),
             '<a target="_blank" href="' .
-            $webhookUrl .
-            '">' .
-            $webhookUrl .
-            '</a>'
+                $webhookUrl .
+                '">' .
+                $webhookUrl .
+                '</a>'
         );
 
         $registerLabel = sprintf(
@@ -240,10 +240,7 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
         );
 
         $documentationLabel = sprintf(
-            __(
-                'See more about OpenPix Parcelado %s',
-                'woocommerce-openpix'
-            ),
+            __('See more about OpenPix Parcelado %s', 'woocommerce-openpix'),
             '<a target="_blank" href="https://woovi.com/pix/woovi-parcelado">here</a>'
         );
 
@@ -264,11 +261,11 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
                         'woocommerce-openpix'
                     ),
                     '<a target="_blank" href="https://developers.openpix.com.br/docs/apis/api-getting-started/">' .
-                    __(
-                        'OpenPix API Getting Started',
-                        'woocommerce-openpix'
-                    ) .
-                    '</a>'
+                        __(
+                            'OpenPix API Getting Started',
+                            'woocommerce-openpix'
+                        ) .
+                        '</a>'
                 ),
             ],
             'appID' => [
@@ -289,7 +286,10 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
                     'woocommerce-openpix'
                 ),
                 'desc_tip' => true,
-                'default' => __('Pay with Pix and Credit Card', 'woocommerce-openpix'),
+                'default' => __(
+                    'Pay with Pix and Credit Card',
+                    'woocommerce-openpix'
+                ),
             ],
             'description' => [
                 'title' => __('Description', 'woocommerce-openpix'),
@@ -299,7 +299,10 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
                     'woocommerce-openpix'
                 ),
                 'desc_tip' => true,
-                'default' => __('Pay with Pix and Credit Card', 'woocommerce-openpix'),
+                'default' => __(
+                    'Pay with Pix and Credit Card',
+                    'woocommerce-openpix'
+                ),
             ],
             'order_button_text' => [
                 'title' => __('Order Button Text', 'woocommerce-openpix'),
@@ -309,7 +312,10 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
                     'woocommerce-openpix'
                 ),
                 'desc_tip' => true,
-                'default' => __('Pay with Pix and Credit Card', 'woocommerce-openpix'),
+                'default' => __(
+                    'Pay with Pix and Credit Card',
+                    'woocommerce-openpix'
+                ),
             ],
             'webhook_section' => [
                 'title' => __(
@@ -599,7 +605,6 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
             $order
         );
 
-
         $params = [
             'timeout' => 60,
             'headers' => [
@@ -804,7 +809,7 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
             'value' => $total_cents,
             'comment' => $comment_trimmed,
             'additionalInfo' => $additionalInformation,
-            'type' => 'PIX_CREDIT'
+            'type' => 'PIX_CREDIT',
         ];
 
         $customer = $this->getCustomerData($order);
@@ -822,7 +827,6 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
             if (is_numeric($order)) {
                 $order = wc_get_order($order);
             }
-
 
             $params = [
                 'timeout' => 60,
@@ -869,7 +873,6 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
         <script src="<?= $data['src'] ?>" async></script>
         <?php
     }
-
 
     /**
      * Check if the provided data is a valid test webhook payload.
@@ -983,6 +986,7 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
             $response = [
                 'message' => __('App ID is required', 'openpix'),
             ];
+            $this->update_option('webhook_status', 'Not Configured');
             echo json_encode($response);
             exit();
         }
@@ -1000,6 +1004,7 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
     public function configureIntegration($data)
     {
         $this->update_option('appID', $data['appID']);
+        $this->update_option('webhook_status', 'Configured');
     }
 
     public function handleTestWebhook($data)
@@ -1102,7 +1107,7 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
         if ($order_correlation_id !== $correlationID) {
             WC_OpenPix::debug(
                 'Order with different correlation id then webhook correlation id ' .
-                $order_id
+                    $order_id
             );
 
             header('HTTP/1.1 200 OK');
