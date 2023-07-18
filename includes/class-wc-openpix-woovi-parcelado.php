@@ -41,7 +41,7 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
             $this,
             'process_admin_options',
         ]);
-        add_action('woocommerce_api_wc_openpix_pix_gateway', [
+        add_action('woocommerce_api_wc_openpix_pix_parcelado_gateway', [
             $this,
             'ipn_handler',
         ]);
