@@ -1,5 +1,9 @@
 <?php
 
+if (!defined('ABSPATH')) {
+    exit();
+}
+
 require_once 'config/config.php';
 require_once 'class-wc-openpix-pix.php';
 require_once 'webhook/class-wc-openpix-webhook.php';
