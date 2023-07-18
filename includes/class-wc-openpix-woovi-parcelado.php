@@ -9,7 +9,7 @@ require_once 'config/config.php';
 class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
 {
     public $appID;
-    public $openpix_webhook;
+//    public $openpix_webhook;
     public $status_when_waiting;
     public $status_when_paid;
 
@@ -608,7 +608,7 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
             'headers' => [
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
-                'Authorization' => $wc_openpix_pix_gateway->getAppID(),
+                'Authorization' => $this->appID,
                 'version' => WC_OpenPix::VERSION,
                 'platform' => 'WOOCOMMERCE',
             ],
