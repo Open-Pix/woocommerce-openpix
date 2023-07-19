@@ -479,7 +479,7 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
             'email' => $email,
             'taxID' => $taxID,
             'phone' => $this->formatPhone($phone),
-            '$address' => $address,
+            'address' => $address,
         ];
 
         return $customer;
