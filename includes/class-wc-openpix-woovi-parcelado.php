@@ -5,16 +5,19 @@ if (!defined('ABSPATH')) {
 }
 
 require_once 'config/config.php';
+require_once 'customer/class-wc-openpix-customer.php';
 
 class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
 {
     public $appID;
     public $status_when_waiting;
     public $status_when_paid;
+    private WC_OpenPix_Customer $openpix_customer;
 
     public function __construct()
     {
-        WC_OpenPix::debugJson('construct', 1);
+        $this->openpix_customer = new WC_OpenPix_Customer();
+
         $this->id = 'woocommerce_openpix_pix_parcelado';
         $this->method_title = __('OpenPix Parcelado', 'woocommerce-openpix');
         $this->method_description = __(
@@ -469,11 +472,14 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
                 ? sanitize_text_field($order_billing_cellphone)
                 : sanitize_text_field($order_billing_phone);
 
+        $address = $this->openpix_customer->getCustomerAddress($order);
+
         $customer = [
             'name' => $name,
             'email' => $email,
             'taxID' => $taxID,
             'phone' => $this->formatPhone($phone),
+            '$address' => $address,
         ];
 
         return $customer;
