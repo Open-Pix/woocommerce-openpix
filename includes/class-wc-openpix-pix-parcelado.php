@@ -244,7 +244,7 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
 
         $documentationLabel = sprintf(
             __('See more about OpenPix Parcelado %s', 'woocommerce-openpix'),
-            '<a target="_blank" href="https://woovi.com/pix/woovi-parcelado">here</a>'
+            '<a target="_blank" href="https://developers.openpix.com.br/docs/category/woocommerce">here</a>'
         );
 
         $this->form_fields = [
