@@ -7,6 +7,8 @@ if [ $1 != "prod" ]
   then
     zip -r woocommerce-openpix-$1-$(date "+%Y-%m-%d:%H:%M").zip \
     includes/class-wc-openpix-pix.php \
+    includes/class-wc-openpix-pix-parcelado.php \
+    includes/customer/class-wc-openpix-customer.php \
     includes/class-wc-openpix-prod.php \
     includes/class-giftback-coupon.php \
     includes/config/config.php \
@@ -19,6 +21,8 @@ if [ $1 != "prod" ]
   else 
       zip -r woocommerce-openpix-$1-$(date "+%Y-%m-%d:%H:%M").zip \
       includes/class-wc-openpix-pix.php \
+      includes/class-wc-openpix-pix-parcelado.php \
+    includes/customer/class-wc-openpix-customer.php \
       includes/class-giftback-coupon.php \
       includes/config/config.php \
       languages \
