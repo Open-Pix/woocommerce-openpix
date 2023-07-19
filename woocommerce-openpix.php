@@ -4,7 +4,7 @@
  * Description: Aceite pagamentos Pix em com atualização em tempo real, checkout transparente e atualização automática de status do pedido.
  * Author: OpenPix
  * Author URI: https://openpix.com.br/
- * Version: 2.6.0
+ * Version: 2.6.1
  * Text Domain: woocommerce-openpix
  * WC tested up to: 7.6.0
  * @package WooCommerce_OpenPix
@@ -34,7 +34,7 @@ function woocommerce_openpix_init()
 
 class WC_OpenPix
 {
-    const VERSION = '2.6.0';
+    const VERSION = '2.6.1';
 
     protected static $instance = null;
 
@@ -69,7 +69,8 @@ class WC_OpenPix
     {
         // include_once dirname(__FILE__) .'/includes/class-wc-openpix-prod.php';
         include_once dirname(__FILE__) . '/includes/class-wc-openpix-pix.php';
-        include_once dirname(__FILE__) . '/includes/class-wc-openpix-woovi-parcelado.php';
+        include_once dirname(__FILE__) .
+            '/includes/class-wc-openpix-woovi-parcelado.php';
         include_once dirname(__FILE__) . '/includes/class-giftback-coupon.php';
     }
 
