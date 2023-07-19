@@ -65,7 +65,7 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
 
     public function can_refund_order($order)
     {
-        return true;
+        return false;
     }
 
     public function process_refund($order_id, $amount = null, $reason = null)
