@@ -1,3 +1,10 @@
+#### 2.6.2 (2023-07-19)
+
+##### Bug Fixes
+
+* **class:**  class and links (8dcd9765)
+* **filename:**  filename (17035db7)
+
 #### 2.6.1 (2023-07-19)
 
 ##### Build System / Dependencies
