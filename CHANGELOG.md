@@ -1,3 +1,46 @@
+#### 2.7.0 (2023-08-10)
+
+##### Build System / Dependencies
+
+* **deps-dev:**
+  *  bump eslint-import-resolver-typescript (#1159) (34ef55f6)
+  *  bump @types/react from 18.2.19 to 18.2.20 (#1158) (ecb96ce8)
+  *  bump eslint-plugin-cypress from 2.13.3 to 2.14.0 (#1157) (8f3c5f55)
+  *  bump @types/react from 18.2.18 to 18.2.19 (#1156) (190aa20f)
+  *  bump eslint-import-resolver-webpack (#1155) (f91c8bf9)
+  *  bump esbuild from 0.18.19 to 0.19.0 (#1154) (fb9f3af2)
+  *  bump @babel/plugin-transform-typescript (#1152) (45bbdee8)
+  *  bump @babel/preset-env from 7.22.9 to 7.22.10 (#1149) (258dc03b)
+  *  bump esbuild from 0.18.18 to 0.18.19 (#1151) (f3751951)
+  *  bump regenerator-runtime from 0.13.11 to 0.14.0 (#1150) (86e3b5f0)
+  *  bump @babel/plugin-transform-runtime (#1148) (fd73108c)
+  *  bump eslint-import-resolver-webpack (#1147) (c3914244)
+  *  bump @types/eslint from 8.44.1 to 8.44.2 (#1146) (89f890ce)
+  *  bump esbuild from 0.18.17 to 0.18.18 (#1144) (8f576924)
+  *  bump eslint-config-prettier from 8.9.0 to 8.10.0 (#1143) (a382c534)
+  *  bump @types/react from 18.2.17 to 18.2.18 (#1142) (d6e54776)
+  *  bump eslint from 8.45.0 to 8.46.0 (#1141) (7c337427)
+  *  bump eslint-plugin-import from 2.27.5 to 2.28.0 (#1140) (12729e19)
+  *  bump @types/koa from 2.13.7 to 2.13.8 (#1139) (821f8c00)
+  *  bump eslint-plugin-react from 7.33.0 to 7.33.1 (#1138) (5e9b550c)
+  *  bump jest from 29.6.1 to 29.6.2 (#1136) (7cad4c33)
+  *  bump jest-environment-jsdom from 29.6.1 to 29.6.2 (#1137) (c62ed116)
+  *  bump eslint-config-prettier from 8.8.0 to 8.9.0 (#1135) (24994089)
+  *  bump babel-jest from 29.6.1 to 29.6.2 (#1134) (b814e442)
+  *  bump @types/react from 18.2.16 to 18.2.17 (#1133) (a6c2f1f7)
+  *  bump esbuild from 0.18.16 to 0.18.17 (#1132) (de302aeb)
+  *  bump @types/eslint from 8.44.0 to 8.44.1 (#1131) (1692c688)
+  *  bump @types/koa from 2.13.6 to 2.13.7 (#1130) (9acef4c8)
+  *  bump @types/react from 18.2.15 to 18.2.16 (#1129) (f083e91e)
+  *  bump @types/testing-library__jest-dom (#1128) (5404d477)
+  *  bump esbuild from 0.18.15 to 0.18.16 (#1127) (ea704bf0)
+  *  bump eslint-plugin-react from 7.32.2 to 7.33.0 (#1126) (5df3ced0)
+  *  bump esbuild from 0.18.14 to 0.18.15 (#1125) (41514fef)
+
+##### Bug Fixes
+
+* **pack:**  bring back assets (b8a502d2)
+
 #### 2.6.2 (2023-07-19)
 
 ##### Bug Fixes
