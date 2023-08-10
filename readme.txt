@@ -4,7 +4,7 @@ Tags: woocommerce, openpix, payment
 Requires at least: 4.0
 Tested up to: 6.1.1
 Requires PHP: 5.6
-Stable tag: 2.7.0
+Stable tag: 2.7.1
 License: GPLv2 or later
 License URI: <http://www.gnu.org/licenses/gpl-2.0.html>
 
@@ -89,9 +89,13 @@ Se precisar falar com nosso time, acesse o chat disponível em nosso site.
 
 == Changelog ==
 
-= 2.6.3 - 2023-08-10 =
+= 2.7.1 - 2023-08-10 =
 
-* Correção de Classes da funcionalidade OpenPix Parcelado
+* Correção Assets
+
+= 2.7.0 - 2023-08-10 =
+
+* Correção de Imports
 
 = 2.6.2 - 2023-07-19 =
 
