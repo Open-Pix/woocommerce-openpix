@@ -11,7 +11,6 @@ if [ $1 != "prod" ]
     includes/class-wc-openpix-pix-parcelado.php \
     includes/customer/class-wc-openpix-customer.php \
     includes/class-wc-openpix-prod.php \
-    includes/class-giftback-coupon.php \
     includes/config/config.php \
     includes/config/config-prod-beta.php \
     languages \
@@ -25,7 +24,6 @@ if [ $1 != "prod" ]
       includes/class-wc-openpix-pix.php \
       includes/class-wc-openpix-pix-parcelado.php \
     includes/customer/class-wc-openpix-customer.php \
-      includes/class-giftback-coupon.php \
       includes/config/config.php \
       languages \
       templates \
