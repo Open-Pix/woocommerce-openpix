@@ -163,7 +163,6 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
         return true;
     }
 
-    // giftback
     public function checkout_scripts()
     {
         if (is_checkout()) {
@@ -485,33 +484,6 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
         return $customer;
     }
 
-    public function getGiftbackData()
-    {
-        $hasGiftback =
-            isset($_POST['openpix_giftback_hash']) &&
-            isset($_POST['openpix_giftback_value']) &&
-            isset($_POST['openpix_shopper_id']);
-
-        if (!$hasGiftback) {
-            WC_OpenPix::debug('Not has giftback data');
-            return null;
-        }
-
-        $order_giftback_hash = $_POST['openpix_giftback_hash'];
-        $order_giftback_value = intval($_POST['openpix_giftback_value']);
-        $order_shopper_id = $_POST['openpix_shopper_id'];
-
-        $giftback = [
-            'giftbackHash' => $order_giftback_hash,
-            'giftbackValue' => $order_giftback_value,
-            'shopperId' => $order_shopper_id,
-        ];
-
-        WC_OpenPix::debugJson('Giftback data', $giftback);
-
-        return $giftback;
-    }
-
     public function validateOrderFields($order)
     {
         $birthdate = sanitize_text_field(
@@ -552,19 +524,6 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
         }
 
         return null;
-    }
-
-    public function shouldApplyGiftback($data)
-    {
-        WC_OpenPix::debugJson('Giftback data', $data);
-        if (
-            isset($data['charge']['giftbackAppliedValue']) &&
-            !empty($data['charge']['giftbackAppliedValue']) &&
-            $data['charge']['giftbackAppliedValue'] > 0
-        ) {
-            return true;
-        }
-        return false;
     }
 
     public function getErrorFromResponse($response)
@@ -691,21 +650,6 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
             ],
         ];
 
-        if ($this->shouldApplyGiftback($data)) {
-            $giftbackAppliedValueOnCharge =
-                $data['charge']['giftbackAppliedValue'];
-            $nonNegativeGiftback = absint($giftbackAppliedValueOnCharge);
-            $roundedGiftbackValue = round($nonNegativeGiftback / 100, 2);
-
-            $coupon = new AWPCustomDiscount(
-                'giftback-' . $order_id,
-                $roundedGiftbackValue,
-                'fixed_cart'
-            );
-
-            $coupon->addDiscount($order);
-        }
-
         // WooCommerce 3.0 or later
         if (!method_exists($order, 'update_meta_data')) {
             foreach ($meta_data as $key => $value) {
@@ -826,7 +770,6 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
         return $payload;
     }
 
-    // giftback growth
     public function ceHandlerWooCommerceNewOrder($order)
     {
         try {

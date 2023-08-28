@@ -71,7 +71,6 @@ class WC_OpenPix
         include_once dirname(__FILE__) . '/includes/class-wc-openpix-pix.php';
         include_once dirname(__FILE__) .
             '/includes/class-wc-openpix-pix-parcelado.php';
-        include_once dirname(__FILE__) . '/includes/class-giftback-coupon.php';
     }
 
     /**
