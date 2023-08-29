@@ -1,3 +1,36 @@
+#### 2.8.0 (2023-08-29)
+
+##### Build System / Dependencies
+
+* **deps-dev:**
+  *  bump eslint-plugin-compat from 4.1.4 to 4.2.0 (#1193) (fe875027)
+  *  bump eslint from 8.47.0 to 8.48.0 (#1191) (eeed6bd2)
+  *  bump @babel/plugin-transform-typescript (#1190) (9bc4daf4)
+  *  bump jest-environment-jsdom from 29.6.3 to 29.6.4 (#1189) (5d13b7e8)
+  *  bump babel-jest from 29.6.3 to 29.6.4 (#1187) (dfb79b8a)
+  *  bump jest from 29.6.3 to 29.6.4 (#1186) (7b606d2a)
+  *  bump typescript from 5.1.6 to 5.2.2 (#1185) (47deb51a)
+  *  bump @babel/preset-typescript from 7.22.5 to 7.22.11 (#1184) (79d5c447)
+  *  bump @types/styled-system from 5.1.16 to 5.1.17 (#1182) (a77804c9)
+  *  bump @types/jquery from 3.5.16 to 3.5.17 (#1181) (51b984e5)
+  *  bump @types/react from 18.2.20 to 18.2.21 (#1180) (7839b7ec)
+  *  bump babel-jest from 29.6.2 to 29.6.3 (#1178) (85abf179)
+  *  bump jest-environment-jsdom from 29.6.2 to 29.6.3 (#1179) (b483a1cf)
+  *  bump jest from 29.6.2 to 29.6.3 (#1177) (cf0c1d2d)
+  *  bump eslint-plugin-import from 2.28.0 to 2.28.1 (#1174) (a6cf60b6)
+  *  bump eslint-import-resolver-webpack (#1173) (f7d1678d)
+  *  bump eslint-import-resolver-webpack (#1171) (effc4a2e)
+  *  bump @prettier/plugin-php from 0.19.6 to 0.19.7 (#1170) (7e8ea95e)
+  *  bump eslint-plugin-react from 7.33.1 to 7.33.2 (#1169) (2591c58b)
+  *  bump @pmmmwh/react-refresh-webpack-plugin (#1167) (c457dea3)
+  *  bump esbuild from 0.19.1 to 0.19.2 (#1166) (ee81cc0e)
+  *  bump esbuild from 0.19.0 to 0.19.1 (#1164) (470bb309)
+  *  bump eslint from 8.46.0 to 8.47.0 (#1162) (cb062388)
+
+##### Bug Fixes
+
+*  remove giftback (#1192) (b2829e68)
+
 #### 2.7.1 (2023-08-10)
 
 #### 2.7.0 (2023-08-10)
