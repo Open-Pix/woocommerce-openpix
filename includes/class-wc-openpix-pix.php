@@ -18,17 +18,13 @@ function embedWebhookConfigButton()
         jQuery("#woocommerce_woocommerce_openpix_pix_webhook_button").click(() => {
             var data = {
                 action: 'openpix_configure_webhook',
-                appID: jQuery('#woocommerce_woocommerce_openpix_pix_appID').val()
             };
 
             jQuery.post(ajaxurl,data,function(response) {
-                if(response?.message) {
-                    alert(response.message);
-                }
-                if(response?.success) {
-                    if(response?.body?.webhook_status) {
-                        jQuery("#woocommerce_woocommerce_openpix_pix_webhook_status").val(response.body.webhook_status);
-                    }
+                var redirect_url = response.redirect_url || "";
+
+                if (redirect_url) {
+                    window.open(redirect_url, "_blank");
                 }
             })
         })
@@ -746,12 +742,9 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                 'class' => 'button-primary',
                 'description' => sprintf(
                     __(
-                        'Follow documentation to configure Webhook on OpenPix here %s.',
+                        'By pressing this button, you will be redirected to our platform where we will quickly configure a new integration.',
                         'woocommerce-openpix'
-                    ),
-                    '<a target="_blank" href="https://developers.openpix.com.br/docs/ecommerce/woocommerce-plugin/">' .
-                        __('Documentation', 'woocommerce-openpix') .
-                        '</a>'
+                    )
                 ),
             ],
             'webhook_status' => [
@@ -1131,190 +1124,35 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             'redirect' => $this->get_return_url($order),
         ];
     }
+
     public static function openpix_configure_webhook()
     {
         $webhookUrl = OpenPixConfig::getWebhookUrl();
+        $platformUrl = OpenPixConfig::getPlatformUrl();
+        $platformNewIntegrationUrl =
+            $platformUrl .
+            '/home/applications/woocommerce/add/oneclick?website=' .
+            $webhookUrl;
 
-        $url = OpenPixConfig::getApiUrl() . '/api/v1/webhook';
         $openpixSettings = get_option(
             'woocommerce_woocommerce_openpix_pix_settings'
         );
-        if (
-            empty(trim($openpixSettings['appID'])) &&
-            !empty(trim($_POST['appID']))
-        ) {
-            $openpixSettings['appID'] = trim($_POST['appID']);
-            update_option(
-                'woocommerce_woocommerce_openpix_pix_settings',
-                $openpixSettings
-            );
-        }
-        $appID = $openpixSettings['appID'];
 
-        if (!$appID) {
-            $response = [
-                'message' => __(
-                    'OpenPix: You need to add appID before configuring webhook.',
-                    'woocommerce-openpix'
-                ),
-                'success' => false,
-            ];
-            wp_send_json($response);
-            wp_die();
-        }
-        $params = [
-            'timeout' => 60,
-            'headers' => [
-                'Accept' => 'application/json',
-                'Content-Type' => 'application/json',
-                'Authorization' => $appID,
-                'version' => WC_OpenPix::VERSION,
-                'platform' => 'WOOCOMMERCE',
-            ],
-            'method' => 'GET',
-        ];
-        $response = wp_remote_get("$url?url=$webhookUrl", $params); // check if alredy have one webhook with this $webhookUrl
-
-        $data = json_decode($response['body'], true);
-
-        $hasActiveWebhook = false;
-        foreach ($data['webhooks'] as $webhook) {
-            if ($webhook['isActive']) {
-                $hasActiveWebhook = true;
-                break;
-            }
-        }
-        if ($hasActiveWebhook) {
-            $openpixSettings['webhook_status'] = __(
-                'Configured',
-                'woocommerce-openpix'
-            );
-
-            update_option(
-                'woocommerce_woocommerce_openpix_pix_settings',
-                $openpixSettings
-            );
-            $responsePayload = [
-                'message' => __(
-                    'OpenPix: Webhook already configured.',
-                    'woocommerce-openpix'
-                ),
-                'body' => [
-                    'webhook_authorization' =>
-                        $openpixSettings['webhook_authorization'],
-                    'hmac_authorization' =>
-                        $openpixSettings['hmac_authorization'],
-                    'webhook_status' => $openpixSettings['webhook_status'],
-                ],
-                'success' => true,
-            ];
-            wp_send_json(
-                $responsePayload,
-                null,
-                JSON_UNESCAPED_UNICODE |
-                    JSON_UNESCAPED_SLASHES |
-                    JSON_NUMERIC_CHECK
-            );
-
-            wp_die();
-        }
-
-        $payload = [
-            'webhook' => [
-                'name' => 'WooCommerce-Webhook',
-                'url' => $webhookUrl,
-                'isActive' => true,
-            ],
-        ];
-        $paramsWebhookPost = [
-            'timeout' => 60,
-            'headers' => [
-                'Accept' => 'application/json',
-                'Content-Type' => 'application/json',
-                'Authorization' => $appID,
-                'version' => WC_OpenPix::VERSION,
-                'platform' => 'WOOCOMMERCE',
-            ],
-            'body' => json_encode($payload),
-            'method' => 'POST',
-            'data_format' => 'body',
-        ];
-        $oldOpenpixSettings = $openpixSettings;
-        // because iph_handler validade request
-
-        // @todo: put signature here
+        $openpixSettings['appID'] = '';
 
         update_option(
             'woocommerce_woocommerce_openpix_pix_settings',
             $openpixSettings
         );
 
-        $responseWebhookPost = wp_remote_post($url, $paramsWebhookPost);
-
-        $bodyWebhook = json_decode($responseWebhookPost['body'], true);
-
-        if (isset($bodyWebhook['error']) || isset($bodyWebhook['errors'])) {
-            // Roolback of openpixSettings
-            $openpixSettings['webhook_status'] = __(
-                'Not configured',
-                'woocommerce-openpix'
-            );
-
-            update_option(
-                'woocommerce_woocommerce_openpix_pix_settings',
-                $oldOpenpixSettings
-            );
-            $errorFromApi =
-                $bodyWebhook['error'] ?? $bodyWebhook['errors'][0]['message'];
-
-            $responsePayload = [
-                'message' =>
-                    __(
-                        'OpenPix: Error configuring webhook.',
-                        'woocommerce-openpix'
-                    ) . " \n$errorFromApi",
-                'body' => [
-                    'webhook_status' => $openpixSettings['webhook_status'],
-                ],
-                'success' => false,
-            ];
-            wp_send_json(
-                $responsePayload,
-                null,
-                JSON_UNESCAPED_UNICODE |
-                    JSON_UNESCAPED_SLASHES |
-                    JSON_NUMERIC_CHECK
-            );
-            wp_die();
-        }
-
-        $openpixSettings['webhook_status'] = __(
-            'Configured',
-            'woocommerce-openpix'
-        );
-
-        update_option(
-            'woocommerce_woocommerce_openpix_pix_settings',
-            $openpixSettings
-        );
-
-        $responsePayload = [
-            'message' => __(
-                'OpenPix: Webhook configured.',
-                'woocommerce-openpix'
-            ),
-            'body' => [
-                'webhook_status' => $openpixSettings['webhook_status'],
-            ],
-            'success' => true,
+        $response = [
+            'redirect_url' => $platformNewIntegrationUrl,
         ];
-        wp_send_json(
-            $responsePayload,
-            null,
-            JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
-        );
-        wp_die(); // this is required to terminate immediately and return a proper response
+
+        wp_send_json($response);
+        wp_die();
     }
+
     public function thankyou_page($order_id)
     {
         $data = $this->getPluginSrc($order_id);
