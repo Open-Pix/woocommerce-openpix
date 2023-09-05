@@ -17,7 +17,7 @@ function embedWooviParceladoOneclickConfigButton()
 
         jQuery("#woocommerce_woocommerce_openpix_pix_parcelado_oneclick_button").click(() => {
             var data = {
-                action: 'openpix_prepare_oneclick',
+                action: 'openpix_parcelado_prepare_oneclick',
             };
 
             jQuery.post(ajaxurl,data,function(response) {
@@ -31,6 +31,11 @@ function embedWooviParceladoOneclickConfigButton()
 	});
 	</script> <?php
 }
+
+add_action('wp_ajax_openpix_parcelado_prepare_oneclick', [
+    'WC_OpenPix_Pix_Parcelado_Gateway',
+    'openpix_parcelado_prepare_oneclick',
+]);
 
 require_once 'customer/class-wc-openpix-customer.php';
 
@@ -740,9 +745,11 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
         ];
     }
 
-    public static function openpix_prepare_oneclick()
+    public static function openpix_parcelado_prepare_oneclick()
     {
-        $webhookUrl = OpenPixConfig::getWebhookUrl();
+        $webhookUrl = OpenPixConfig::getWebhookUrl(
+            'WC_OpenPix_Pix_Parcelado_Gateway'
+        );
         $platformUrl = OpenPixConfig::getPlatformUrl();
         $platformNewIntegrationUrl =
             $platformUrl .
