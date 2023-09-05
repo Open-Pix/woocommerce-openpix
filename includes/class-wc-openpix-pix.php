@@ -15,9 +15,9 @@ function embedWebhookConfigButton()
 	<script type="text/javascript" >
 	jQuery(document).ready(function($) {
 
-        jQuery("#woocommerce_woocommerce_openpix_pix_webhook_button").click(() => {
+        jQuery("#woocommerce_woocommerce_openpix_pix_oneclick_button").click(() => {
             var data = {
-                action: 'openpix_configure_webhook',
+                action: 'openpix_prepare_oneclick',
             };
 
             jQuery.post(ajaxurl,data,function(response) {
@@ -31,9 +31,9 @@ function embedWebhookConfigButton()
 	});
 	</script> <?php
 }
-add_action('wp_ajax_openpix_configure_webhook', [
+add_action('wp_ajax_openpix_prepare_oneclick', [
     'WC_OpenPix_Pix_Gateway',
-    'openpix_configure_webhook',
+    'openpix_prepare_oneclick',
 ]);
 function wc_openpix_assets_url()
 {
@@ -729,14 +729,14 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                 'desc_tip' => true,
                 'default' => __('Pay with Pix', 'woocommerce-openpix'),
             ],
-            'webhook_section' => [
+            'oneclick_section' => [
                 'title' => __(
-                    'Configure Webhook integration',
+                    'Authenticate on the platform using 1 click',
                     'woocommerce-openpix'
                 ),
                 'type' => 'title',
             ],
-            'webhook_button' => [
+            'oneclick_button' => [
                 'type' => 'button',
                 'title' => __('One Click Configuration', 'woocommerce-openpix'),
                 'class' => 'button-primary',
@@ -746,6 +746,13 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                         'woocommerce-openpix'
                     )
                 ),
+            ],
+            'webhook_section' => [
+                'title' => __(
+                    'Configure Webhook integration',
+                    'woocommerce-openpix'
+                ),
+                'type' => 'title',
             ],
             'webhook_status' => [
                 'type' => 'text',
@@ -776,9 +783,9 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             ],
         ];
 
-        if (!$this->get_option('webhook_button')) {
+        if (!$this->get_option('oneclick_button')) {
             $this->update_option(
-                'webhook_button',
+                'oneclick_button',
                 __('Configure now with one click', 'woocommerce-openpix')
             );
         }
@@ -1125,7 +1132,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         ];
     }
 
-    public static function openpix_configure_webhook()
+    public static function openpix_prepare_oneclick()
     {
         $webhookUrl = OpenPixConfig::getWebhookUrl();
         $platformUrl = OpenPixConfig::getPlatformUrl();
@@ -1134,9 +1141,14 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             '/home/applications/woocommerce/add/oneclick?website=' .
             $webhookUrl;
 
+        // Remove current App ID
         $openpixSettings = get_option(
             'woocommerce_woocommerce_openpix_pix_settings'
         );
+
+        if (!is_array($openpixSettings)) {
+            $openpixSettings = [];
+        }
 
         $openpixSettings['appID'] = '';
 
