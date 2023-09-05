@@ -302,6 +302,24 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
                         '</a>'
                 ),
             ],
+            'oneclick_section' => [
+                'title' => __(
+                    'Authenticate on the platform using 1 click',
+                    'woocommerce-openpix'
+                ),
+                'type' => 'title',
+            ],
+            'oneclick_button' => [
+                'type' => 'button',
+                'title' => __('One Click Configuration', 'woocommerce-openpix'),
+                'class' => 'button-primary',
+                'description' => sprintf(
+                    __(
+                        'By pressing this button, you will be redirected to our platform where we will quickly configure a new integration.',
+                        'woocommerce-openpix'
+                    )
+                ),
+            ],
             'appID' => [
                 'title' => __('AppID OpenPix', 'woocommerce-openpix'),
                 'type' => 'text',
@@ -349,24 +367,6 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
                 'default' => __(
                     'Pay with Pix and Credit Card',
                     'woocommerce-openpix'
-                ),
-            ],
-            'oneclick_section' => [
-                'title' => __(
-                    'Authenticate on the platform using 1 click',
-                    'woocommerce-openpix'
-                ),
-                'type' => 'title',
-            ],
-            'oneclick_button' => [
-                'type' => 'button',
-                'title' => __('One Click Configuration', 'woocommerce-openpix'),
-                'class' => 'button-primary',
-                'description' => sprintf(
-                    __(
-                        'By pressing this button, you will be redirected to our platform where we will quickly configure a new integration.',
-                        'woocommerce-openpix'
-                    )
                 ),
             ],
             'webhook_section' => [
