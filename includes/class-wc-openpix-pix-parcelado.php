@@ -5,6 +5,38 @@ if (!defined('ABSPATH')) {
 }
 
 require_once 'config/config.php';
+
+add_action('admin_footer', 'embedWooviParceladoOneclickConfigButton');
+
+function embedWooviParceladoOneclickConfigButton()
+{
+    ?>
+    
+	<script type="text/javascript" >
+	jQuery(document).ready(function($) {
+
+        jQuery("#woocommerce_woocommerce_openpix_pix_parcelado_oneclick_button").click(() => {
+            var data = {
+                action: 'openpix_parcelado_prepare_oneclick',
+            };
+
+            jQuery.post(ajaxurl,data,function(response) {
+                var redirect_url = response.redirect_url || "";
+
+                if (redirect_url) {
+                    window.open(redirect_url, "_blank");
+                }
+            })
+        })
+	});
+	</script> <?php
+}
+
+add_action('wp_ajax_openpix_parcelado_prepare_oneclick', [
+    'WC_OpenPix_Pix_Parcelado_Gateway',
+    'openpix_parcelado_prepare_oneclick',
+]);
+
 require_once 'customer/class-wc-openpix-customer.php';
 
 class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
@@ -270,6 +302,24 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
                         '</a>'
                 ),
             ],
+            'oneclick_section' => [
+                'title' => __(
+                    'Authenticate on the platform using 1 click',
+                    'woocommerce-openpix'
+                ),
+                'type' => 'title',
+            ],
+            'oneclick_button' => [
+                'type' => 'button',
+                'title' => __('One Click Configuration', 'woocommerce-openpix'),
+                'class' => 'button-primary',
+                'description' => sprintf(
+                    __(
+                        'By pressing this button, you will be redirected to our platform where we will quickly configure a new integration.',
+                        'woocommerce-openpix'
+                    )
+                ),
+            ],
             'appID' => [
                 'title' => __('AppID OpenPix', 'woocommerce-openpix'),
                 'type' => 'text',
@@ -354,6 +404,13 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
                 'default' => $this->get_available_status('wc-processing'),
             ],
         ];
+
+        if (!$this->get_option('oneclick_button')) {
+            $this->update_option(
+                'oneclick_button',
+                __('Configure now with one click', 'woocommerce-openpix')
+            );
+        }
     }
 
     public function payment_fields()
@@ -687,6 +744,42 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
             'redirect' => $this->get_return_url($order),
         ];
     }
+
+    public static function openpix_parcelado_prepare_oneclick()
+    {
+        $webhookUrl = OpenPixConfig::getWebhookUrl(
+            'WC_OpenPix_Pix_Parcelado_Gateway'
+        );
+        $platformUrl = OpenPixConfig::getPlatformUrl();
+        $platformNewIntegrationUrl =
+            $platformUrl .
+            '/home/applications/woocommerce-pix-credit-card/add/oneclick?website=' .
+            $webhookUrl;
+
+        // Remove current AppID
+        $openpixSettings = get_option(
+            'woocommerce_woocommerce_openpix_pix_parcelado_settings'
+        );
+
+        if (!is_array($openpixSettings)) {
+            $openpixSettings = [];
+        }
+
+        $openpixSettings['appID'] = '';
+
+        update_option(
+            'woocommerce_woocommerce_openpix_pix_parcelado_settings',
+            $openpixSettings
+        );
+
+        $response = [
+            'redirect_url' => $platformNewIntegrationUrl,
+        ];
+
+        wp_send_json($response);
+        wp_die();
+    }
+
     public function thankyou_page($order_id)
     {
         $data = $this->getPluginSrc($order_id);
