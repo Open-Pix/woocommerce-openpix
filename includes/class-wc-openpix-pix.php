@@ -40,14 +40,19 @@ function wc_openpix_assets_url()
     return plugin_dir_url(dirname(__FILE__)) . 'assets/';
 }
 
+require_once __DIR__ . '/customer/class-wc-openpix-customer.php';
+
 class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 {
     public $appID;
     public $status_when_waiting;
     public $status_when_paid;
+    private WC_OpenPix_Customer $openpix_customer;
 
     public function __construct()
     {
+        $this->openpix_customer = new WC_OpenPix_Customer();
+
         $this->id = 'woocommerce_openpix_pix';
         $this->method_title = __('OpenPix Pix', 'woocommerce-openpix');
         $this->method_description = __(
@@ -925,7 +930,35 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             'phone' => $this->formatPhone($phone),
         ];
 
+        $address = $this->openpix_customer->getCustomerAddress($order);
+
+        if ($this->canSendCustomerAddress($address)) {
+            $customer['address'] = $address;
+        }
+
         return $customer;
+    }
+
+    private function canSendCustomerAddress($address)
+    {
+        if (!is_array($address)) {
+            return false;
+        }
+
+        $hasMissingFields =
+            empty($address['zipcode']) ||
+            empty($address['street']) ||
+            empty($address['number']) ||
+            empty($address['neighborhood']) ||
+            empty($address['city']) ||
+            empty($address['state']) ||
+            empty($address['country']);
+
+        if ($hasMissingFields) {
+            return false;
+        }
+
+        return true;
     }
 
     public function validateOrderFields($order)
