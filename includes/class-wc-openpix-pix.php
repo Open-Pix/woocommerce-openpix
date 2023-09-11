@@ -941,18 +941,22 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
     private function canSendCustomerAddress($address)
     {
-        if (! is_array($address)) return false;
+        if (!is_array($address)) {
+            return false;
+        }
 
-        $hasMissingFields = empty($address['zipcode'])
-            || empty($address['street'])
-            || empty($address['number'])
-            || empty($address['neighborhood'])
-            || empty($address['city'])
-            || empty($address['state'])
-            || empty($address['complement'])
-            || empty($address['country']);
+        $hasMissingFields =
+            empty($address['zipcode']) ||
+            empty($address['street']) ||
+            empty($address['number']) ||
+            empty($address['neighborhood']) ||
+            empty($address['city']) ||
+            empty($address['state']) ||
+            empty($address['country']);
 
-        if ($hasMissingFields) return false;
+        if ($hasMissingFields) {
+            return false;
+        }
 
         return true;
     }
