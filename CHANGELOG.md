@@ -1,3 +1,36 @@
+#### 2.8.1 (2023-09-14)
+
+##### Build System / Dependencies
+
+* **deps-dev:**
+  *  bump jest-environment-jsdom from 29.6.4 to 29.7.0 (#1217) (8d070876)
+  *  bump babel-jest from 29.6.4 to 29.7.0 (#1216) (173ab521)
+  *  bump esbuild from 0.19.2 to 0.19.3 (#1218) (2aff25c1)
+  *  bump jest from 29.6.4 to 29.7.0 (#1215) (37f6c75a)
+  *  bump @babel/plugin-proposal-export-default-from (#1212) (01454cd8)
+  *  bump eslint from 8.48.0 to 8.49.0 (#1211) (8d9c4806)
+  *  bump @types/styled-components from 5.1.26 to 5.1.27 (#1210) (dc852eae)
+  *  bump @babel/preset-env from 7.22.14 to 7.22.15 (#1202) (26740620)
+  *  bump @babel/preset-typescript from 7.22.11 to 7.22.15 (#1206) (8e314736)
+  *  bump @babel/plugin-transform-runtime (#1203) (1737232d)
+  *  bump @types/core-js from 2.5.5 to 2.5.6 (#1205) (ee3987ce)
+  *  bump @babel/plugin-transform-typescript (#1204) (9880aa71)
+  *  bump @babel/preset-react from 7.22.5 to 7.22.15 (#1201) (605d3beb)
+  *  bump @types/jquery from 3.5.17 to 3.5.18 (#1200) (2bf70c32)
+  *  bump @types/uuid from 9.0.2 to 9.0.3 (#1197) (f6a226bb)
+  *  bump @types/qrcode.react from 1.0.2 to 1.0.3 (#1199) (6bdf7232)
+  *  bump @babel/preset-env from 7.22.10 to 7.22.14 (#1198) (c96c4522)
+  *  bump @types/unused-files-webpack-plugin (#1196) (1e30a131)
+
+##### New Features
+
+* **checkout:**  send address when using normal pix (#1209) (abe76e89)
+*  add oneclick v2 button (#1207) (70150af4)
+
+##### Bug Fixes
+
+* **checkout:**  make complement optional on normal pix (#1214) (285ec6e8)
+
 #### 2.8.0 (2023-08-29)
 
 ##### Build System / Dependencies
