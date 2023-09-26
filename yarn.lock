@@ -2524,10 +2524,10 @@
   dependencies:
     webpack-dev-server "*"
 
-"@types/webpack-plugin-serve@1.4.2":
-  version "1.4.2"
-  resolved "https://registry.yarnpkg.com/@types/webpack-plugin-serve/-/webpack-plugin-serve-1.4.2.tgz#30ca8f4b9f74e74b29be682265e92ceb23269a8c"
-  integrity sha512-h7tKnZfAm3w6e9iiT60KzSeETiO19fLTUd/Z9Wc3dNMrztMXASoMhX1mIogySUjwW4fHsTpXhCUrJEZ02dkQLQ==
+"@types/webpack-plugin-serve@1.4.3":
+  version "1.4.3"
+  resolved "https://registry.yarnpkg.com/@types/webpack-plugin-serve/-/webpack-plugin-serve-1.4.3.tgz#708a83b008d669b140e2b44de3c15744232204ba"
+  integrity sha512-GC01q7RoXJPtaXCGjwK2l6Vg4bOQqT64ZNMrnA7k19KNo1E5rTKp2SpwLgMSSlQFk04EgU+G3RCPa45p+zZ20g==
   dependencies:
     "@types/connect-history-api-fallback" "*"
     "@types/koa" "*"
