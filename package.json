@@ -13,7 +13,7 @@
     "@babel/preset-env": "7.22.15",
     "@babel/preset-react": "7.22.15",
     "@babel/preset-typescript": "7.22.15",
-    "@octokit/rest": "^20.0.1",
+    "@octokit/rest": "^20.0.2",
     "@pmmmwh/react-refresh-webpack-plugin": "0.5.11",
     "@prettier/plugin-php": "^0.19.7",
     "@testing-library/dom": "^9.3.3",
