@@ -29,7 +29,7 @@
     "@types/eslint-plugin-prettier": "^3.1.0",
     "@types/hard-source-webpack-plugin": "1.0.5",
     "@types/isomorphic-fetch": "^0.0.37",
-    "@types/jquery": "3.5.19",
+    "@types/jquery": "3.5.20",
     "@types/koa": "2.13.9",
     "@types/koa-static": "4.0.2",
     "@types/prettier": "^2.7.3",
