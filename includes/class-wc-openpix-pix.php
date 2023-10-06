@@ -47,6 +47,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
     public $appID;
     public $status_when_waiting;
     public $status_when_paid;
+    private $redirect_url_after_paid;
     private WC_OpenPix_Customer $openpix_customer;
 
     public function __construct()
@@ -73,6 +74,10 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
         $this->status_when_waiting = $this->get_option('status_when_waiting');
         $this->status_when_paid = $this->get_option('status_when_paid');
+
+        $this->redirect_url_after_paid = $this->get_option(
+            'redirect_url_after_paid'
+        );
 
         add_action('woocommerce_update_options_payment_gateways_' . $this->id, [
             $this,
@@ -1087,6 +1092,9 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                 'error'
             );
 
+            var_dump($response);
+            exit();
+
             $error_message = $response->get_error_message();
 
             WC_OpenPix::debug('Error creating pix: ' . $error_message);
@@ -1112,6 +1120,9 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             WC_OpenPix::debugJson('Error creating pix:', $response);
 
             $errorMessage = $this->getErrorFromResponse($response);
+
+            var_dump($response);
+            exit();
 
             wc_add_notice(
                 __('Error creating Pix, try again', 'woocommerce-openpix'),
@@ -1288,7 +1299,33 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         if ($customer) {
             $payload['customer'] = $customer;
         }
+
+        $redirectUrl = $this->makeRedirectUrlAfterPaid($correlationID);
+
+        if (!empty($redirectUrl)) {
+            $payload['redirectUrl'] = $redirectUrl;
+        }
+
         return $payload;
+    }
+
+    private function makeRedirectUrlAfterPaid($correlationID)
+    {
+        $redirectUrl = $this->redirect_url_after_paid;
+
+        if (empty($redirectUrl)) {
+            return '';
+        }
+
+        $queryParams = parse_url($redirectUrl, PHP_URL_QUERY);
+        $correlationIDQueryParam =
+            ($queryParams ? '&' : '?') .
+            'correlationID=' .
+            urlencode($correlationID);
+
+        $finalUrl = $redirectUrl . $correlationIDQueryParam;
+
+        return $finalUrl;
     }
 
     // giftback growth
