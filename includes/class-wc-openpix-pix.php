@@ -1092,9 +1092,6 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                 'error'
             );
 
-            var_dump($response);
-            exit();
-
             $error_message = $response->get_error_message();
 
             WC_OpenPix::debug('Error creating pix: ' . $error_message);
@@ -1120,9 +1117,6 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             WC_OpenPix::debugJson('Error creating pix:', $response);
 
             $errorMessage = $this->getErrorFromResponse($response);
-
-            var_dump($response);
-            exit();
 
             wc_add_notice(
                 __('Error creating Pix, try again', 'woocommerce-openpix'),
