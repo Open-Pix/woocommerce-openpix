@@ -786,6 +786,18 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                 'options' => $this->get_available_status(),
                 'default' => $this->get_available_status('wc-processing'),
             ],
+            'actions_section' => [
+                'title' => __('Configure actions', 'woocommerce-openpix'),
+                'type' => 'title',
+            ],
+            'redirect_url_after_paid' => [
+                'type' => 'text',
+                'title' => __(
+                    'Redirect URL after confirmation of payment',
+                    'woocommerce-openpix'
+                ),
+                'description' => __('Redirect URL ', 'woocommerce-openpix'),
+            ],
         ];
 
         if (!$this->get_option('oneclick_button')) {
