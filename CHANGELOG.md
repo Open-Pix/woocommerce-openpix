@@ -1,3 +1,47 @@
+#### 2.9.0 (2023-10-09)
+
+##### Build System / Dependencies
+
+* **deps-dev:**
+  *  bump @types/react-dom from 18.2.10 to 18.2.11 (#1256) (509c72cf)
+  *  bump @types/jquery from 3.5.21 to 3.5.22 (#1255) (ee988695)
+  *  bump @types/uuid from 9.0.4 to 9.0.5 (#1254) (575b8260)
+  *  bump @types/react from 18.2.24 to 18.2.25 (#1250) (71eb7af9)
+  *  bump @types/jquery from 3.5.20 to 3.5.21 (#1251) (9207d866)
+  *  bump @types/react-dom from 18.2.8 to 18.2.10 (#1249) (6d2d61ee)
+  *  bump @types/react from 18.2.23 to 18.2.24 (#1248) (92f57d89)
+  *  bump @types/react-dom from 18.2.7 to 18.2.8 (#1246) (66c3fa5c)
+  *  bump esbuild from 0.19.3 to 0.19.4 (#1247) (9767e8b4)
+  *  bump @types/rebass from 4.0.10 to 4.0.11 (#1245) (af1bcedb)
+  *  bump @types/jquery from 3.5.19 to 3.5.20 (#1244) (bc75d5d5)
+  *  bump @types/isomorphic-fetch from 0.0.36 to 0.0.37 (#1243) (5dd9573f)
+  *  bump @types/react from 18.2.22 to 18.2.23 (#1242) (1bbac76c)
+  *  bump @babel/preset-typescript from 7.22.15 to 7.23.0 (#1241) (16a7d490)
+  *  bump @types/styled-components from 5.1.27 to 5.1.28 (#1240) (66fef4b3)
+  *  bump @types/webpack-plugin-serve from 1.4.2 to 1.4.3 (#1239) (dd069d63)
+  *  bump @octokit/rest from 20.0.1 to 20.0.2 (#1238) (6da084d5)
+  *  bump @types/styled-system from 5.1.17 to 5.1.18 (#1237) (91969ba5)
+  *  bump eslint-import-resolver-typescript (#1236) (fa6bf8e4)
+  *  bump simple-git from 3.19.1 to 3.20.0 (#1234) (fe0bbdcf)
+  *  bump @types/dotenv-safe from 8.1.2 to 8.1.3 (#1232) (b009d75a)
+  *  bump eslint-plugin-cypress from 2.14.0 to 2.15.1 (#1231) (b2a25eec)
+  *  bump @types/react from 18.2.21 to 18.2.22 (#1230) (67b82463)
+  *  bump @types/babel__core from 7.20.1 to 7.20.2 (#1229) (18a85901)
+  *  bump @testing-library/user-event from 14.5.0 to 14.5.1 (#1228) (d7b1d28b)
+  *  bump @types/hard-source-webpack-plugin (#1227) (72c1a2c2)
+  *  bump @testing-library/dom from 9.3.1 to 9.3.3 (#1225) (fe8a827d)
+  *  bump @types/jquery from 3.5.18 to 3.5.19 (#1224) (6b72055a)
+  *  bump esbuild-register from 3.4.2 to 3.5.0 (#1223) (2ec48863)
+  *  bump @testing-library/user-event from 14.4.3 to 14.5.0 (#1222) (9d97d1c2)
+  *  bump @types/koa from 2.13.8 to 2.13.9 (#1221) (c063ea60)
+  *  bump @types/uuid from 9.0.3 to 9.0.4 (#1220) (d8b0a0e1)
+* **change-log:**  v2.8.1 (#1219) (6abb33a0)
+
+##### New Features
+
+* **checkout:**  redirect user to another page if option is provided (#1253) (5cb25a0e)
+* **settings:**  add redirect url after charge is paid option (#1252) (b9456e4a)
+
 #### 2.8.1 (2023-09-14)
 
 ##### Build System / Dependencies
