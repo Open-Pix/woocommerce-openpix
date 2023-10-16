@@ -1316,7 +1316,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
     private function makeRedirectUrlAfterPaid($variables)
     {
-        $redirectUrl = $this->redirect_url_after_paid;
+        $redirectUrl = html_entity_decode($this->redirect_url_after_paid);
 
         if (empty($redirectUrl)) {
             return '';
