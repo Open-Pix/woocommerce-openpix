@@ -1301,8 +1301,8 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
         $variables = [
             'correlationID' => $correlationID,
-            'orderID' => $order_id,
-            'checkoutKey' => $checkoutKey,
+            'order_id' => $order_id,
+            'key' => $checkoutKey,
         ];
 
         $redirectUrl = $this->makeRedirectUrlAfterPaid($variables);
@@ -1322,11 +1322,13 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             return '';
         }
 
-        foreach ($variables as $name => $value) {
-            $redirectUrl = str_replace(':' . $name, $value, $redirectUrl);
-        }
+        $queryParams = parse_url($redirectUrl, PHP_URL_QUERY);
+        $mergedQueryParams =
+            ($queryParams ? '&' : '?') . http_build_query($variables);
 
-        return $redirectUrl;
+        $finalUrl = $redirectUrl . $mergedQueryParams;
+
+        return $finalUrl;
     }
 
     // giftback growth
