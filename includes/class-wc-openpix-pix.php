@@ -1294,7 +1294,18 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             $payload['customer'] = $customer;
         }
 
-        $redirectUrl = $this->makeRedirectUrlAfterPaid($correlationID);
+        $checkoutKey =
+            !empty($order) && method_exists($order, 'get_order_key')
+                ? $order->get_order_key()
+                : '';
+
+        $variables = [
+            'correlationID' => $correlationID,
+            'orderID' => $order_id,
+            'checkoutKey' => $checkoutKey,
+        ];
+
+        $redirectUrl = $this->makeRedirectUrlAfterPaid($variables);
 
         if (!empty($redirectUrl)) {
             $payload['redirectUrl'] = $redirectUrl;
@@ -1303,23 +1314,19 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         return $payload;
     }
 
-    private function makeRedirectUrlAfterPaid($correlationID)
+    private function makeRedirectUrlAfterPaid($variables)
     {
-        $redirectUrl = $this->redirect_url_after_paid;
+        $redirectUrl = html_entity_decode($this->redirect_url_after_paid);
 
         if (empty($redirectUrl)) {
             return '';
         }
 
-        $queryParams = parse_url($redirectUrl, PHP_URL_QUERY);
-        $correlationIDQueryParam =
-            ($queryParams ? '&' : '?') .
-            'correlationID=' .
-            urlencode($correlationID);
+        foreach ($variables as $name => $value) {
+            $redirectUrl = str_replace(':' . $name, $value, $redirectUrl);
+        }
 
-        $finalUrl = $redirectUrl . $correlationIDQueryParam;
-
-        return $finalUrl;
+        return $redirectUrl;
     }
 
     // giftback growth
