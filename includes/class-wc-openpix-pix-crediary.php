@@ -306,22 +306,22 @@ class WC_OpenPix_Pix_Crediary_Gateway extends WC_Payment_Gateway
             ],
             'oneclick_section' => [
                 'title' => __(
-                    'Authenticate on the platform using 1 click',
+                    'Authenticate on the platform',
                     'woocommerce-openpix'
                 ),
                 'type' => 'title',
             ],
-            'oneclick_button' => [
-                'type' => 'button',
-                'title' => __('One Click Configuration', 'woocommerce-openpix'),
-                'class' => 'button-primary',
-                'description' => sprintf(
-                    __(
-                        'By pressing this button, you will be redirected to our platform where we will quickly configure a new integration.',
-                        'woocommerce-openpix'
-                    )
-                ),
-            ],
+            // 'oneclick_button' => [
+            //     'type' => 'button',
+            //     'title' => __('One Click Configuration', 'woocommerce-openpix'),
+            //     'class' => 'button-primary',
+            //     'description' => sprintf(
+            //         __(
+            //             'By pressing this button, you will be redirected to our platform where we will quickly configure a new integration.',
+            //             'woocommerce-openpix'
+            //         )
+            //     ),
+            // ],
             'appID' => [
                 'title' => __('AppID OpenPix', 'woocommerce-openpix'),
                 'type' => 'text',
