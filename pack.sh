@@ -9,6 +9,7 @@ if [ $1 != "prod" ]
     assets/thankyou.css \
     includes/class-wc-openpix-pix.php \
     includes/class-wc-openpix-pix-parcelado.php \
+    includes/class-wc-openpix-pix-crediary.php \
     includes/customer/class-wc-openpix-customer.php \
     includes/class-wc-openpix-prod.php \
     includes/config/config.php \
@@ -23,7 +24,8 @@ if [ $1 != "prod" ]
       assets/thankyou.css \
       includes/class-wc-openpix-pix.php \
       includes/class-wc-openpix-pix-parcelado.php \
-    includes/customer/class-wc-openpix-customer.php \
+      includes/class-wc-openpix-pix-crediary.php \
+      includes/customer/class-wc-openpix-customer.php \
       includes/config/config.php \
       languages \
       templates \
