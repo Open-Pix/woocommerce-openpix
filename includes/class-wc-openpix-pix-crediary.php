@@ -55,7 +55,7 @@ class WC_OpenPix_Pix_Crediary_Gateway extends WC_Payment_Gateway
         $this->id = 'woocommerce_openpix_pix_crediary';
         $this->method_title = __('OpenPix Crediary', 'woocommerce-openpix');
         $this->method_description = __(
-            'Pix Crediary is a digital credit management tool. First, the retailer selects or registers the customer, defining the sale value and payment conditions. Then a payment link is generated and sent to the customer. He chooses the number of installments and pays the first. Okay, sale complete.',
+            'Discover Pix Crediary, an innovative system for managing your own credits charged through Pix. Agility, simplicity and security come together to create an innovative sales experience.',
             'woocommerce-openpix'
         );
         $this->has_fields = true; // direct payment
