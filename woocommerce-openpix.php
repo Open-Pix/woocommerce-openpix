@@ -71,6 +71,8 @@ class WC_OpenPix
         include_once dirname(__FILE__) . '/includes/class-wc-openpix-pix.php';
         include_once dirname(__FILE__) .
             '/includes/class-wc-openpix-pix-parcelado.php';
+        include_once dirname(__FILE__) .
+            '/includes/class-wc-openpix-pix-crediary.php';
     }
 
     /**
@@ -93,6 +95,7 @@ class WC_OpenPix
             '">' .
             __('Settings Pix', 'woocommerce-openpix') .
             '</a>';
+
         $plugin_links[] =
             '<a href="' .
             esc_url(
@@ -103,6 +106,18 @@ class WC_OpenPix
             '">' .
             __('Settings Parcelado', 'woocommerce-openpix') .
             '</a>';
+
+        $plugin_links[] =
+            '<a href="' .
+            esc_url(
+                admin_url(
+                    'admin.php?page=wc-settings&tab=checkout&section=woocommerce_openpix_pix_crediary'
+                )
+            ) .
+            '">' .
+            __('Settings Pix Crediary', 'woocommerce-openpix') .
+            '</a>';
+
         $plugin_links[] =
             '<a  target="_blank" href="https://developers.openpix.com.br/docs/ecommerce/woocommerce/woocommerce-plugin">' .
             __('Documentation', 'woocommerce-openpix') .
@@ -112,6 +127,7 @@ class WC_OpenPix
             '<a  target="_blank" href="https://app.openpix.com/register/?src=wordpress"> ' .
             __('Sign up', 'woocommerce-openpix') .
             '</a>';
+
         return array_merge($plugin_links, $links);
     }
 
@@ -120,6 +136,7 @@ class WC_OpenPix
         // $methods[] = 'WC_OpenPix_Pix_Prod_Gateway';
         $methods[] = 'WC_OpenPix_Pix_Gateway';
         $methods[] = 'WC_OpenPix_Pix_Parcelado_Gateway';
+        $methods[] = 'WC_OpenPix_Pix_Crediary_Gateway';
 
         return $methods;
     }
