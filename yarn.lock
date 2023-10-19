@@ -2535,12 +2535,13 @@
   dependencies:
     webpack-dev-server "*"
 
-"@types/webpack-plugin-serve@1.4.3":
-  version "1.4.3"
-  resolved "https://registry.yarnpkg.com/@types/webpack-plugin-serve/-/webpack-plugin-serve-1.4.3.tgz#708a83b008d669b140e2b44de3c15744232204ba"
-  integrity sha512-GC01q7RoXJPtaXCGjwK2l6Vg4bOQqT64ZNMrnA7k19KNo1E5rTKp2SpwLgMSSlQFk04EgU+G3RCPa45p+zZ20g==
+"@types/webpack-plugin-serve@1.4.4":
+  version "1.4.4"
+  resolved "https://registry.yarnpkg.com/@types/webpack-plugin-serve/-/webpack-plugin-serve-1.4.4.tgz#928b99fbd7675bb2fcf87213322a1f35a71f34b6"
+  integrity sha512-G3fq2vHGGVRRegqOrDhxV7VPURD+znZ413Cy4tPypp72bkvwF6ELfShOWcC/XaeeBTYQuxqG0Meq4LvuS/n3Vg==
   dependencies:
     "@types/connect-history-api-fallback" "*"
+    "@types/express" "*"
     "@types/koa" "*"
     "@types/koa-compress" "*"
     "@types/koa-static" "*"
