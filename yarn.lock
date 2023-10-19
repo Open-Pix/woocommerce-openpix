@@ -2196,10 +2196,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/hard-source-webpack-plugin@1.0.5":
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/@types/hard-source-webpack-plugin/-/hard-source-webpack-plugin-1.0.5.tgz#be4cf77438a5a10f283357e6619996bdb16c374a"
-  integrity sha512-JCylIv0Gry8poahdeEDIpVs1Kzy0q2exV1XwW2eVK7c4Gfjp060nucn4M6d8NEr5U2hRIhFxIR1I8DzOyiDvpw==
+"@types/hard-source-webpack-plugin@1.0.6":
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/@types/hard-source-webpack-plugin/-/hard-source-webpack-plugin-1.0.6.tgz#945a765792f8a52c4e31a2becb96704d851f652e"
+  integrity sha512-K+DvtcJgr5ZuyJu5BgsMJBcYID/q1xBjakcJpB+7c53DuRUcyV4Cv9SH0htyLrnnu8PDUMG57ZlBu05SSswoNg==
   dependencies:
     "@types/webpack" "^4"
 
