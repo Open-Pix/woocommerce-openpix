@@ -27,7 +27,7 @@
     "@types/dotenv-webpack": "^7.0.6",
     "@types/eslint": "8.44.2",
     "@types/eslint-plugin-prettier": "^3.1.0",
-    "@types/hard-source-webpack-plugin": "1.0.5",
+    "@types/hard-source-webpack-plugin": "1.0.6",
     "@types/isomorphic-fetch": "^0.0.37",
     "@types/jquery": "3.5.22",
     "@types/koa": "2.13.9",
