@@ -1,3 +1,41 @@
+#### 2.10.0 (2023-10-19)
+
+##### Build System / Dependencies
+
+* **deps-dev:**
+  *  bump @types/jquery from 3.5.22 to 3.5.24 (#1293) (f759e60c)
+  *  bump @types/react-dom from 18.2.13 to 18.2.14 (#1294) (b0b23054)
+  *  bump @types/koa from 2.13.9 to 2.13.10 (#1287) (1bddb454)
+  *  bump @types/styled-components from 5.1.28 to 5.1.29 (#1291) (0ae91ef3)
+  *  bump @types/uuid from 9.0.5 to 9.0.6 (#1292) (e25a24a4)
+  *  bump @types/styled-system from 5.1.19 to 5.1.20 (#1290) (a3e00158)
+  *  bump @types/qrcode.react from 1.0.3 to 1.0.4 (#1289) (ef7dc279)
+  *  bump @types/webpack-plugin-serve from 1.4.3 to 1.4.4 (#1288) (8a1a8704)
+  *  bump @types/isomorphic-fetch from 0.0.37 to 0.0.38 (#1285) (ef18ce8c)
+  *  bump @types/rebass from 4.0.11 to 4.0.12 (#1286) (7b9fd957)
+  *  bump @types/koa-static from 4.0.2 to 4.0.3 (#1284) (a6e4c0d2)
+  *  bump @types/hard-source-webpack-plugin (#1283) (600fa163)
+  *  bump @types/dotenv-safe from 8.1.3 to 8.1.4 (#1278) (d83c96fd)
+  *  bump @types/dotenv-webpack from 7.0.4 to 7.0.6 (#1277) (5ed54ea2)
+  *  bump @types/core-js from 2.5.6 to 2.5.7 (#1276) (42a4581a)
+  *  bump @types/babel__core from 7.20.2 to 7.20.3 (#1275) (0d8a2b32)
+  *  bump esbuild from 0.19.4 to 0.19.5 (#1274) (34a74d81)
+* **change-log:**  v2.9.1 (#1273) (572c835f)
+
+##### Chores
+
+* **pack:**  add pix crediary gateway to packer script (#1280) (5fe11b74)
+
+##### New Features
+
+* **payment-gateway:**  add pix crediary (#1279) (54378e8a)
+
+##### Bug Fixes
+
+* **settings:**
+  *  improve crediary description (#1282) (19a78ba3)
+  *  disable temporarily 1click (#1281) (7d9340f8)
+
 #### 2.9.1 (2023-10-17)
 
 #### 2.9.0 (2023-10-09)
