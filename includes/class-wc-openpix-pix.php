@@ -1219,6 +1219,8 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
     {
         $data = $this->getPluginSrc($order_id);
 
+        WC_OpenPix::debugJson('thankyou data', $data);
+
         wc_get_template(
             'payment-instructions.php',
             [
