@@ -399,7 +399,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             $response = [
                 'message' => 'fail',
                 'error' => 'order not found',
-                'order_id' => $order->get_id(),
+                'order_id' => null,
                 'correlationId' => $correlationID,
                 'status' => $status,
             ];
