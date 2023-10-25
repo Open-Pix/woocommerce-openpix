@@ -702,7 +702,7 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
                 'pixKey' => $data['charge']['pixKey'],
             ],
         ];
-{
+
         foreach ($meta_data as $key => $value) {
             $order->update_meta_data($key, $value);
         }
