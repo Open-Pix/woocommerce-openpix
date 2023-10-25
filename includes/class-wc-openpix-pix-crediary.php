@@ -1050,7 +1050,6 @@ class WC_OpenPix_Pix_Crediary_Gateway extends WC_Payment_Gateway
 
     public function handleWebhookOrderUpdate($data)
     {
-        global $wpdb;
         $correlationID = $data['charge']['correlationID'];
         $status = $data['charge']['status'];
         $endToEndId = $data['pix']['endToEndId'];
@@ -1271,7 +1270,6 @@ class WC_OpenPix_Pix_Crediary_Gateway extends WC_Payment_Gateway
      */
     public function ipn_handler()
     {
-        global $wpdb;
         @ob_clean();
         $body = file_get_contents('php://input', true);
         $data = json_decode($body, true);
