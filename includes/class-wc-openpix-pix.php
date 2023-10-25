@@ -573,14 +573,14 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
     {
         $signature = $_SERVER['HTTP_X_WEBHOOK_SIGNATURE'] ?? null;
 
-        // if (!$signature || !$this->validSignature($body, $signature)) {
-        //     header('HTTP/1.2 400 Bad Request');
-        //     $response = [
-        //         'error' => 'Invalid Webhook signature',
-        //     ];
-        //     echo json_encode($response);
-        //     exit();
-        // }
+        if (!$signature || !$this->validSignature($body, $signature)) {
+            header('HTTP/1.2 400 Bad Request');
+            $response = [
+                'error' => 'Invalid Webhook signature',
+            ];
+            echo json_encode($response);
+            exit();
+        }
 
         if (!$this->isValidWebhookPayload($data)) {
             header('HTTP/1.2 400 Bad Request');
