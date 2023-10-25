@@ -702,19 +702,12 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
                 'pixKey' => $data['charge']['pixKey'],
             ],
         ];
-
-        // WooCommerce 3.0 or later
-        if (!method_exists($order, 'update_meta_data')) {
-            foreach ($meta_data as $key => $value) {
-                update_post_meta($id, $key, $value);
-            }
-        } else {
-            foreach ($meta_data as $key => $value) {
-                $order->update_meta_data($key, $value);
-            }
-
-            $order->save();
+{
+        foreach ($meta_data as $key => $value) {
+            $order->update_meta_data($key, $value);
         }
+
+        $order->save();
 
         WC_OpenPix::debug('correlationID ' . $correlationID);
 
@@ -1166,18 +1159,11 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
                         'openpix_endToEndId' => $endToEndId,
                     ];
 
-                    // WooCommerce 3.0 or later
-                    if (!method_exists($order, 'update_meta_data')) {
-                        foreach ($meta_data as $key => $value) {
-                            update_post_meta($id, $key, $value);
-                        }
-                    } else {
-                        foreach ($meta_data as $key => $value) {
-                            $order->update_meta_data($key, $value);
-                        }
-
-                        $order->save();
+                    foreach ($meta_data as $key => $value) {
+                        $order->update_meta_data($key, $value);
                     }
+
+                    $order->save();
                 }
             }
         }
