@@ -1350,8 +1350,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
     public function afterOrderDetailHook($order)
     {
-        $page = get_post();
-        if ($page->post_name != 'my-account' || $page->ID != 9) {
+        if (! is_account_page()) {
             return;
         }
 
