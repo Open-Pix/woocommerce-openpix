@@ -1222,9 +1222,6 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         wc_get_template(
             'payment-instructions.php',
             [
-                'paymentLinkUrl' => $data['orderData']['paymentLinkUrl'],
-                'qrCodeImage' => $data['orderData']['qrCodeImage'],
-                'brCode' => $data['orderData']['brCode'],
                 'correlationID' => $data['correlationID'],
                 'environment' => $data['environment'],
                 'appID' => $this->appID,
