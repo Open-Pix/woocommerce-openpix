@@ -399,22 +399,6 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             $response = [
                 'message' => 'fail',
                 'error' => 'order not found',
-                'order_id' => null,
-                'correlationId' => $correlationID,
-                'status' => $status,
-            ];
-            echo json_encode($response);
-            exit();
-        }
-
-        if (!$order) {
-            WC_OpenPix::debug(
-                'Cound not find order with correlation ID ' . $correlationID
-            );
-            header('HTTP/1.1 200 OK');
-            $response = [
-                'message' => 'fail',
-                'error' => 'order not found',
                 'order_id' => $order->get_id(),
                 'correlationId' => $correlationID,
                 'status' => $status,
