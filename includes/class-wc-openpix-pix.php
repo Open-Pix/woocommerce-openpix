@@ -112,8 +112,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
     {
         $order = wc_get_order($order_id);
 
-        $chargeCorrelationID = get_post_meta(
-            $order->id,
+        $chargeCorrelationID = $order->get_meta(
             'openpix_correlation_id',
             true
         );
@@ -426,13 +425,11 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             exit();
         }
 
-        $order_correlation_id = get_post_meta(
-            $order->id,
+        $order_correlation_id = $order->get_meta(
             'openpix_correlation_id',
             true
         );
-        $order_end_to_end_id = get_post_meta(
-            $order->id,
+        $order_end_to_end_id = $order->get_meta(
             'openpix_endToEndId',
             true
         );
@@ -1237,9 +1234,10 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
     public function getPluginSrc($order_id)
     {
-        $data = get_post_meta($order_id, 'openpix_transaction', true);
-        $correlationID = get_post_meta(
-            $order_id,
+        $order = wc_get_order($order_id);
+
+        $data = $order->get_meta('openpix_transaction', true);
+        $correlationID = $order->get_meta(
             'openpix_correlation_id',
             true
         );
