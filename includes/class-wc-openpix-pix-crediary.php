@@ -106,11 +106,7 @@ class WC_OpenPix_Pix_Crediary_Gateway extends WC_Payment_Gateway
     {
         $order = wc_get_order($order_id);
 
-        $chargeCorrelationID = get_post_meta(
-            $order->id,
-            'openpix_correlation_id',
-            true
-        );
+        $chargeCorrelationID = $order->get_meta('openpix_correlation_id', true);
 
         $url =
             OpenPixConfig::getApiUrl() .
@@ -796,12 +792,10 @@ class WC_OpenPix_Pix_Crediary_Gateway extends WC_Payment_Gateway
 
     public function getPluginSrc($order_id)
     {
-        $data = get_post_meta($order_id, 'openpix_transaction', true);
-        $correlationID = get_post_meta(
-            $order_id,
-            'openpix_correlation_id',
-            true
-        );
+        $order = wc_get_order($order_id);
+
+        $data = $order->get_meta('openpix_transaction', true);
+        $correlationID = $order->get_meta('openpix_correlation_id', true);
 
         $environment = OpenPixConfig::getEnv();
 
@@ -1096,16 +1090,8 @@ class WC_OpenPix_Pix_Crediary_Gateway extends WC_Payment_Gateway
             exit();
         }
 
-        $order_correlation_id = get_post_meta(
-            $order->id,
-            'openpix_correlation_id',
-            true
-        );
-        $order_end_to_end_id = get_post_meta(
-            $order->id,
-            'openpix_endToEndId',
-            true
-        );
+        $order_correlation_id = $order->get_meta('openpix_correlation_id', true);
+        $order_end_to_end_id = $order->get_meta('openpix_endToEndId', true);
 
         if ($order_end_to_end_id) {
             WC_OpenPix::debug('Order already paid ' . $order_id);
