@@ -399,7 +399,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             $response = [
                 'message' => 'fail',
                 'error' => 'order not found',
-                'order_id' => $order,
+                'order_id' => null,
                 'correlationId' => $correlationID,
                 'status' => $status,
             ];
@@ -415,7 +415,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             $response = [
                 'message' => 'fail',
                 'error' => 'order not found',
-                'order_id' => $order_id,
+                'order_id' => $order->get_id(),
                 'correlationId' => $correlationID,
                 'status' => $status,
             ];
@@ -433,13 +433,13 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         );
 
         if ($order_end_to_end_id) {
-            WC_OpenPix::debug('Order already paid ' . $order_id);
+            WC_OpenPix::debug('Order already paid ' . $order->get_id());
 
             header('HTTP/1.1 200 OK');
             $response = [
                 'message' => 'fail',
                 'error' => 'order already with end to end id',
-                'order_id' => $order_id,
+                'order_id' => $order->get_id(),
                 'correlationId' => $correlationID,
                 'status' => $status,
             ];
@@ -449,13 +449,13 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         }
 
         if (!$order_correlation_id) {
-            WC_OpenPix::debug('Order without correlation id ' . $order_id);
+            WC_OpenPix::debug('Order without correlation id ' . $order->get_id());
 
             header('HTTP/1.1 200 OK');
             $response = [
                 'message' => 'fail',
                 'error' => 'order without correlation id',
-                'order_id' => $order_id,
+                'order_id' => $order->get_id(),
                 'correlationId' => $correlationID,
                 'status' => $status,
             ];
@@ -467,7 +467,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         if ($order_correlation_id !== $correlationID) {
             WC_OpenPix::debug(
                 'Order with different correlation id then webhook correlation id ' .
-                    $order_id
+                    $order->get_id()
             );
 
             header('HTTP/1.1 200 OK');
@@ -476,7 +476,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                 'error' =>
                     'order with different correlation id ' .
                     $order_correlation_id,
-                'order_id' => $order_id,
+                'order_id' => $order->get_id(),
                 'correlationId' => $correlationID,
                 'status' => $status,
             ];
@@ -536,7 +536,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
         $response = [
             'message' => 'success',
-            'order_id' => $order_id,
+            'order_id' => $order->get_id(),
             'correlationId' => $correlationID,
             'status' => $status,
         ];
