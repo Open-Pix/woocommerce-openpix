@@ -23,6 +23,17 @@ if (
         apply_filters('active_plugins', get_option('active_plugins'))
     )
 ) {
+    // declare compatibility with HPOS before all
+    add_action('before_woocommerce_init', function() {
+        if (class_exists(\Automattic\WooCommerce\Utilities\FeaturesUtil::class)) {
+            \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility(
+                'custom_order_tables',
+                __FILE__,
+                true
+            );
+        }
+    });
+
     // init plugin
     add_action('plugins_loaded', 'woocommerce_openpix_init', 0);
 }
