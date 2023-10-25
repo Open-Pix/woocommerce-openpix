@@ -1262,7 +1262,6 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
      */
     public function ipn_handler()
     {
-        global $wpdb;
         @ob_clean();
         $body = file_get_contents('php://input', true);
         $data = json_decode($body, true);
