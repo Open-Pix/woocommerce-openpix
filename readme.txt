@@ -89,6 +89,12 @@ Se precisar falar com nosso time, acesse o chat disponível em nosso site.
 
 == Changelog ==
 
+= 2.10.1 - 2023-10-26 =
+
+- Adicionada compatibilidade com HPOS.
+- Mostrar QRCode quando a página da minha conta tiver uma URL que não esteja em inglês.
+- Remover a duplicação de gateways de pagamento na página minha conta.
+
 = 2.10.0 - 2023-10-19 =
 
 * Adicionar novo método de pagamento com Pix Crediário.
