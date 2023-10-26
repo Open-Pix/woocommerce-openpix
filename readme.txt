@@ -4,7 +4,7 @@ Tags: woocommerce, openpix, payment
 Requires at least: 4.0
 Tested up to: 6.1.1
 Requires PHP: 5.6
-Stable tag: 2.10.1
+Stable tag: 2.10.0
 License: GPLv2 or later
 License URI: <http://www.gnu.org/licenses/gpl-2.0.html>
 
@@ -88,6 +88,12 @@ Se precisar falar com nosso time, acesse o chat disponível em nosso site.
 5. Exemplo da Ordem de Pagamento Expirada
 
 == Changelog ==
+
+= 2.10.1 - 2023-10-26 =
+
+- Adicionada compatibilidade com HPOS.
+- Mostrar QRCode quando a página da minha conta tiver uma URL que não esteja em inglês.
+- Remover a duplicação de gateways de pagamento na página minha conta.
 
 = 2.10.0 - 2023-10-19 =
 
