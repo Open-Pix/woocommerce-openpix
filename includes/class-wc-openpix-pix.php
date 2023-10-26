@@ -1336,7 +1336,9 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
     public function afterOrderDetailHook($order)
     {
-        if (! is_account_page()) {
+        $canShowQrCode = is_account_page() && $order->get_payment_method() == $this->id;
+
+        if (! $canShowQrCode) {
             return;
         }
 
