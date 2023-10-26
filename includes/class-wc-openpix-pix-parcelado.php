@@ -1074,7 +1074,7 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
             exit();
         }
 
-        $order_correlation_id = $order->get_meta($order->id, 'openpix_correlation_id');
+        $order_correlation_id = $order->get_meta('openpix_correlation_id', true);
         $order_end_to_end_id = $order->get_meta('openpix_endToEndId', true);
 
         if ($order_end_to_end_id) {
