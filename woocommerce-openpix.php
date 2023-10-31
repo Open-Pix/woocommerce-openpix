@@ -150,8 +150,8 @@ class WC_OpenPix
         // $methods[] = 'WC_OpenPix_Pix_Prod_Gateway';
         $methods[] = WC_OpenPix_Pix_Gateway::instance();
         // $methods[] = 'WC_OpenPix_Pix_Gateway';
-        $methods[] = 'WC_OpenPix_Pix_Parcelado_Gateway';
-        $methods[] = 'WC_OpenPix_Pix_Crediary_Gateway';
+        $methods[] = WC_OpenPix_Pix_Parcelado_Gateway::instance();
+        $methods[] = WC_OpenPix_Pix_Crediary_Gateway::instance();
 
         return $methods;
     }
