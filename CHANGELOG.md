@@ -1,3 +1,17 @@
+#### 2.10.2 (2023-10-31)
+
+##### Build System / Dependencies
+
+* **deps-dev:**  bump @types/react from 18.2.32 to 18.2.33 (#1333) (af4e2143)
+* **change-log:**  v2.10.1 (#1332) (8f41105f)
+
+##### Bug Fixes
+
+* **parcelado:**  idempotent inicialization (#1337) (85d747dd)
+* **crediary:**  idempotent inicialization (#1336) (283ba3ba)
+* **pix:**  idempotency (#1335) (c0733cf8)
+* **readme:**  changelog (#1334) (bdb14650)
+
 #### 2.10.1 (2023-10-26)
 
 #### 2.10.0 (2023-10-19)
