@@ -50,6 +50,17 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
     private $redirect_url_after_paid;
     private WC_OpenPix_Customer $openpix_customer;
 
+    private static $instance = null;
+
+    public static function instance()
+    {
+        if (is_null(self::$instance)) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
+    }
+
     public function __construct()
     {
         $this->openpix_customer = new WC_OpenPix_Customer();
@@ -112,10 +123,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
     {
         $order = wc_get_order($order_id);
 
-        $chargeCorrelationID = $order->get_meta(
-            'openpix_correlation_id',
-            true
-        );
+        $chargeCorrelationID = $order->get_meta('openpix_correlation_id', true);
 
         $url =
             OpenPixConfig::getApiUrl() .
@@ -294,16 +302,14 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             return false;
         }
 
-        $orders = wc_get_orders(
-            [
-                'meta_query' => [
-                    [
-                        'key' => 'openpix_correlation_id',
-                        'value' => $correlation_id,
-                    ],
+        $orders = wc_get_orders([
+            'meta_query' => [
+                [
+                    'key' => 'openpix_correlation_id',
+                    'value' => $correlation_id,
                 ],
             ],
-        );
+        ]);
 
         if (!empty($orders[0])) {
             return $orders[0];
@@ -411,10 +417,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             'openpix_correlation_id',
             true
         );
-        $order_end_to_end_id = $order->get_meta(
-            'openpix_endToEndId',
-            true
-        );
+        $order_end_to_end_id = $order->get_meta('openpix_endToEndId', true);
 
         if ($order_end_to_end_id) {
             WC_OpenPix::debug('Order already paid ' . $order->get_id());
@@ -433,7 +436,9 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         }
 
         if (!$order_correlation_id) {
-            WC_OpenPix::debug('Order without correlation id ' . $order->get_id());
+            WC_OpenPix::debug(
+                'Order without correlation id ' . $order->get_id()
+            );
 
             header('HTTP/1.1 200 OK');
             $response = [
@@ -1204,10 +1209,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         $order = wc_get_order($order_id);
 
         $data = $order->get_meta('openpix_transaction', true);
-        $correlationID = $order->get_meta(
-            'openpix_correlation_id',
-            true
-        );
+        $correlationID = $order->get_meta('openpix_correlation_id', true);
 
         $environment = OpenPixConfig::getEnv();
         $queryString = "appID={$this->appID}&correlationID={$correlationID}&node=openpix-order";
@@ -1336,9 +1338,10 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
     public function afterOrderDetailHook($order)
     {
-        $canShowQrCode = is_account_page() && $order->get_payment_method() == $this->id;
+        $canShowQrCode =
+            is_account_page() && $order->get_payment_method() == $this->id;
 
-        if (! $canShowQrCode) {
+        if (!$canShowQrCode) {
             return;
         }
 

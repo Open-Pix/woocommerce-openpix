@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Plugin Name: OpenPix for WooCommerce
  * Description: Aceite pagamentos Pix em com atualização em tempo real, checkout transparente e atualização automática de status do pedido.
@@ -147,7 +148,8 @@ class WC_OpenPix
     public function add_gateway($methods)
     {
         // $methods[] = 'WC_OpenPix_Pix_Prod_Gateway';
-        $methods[] = 'WC_OpenPix_Pix_Gateway';
+        $methods[] = WC_OpenPix_Pix_Gateway::instance();
+        // $methods[] = 'WC_OpenPix_Pix_Gateway';
         $methods[] = 'WC_OpenPix_Pix_Parcelado_Gateway';
         $methods[] = 'WC_OpenPix_Pix_Crediary_Gateway';
 
