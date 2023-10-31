@@ -46,6 +46,17 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
     public $status_when_paid;
     private WC_OpenPix_Customer $openpix_customer;
 
+    private static $instance = null;
+
+    public static function instance()
+    {
+        if (is_null(self::$instance)) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
+    }
+
     public function __construct()
     {
         $this->openpix_customer = new WC_OpenPix_Customer();
@@ -892,9 +903,10 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
 
     public function afterOrderDetailHook($order)
     {
-        $canShowQrCode = is_account_page() && $order->get_payment_method() == $this->id;
+        $canShowQrCode =
+            is_account_page() && $order->get_payment_method() == $this->id;
 
-        if (! $canShowQrCode) {
+        if (!$canShowQrCode) {
             return;
         }
 
@@ -947,16 +959,14 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
             return false;
         }
 
-        $orders = wc_get_orders(
-            [
-                'meta_query' => [
-                    [
-                        'key' => 'openpix_correlation_id',
-                        'value' => $correlation_id,
-                    ],
+        $orders = wc_get_orders([
+            'meta_query' => [
+                [
+                    'key' => 'openpix_correlation_id',
+                    'value' => $correlation_id,
                 ],
             ],
-        );
+        ]);
 
         if (!empty($orders[0])) {
             return $orders[0];
@@ -1074,7 +1084,10 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
             exit();
         }
 
-        $order_correlation_id = $order->get_meta('openpix_correlation_id', true);
+        $order_correlation_id = $order->get_meta(
+            'openpix_correlation_id',
+            true
+        );
         $order_end_to_end_id = $order->get_meta('openpix_endToEndId', true);
 
         if ($order_end_to_end_id) {
@@ -1094,7 +1107,9 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
         }
 
         if (!$order_correlation_id) {
-            WC_OpenPix::debug('Order without correlation id ' . $order->get_id());
+            WC_OpenPix::debug(
+                'Order without correlation id ' . $order->get_id()
+            );
 
             header('HTTP/1.1 200 OK');
             $response = [
