@@ -1294,6 +1294,10 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
         $finalUrl = $redirectUrl . $mergedQueryParams;
 
+        if (!empty($variables['order_id'])) {
+            $finalUrl = str_replace(':orderId', $variables['order_id'], $finalUrl);
+        }
+
         return $finalUrl;
     }
 
