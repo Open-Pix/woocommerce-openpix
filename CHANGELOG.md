@@ -1,3 +1,70 @@
+#### 2.10.3 (2023-11-03)
+
+##### Build System / Dependencies
+
+* **deps-dev:**
+  *  bump eslint-plugin-jsx-a11y from 6.7.1 to 6.8.0 (#1340) (d1c23079)
+  *  bump @types/react from 18.2.33 to 18.2.34 (#1339) (c6cc32d4)
+  *  bump @types/react from 18.2.32 to 18.2.33 (#1333) (af4e2143)
+  *  bump eslint-plugin-import from 2.28.1 to 2.29.0 (#1303) (04eb5af6)
+  *  bump @types/react from 18.2.31 to 18.2.32 (#1330) (6d8f6cc8)
+  *  bump eslint-import-resolver-webpack (#1302) (2ac0e514)
+  *  bump @types/jquery from 3.5.24 to 3.5.25 (#1301) (970afb7e)
+  *  bump @types/react from 18.2.30 to 18.2.31 (#1300) (fac10386)
+  *  bump @types/react from 18.2.28 to 18.2.30 (#1298) (0c520afc)
+  *  bump @types/unused-files-webpack-plugin (#1296) (f6e19ac4)
+* **change-log:**
+  *  v2.10.2 (#1338) (dce42a35)
+  *  v2.10.1 (#1332) (8f41105f)
+  *  v2.10.0 (#1295) (bbd3ac8a)
+
+##### New Features
+
+* **pix:**  add order id redirect variable (#1342) (9390d9ae)
+* **thankyou:**  log data (#1305) (2ce809db)
+
+##### Bug Fixes
+
+* **parcelado:**
+  *  idempotent inicialization (#1337) (85d747dd)
+  *  remove unexpected brace (#1325) (3efd3be2)
+  *  hpos (#1308) (406e9fed)
+* **crediary:**
+  *  idempotent inicialization (#1336) (283ba3ba)
+  *  hpos (#1307) (f23b4e95)
+* **pix:**
+  *  idempotency (#1335) (c0733cf8)
+  *  remove order id (#1326) (6382653b)
+* **readme:**  changelog (#1334) (bdb14650)
+* **webhook:**
+  *  get correlationID correctly on woovi parcelado (#1331) (804c5495)
+  *  add more compability with hpos on parcelado webhook (#1324) (b925382d)
+  *  add more support for hpos on crediary webhook (#1323) (8d22eab8)
+  *  use woo api for hpos compatibility on pix gateway (#1322) (25e39b68)
+  *  bring back webhook signature validation (#1314) (de25b41d)
+  *  support hpos on woovi parcelado (#1313) (1b465da6)
+  *  hpos crediary (#1312) (77d51349)
+  *  return order id on pix gateway's webhook for the sake of debugging (#1311) (ac95d4ed)
+  *  get order using woo API on pix gateway (#1310) (f0a4b27d)
+* **order-detail:**
+  *  unique gateway on woovi parcelado (#1329) (c360c367)
+  *  check if gateway if crediary (#1328) (7e031755)
+  *  only show qrcode if gateway is the current on pix (#1327) (6220412a)
+  *  show qrcode when myaccount postname is non english and support hpos on crediary (#1320) (3ad3d92a)
+  *  display qrcode when postname is non-english and support hpos on parcelado (#1319) (416d7176)
+* **woo:**  declare hpos compability (#1321) (7c9f4d9d)
+* **qrcode:**  show qrcode on non-english account pages and support hpos (#1318) (ad28e035)
+* **hpos:**  add support for hpos on checkout (#1306) (136a9608)
+* **thank-you:**  remove unused fields (#1304) (071809fa)
+
+##### Refactors
+
+* **parcelado:**  drop unused global (#1317) (c417efac)
+* **pix:**  avoid unused globals (#1316) (eb61d988)
+* **webhook:**
+  *  drop duplicated order existing check (#1315) (8589949e)
+  *  drop unused class (#1309) (3aad5287)
+
 #### 2.10.2 (2023-10-31)
 
 ##### Build System / Dependencies
