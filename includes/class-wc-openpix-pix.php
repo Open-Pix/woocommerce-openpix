@@ -300,7 +300,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
     {
         if (
             !method_exists(
-                \Automattic\WooCommerce\Utilities\OrderUtil,
+                \Automattic\WooCommerce\Utilities\OrderUtil::class,
                 'custom_orders_table_usage_is_enabled'
             )
         ) {
@@ -438,7 +438,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
     public function get_order_meta($order, $name, $single = true)
     {
         if (!$this->isHposEnabled()) {
-            return get_post_meta($order->id, $name, $single);
+            return get_post_meta($order->get_id(), $name, $single);
         }
 
         return $order->get_meta($order, $name, $single);
