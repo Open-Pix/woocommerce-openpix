@@ -1,3 +1,14 @@
+#### 2.10.5 (2023-11-06)
+
+##### Build System / Dependencies
+
+* **change-log:**  v2.10.4 (#1347) (f7d8225e)
+
+##### New Features
+
+* **crediary:**  add better legacy order storage mode support (#1349) (2147c183)
+* **parcelado:**  add better legacy order storage mode support (#1348) (c3869080)
+
 #### 2.10.4 (2023-11-06)
 
 ##### Build System / Dependencies

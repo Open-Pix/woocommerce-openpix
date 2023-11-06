@@ -4,7 +4,7 @@ Tags: woocommerce, openpix, payment
 Requires at least: 4.0
 Tested up to: 6.1.1
 Requires PHP: 5.6
-Stable tag: 2.10.4
+Stable tag: 2.10.5
 License: GPLv2 or later
 License URI: <http://www.gnu.org/licenses/gpl-2.0.html>
 
@@ -88,6 +88,10 @@ Se precisar falar com nosso time, acesse o chat disponível em nosso site.
 5. Exemplo da Ordem de Pagamento Expirada
 
 == Changelog ==
+
+= 2.10.5 - 2023-11-06 =
+
+- Adicionar melhor suporte ao modo legacy de armazenamento de pedidos nos métodos de pagamento Woovi Parcelado e Pix Crediário.
 
 = 2.10.4 - 2023-11-06 =
 
