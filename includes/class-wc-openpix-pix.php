@@ -435,7 +435,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         exit();
     }
 
-    public function get_post_meta($order, $name, $single = true)
+    public function get_order_meta($order, $name, $single = true)
     {
         if (!$this->isHposEnabled()) {
             return get_post_meta($order->id, $name, $single);
@@ -468,12 +468,12 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             exit();
         }
 
-        $order_correlation_id = $this->get_post_meta(
+        $order_correlation_id = $this->get_order_meta(
             $order,
             'openpix_correlation_id',
             true
         );
-        $order_end_to_end_id = $this->get_post_meta(
+        $order_end_to_end_id = $this->get_order_meta(
             $order,
             'openpix_endToEndId',
             true
@@ -1268,8 +1268,12 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
     {
         $order = wc_get_order($order_id);
 
-        $data = $order->get_meta('openpix_transaction', true);
-        $correlationID = $order->get_meta('openpix_correlation_id', true);
+        $data = $this->get_order_meta($order, 'openpix_transaction', true);
+        $correlationID = $this->get_order_meta(
+            $order,
+            'openpix_correlation_id',
+            true
+        );
 
         $environment = OpenPixConfig::getEnv();
         $queryString = "appID={$this->appID}&correlationID={$correlationID}&node=openpix-order";
