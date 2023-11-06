@@ -296,7 +296,44 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         return true;
     }
 
-    public function get_order_by_correlation_id($correlation_id)
+    public function isHposEnabled()
+    {
+        if (
+            !method_exists(
+                \Automattic\WooCommerce\Utilities\OrderUtil::class,
+                'custom_orders_table_usage_is_enabled'
+            )
+        ) {
+            return false;
+        }
+
+        return \Automattic\WooCommerce\Utilities\OrderUtil::custom_orders_table_usage_is_enabled();
+    }
+
+    public function get_order_by_correlation_id_legacy($correlation_id)
+    {
+        global $wpdb;
+
+        if (empty($correlation_id)) {
+            return false;
+        }
+
+        $order_id = $wpdb->get_var(
+            $wpdb->prepare(
+                "SELECT DISTINCT ID FROM $wpdb->posts as posts LEFT JOIN $wpdb->postmeta as meta ON posts.ID = meta.post_id WHERE meta.meta_value = %s AND meta.meta_key = %s",
+                $correlation_id,
+                'openpix_correlation_id'
+            )
+        );
+
+        if (!empty($order_id)) {
+            return wc_get_order($order_id);
+        }
+
+        return false;
+    }
+
+    public function get_order_by_correlation_id_hpos($correlation_id)
     {
         if (empty($correlation_id)) {
             return false;
@@ -316,6 +353,15 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         }
 
         return null;
+    }
+
+    public function get_order_by_correlation_id($correlation_id)
+    {
+        if (!$this->isHposEnabled()) {
+            return $this->get_order_by_correlation_id_legacy($correlation_id);
+        }
+
+        return $this->get_order_by_correlation_id_hpos($correlation_id);
     }
 
     public function isPixDetachedPayload($data): bool
@@ -389,6 +435,15 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         exit();
     }
 
+    public function get_order_meta($order, $name, $single = true)
+    {
+        if (!$this->isHposEnabled()) {
+            return get_post_meta($order->get_id(), $name, $single);
+        }
+
+        return $order->get_meta($order, $name, $single);
+    }
+
     public function handleWebhookOrderUpdate($data)
     {
         $correlationID = $data['charge']['correlationID'];
@@ -413,11 +468,16 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             exit();
         }
 
-        $order_correlation_id = $order->get_meta(
+        $order_correlation_id = $this->get_order_meta(
+            $order,
             'openpix_correlation_id',
             true
         );
-        $order_end_to_end_id = $order->get_meta('openpix_endToEndId', true);
+        $order_end_to_end_id = $this->get_order_meta(
+            $order,
+            'openpix_endToEndId',
+            true
+        );
 
         if ($order_end_to_end_id) {
             WC_OpenPix::debug('Order already paid ' . $order->get_id());
@@ -1208,8 +1268,12 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
     {
         $order = wc_get_order($order_id);
 
-        $data = $order->get_meta('openpix_transaction', true);
-        $correlationID = $order->get_meta('openpix_correlation_id', true);
+        $data = $this->get_order_meta($order, 'openpix_transaction', true);
+        $correlationID = $this->get_order_meta(
+            $order,
+            'openpix_correlation_id',
+            true
+        );
 
         $environment = OpenPixConfig::getEnv();
         $queryString = "appID={$this->appID}&correlationID={$correlationID}&node=openpix-order";
@@ -1295,7 +1359,11 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         $finalUrl = $redirectUrl . $mergedQueryParams;
 
         if (!empty($variables['order_id'])) {
-            $finalUrl = str_replace(':orderId', $variables['order_id'], $finalUrl);
+            $finalUrl = str_replace(
+                ':orderId',
+                $variables['order_id'],
+                $finalUrl
+            );
         }
 
         return $finalUrl;
