@@ -37,7 +37,7 @@
     "@types/react": "18.2.36",
     "@types/react-dom": "18.2.14",
     "@types/rebass": "^4.0.12",
-    "@types/styled-components": "^5.1.29",
+    "@types/styled-components": "^5.1.30",
     "@types/styled-system": "^5.1.22",
     "@types/terser-webpack-plugin": "5.2.0",
     "@types/testing-library__jest-dom": "^5.14.9",
