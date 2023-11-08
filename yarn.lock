@@ -2535,10 +2535,10 @@
   dependencies:
     webpack-dev-server "*"
 
-"@types/webpack-plugin-serve@1.4.4":
-  version "1.4.4"
-  resolved "https://registry.yarnpkg.com/@types/webpack-plugin-serve/-/webpack-plugin-serve-1.4.4.tgz#928b99fbd7675bb2fcf87213322a1f35a71f34b6"
-  integrity sha512-G3fq2vHGGVRRegqOrDhxV7VPURD+znZ413Cy4tPypp72bkvwF6ELfShOWcC/XaeeBTYQuxqG0Meq4LvuS/n3Vg==
+"@types/webpack-plugin-serve@1.4.5":
+  version "1.4.5"
+  resolved "https://registry.yarnpkg.com/@types/webpack-plugin-serve/-/webpack-plugin-serve-1.4.5.tgz#677e9c3d16d624c53e9b706b81875656498bce76"
+  integrity sha512-m/a+VQ+6m6TPDLBprVR2zwtvp4yr/Kn/ZgeFRTXJTyqdotfbY7ZFVkL5KoJgcNuOhicR6O3O963RiHHvSaRecw==
   dependencies:
     "@types/connect-history-api-fallback" "*"
     "@types/express" "*"
