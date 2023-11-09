@@ -2516,10 +2516,10 @@
   dependencies:
     source-map "^0.6.1"
 
-"@types/unused-files-webpack-plugin@3.4.6":
-  version "3.4.6"
-  resolved "https://registry.yarnpkg.com/@types/unused-files-webpack-plugin/-/unused-files-webpack-plugin-3.4.6.tgz#4bf998aa9be336b8c8017d7aee7935300c40bdcb"
-  integrity sha512-dYSP4wbiYgttPLFn0KgnLylY4DpZCcnR/uuLYfod0/COKT5xYEV10bgOjT+uL+/rb9ccb6z9op7wBQ9Je1YUIQ==
+"@types/unused-files-webpack-plugin@3.4.7":
+  version "3.4.7"
+  resolved "https://registry.yarnpkg.com/@types/unused-files-webpack-plugin/-/unused-files-webpack-plugin-3.4.7.tgz#3709c567dcebc8ea29ca32ee760301ab967d7f90"
+  integrity sha512-PFni/O+bJnKHorRIY4L7fteEFIEeEv+cQRNTN+EhmMu9Y8U9k+nAHjAnJ3zN/scY4miI/uceUgB8N4DnUF1i0g==
   dependencies:
     "@types/webpack" "^4"
 
