@@ -97,9 +97,6 @@ class WC_OpenPix_Pix_Crediary_Gateway extends WC_Payment_Gateway
             'thankyou_page',
         ]);
 
-        // inject openpix react
-        add_action('wp_enqueue_scripts', [$this, 'checkout_scripts']);
-
         add_action('woocommerce_after_order_details', [
             $this,
             'afterOrderDetailHook',
@@ -204,41 +201,6 @@ class WC_OpenPix_Pix_Crediary_Gateway extends WC_Payment_Gateway
         return true;
     }
 
-    public function checkout_scripts()
-    {
-        if (is_checkout()) {
-            $name = get_bloginfo('name');
-
-            $correlationID = $this->getCorrelationID();
-
-            WC_OpenPix::debug('get correlationID result ' . $correlationID);
-
-            wp_localize_script('openpix-checkout', 'wcOpenpixParams', [
-                'appID' => $this->appID,
-                'storeName' => $name,
-                'correlationID' => $correlationID,
-            ]);
-        }
-    }
-
-    public function getCorrelationID()
-    {
-        $correlationIDFromSession = WC()->session->get('correlationID');
-
-        WC_OpenPix::debug(
-            'correlationIDFromSession ' . $correlationIDFromSession
-        );
-
-        if (isset($correlationIDFromSession)) {
-            return $correlationIDFromSession;
-        }
-
-        $correlationID = WC_OpenPix::uuid_v4();
-
-        WC()->session->set('correlationID', $correlationID);
-
-        return $correlationID;
-    }
     /**
      * Get a list of Woocommerce status available at the installation
      *
