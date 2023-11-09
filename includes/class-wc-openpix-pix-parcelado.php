@@ -112,7 +112,7 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
     {
         $order = wc_get_order($order_id);
 
-        $chargeCorrelationID = $order->get_meta('openpix_correlation_id', true);
+        $chargeCorrelationID = $order->get_meta('openpix_correlation_id');
 
         $url =
             OpenPixConfig::getApiUrl() .
@@ -1014,7 +1014,7 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
             return get_post_meta($order->get_id(), $name, $single);
         }
 
-        return $order->get_meta($order, $name, $single);
+        return $order->get_meta($name);
     }
 
     function validSignature($payload, $signature)
