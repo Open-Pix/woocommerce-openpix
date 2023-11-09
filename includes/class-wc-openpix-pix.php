@@ -1067,12 +1067,19 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         return '';
     }
 
+    public function generate_correlation_id($order)
+    {
+        $order_id = $order->get_id();
+
+        return $order->get_order_key() . '-' . $order_id;
+    }
+
     public function process_payment($order_id)
     {
         global $woocommerce;
         $order = wc_get_order($order_id);
 
-        $correlationID = WC_OpenPix::uuid_v4();
+        $correlationID = $this->generate_correlation_id($order);
 
         $url = OpenPixConfig::getApiUrl() . '/api/v1/charge';
 
