@@ -1069,9 +1069,10 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
     public function generate_correlation_id($order)
     {
+        $order_key = $order->get_order_key();
         $order_id = $order->get_id();
 
-        return $order->get_order_key() . '-' . $order_id;
+        return $order_key . '-' . $order_id;
     }
 
     public function process_payment($order_id)

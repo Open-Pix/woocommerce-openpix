@@ -596,7 +596,7 @@ class WC_OpenPix_Pix_Crediary_Gateway extends WC_Payment_Gateway
 
     public function generate_correlation_id($order)
     {
-        $order_key = str_replace('wc_order_', '', $order->get_order_key());
+        $order_key = $order->get_order_key();
         $order_id = $order->get_id();
 
         return $order_key . '-' . $order_id;
