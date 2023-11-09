@@ -11,7 +11,7 @@ add_action('admin_footer', 'embedWebhookConfigButton');
 function embedWebhookConfigButton()
 {
     ?>
-    
+
 	<script type="text/javascript" >
 	jQuery(document).ready(function($) {
 
@@ -102,9 +102,6 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             $this,
             'thankyou_page',
         ]);
-
-        // inject openpix react - plugin
-        add_action('wp_enqueue_scripts', [$this, 'checkout_scripts']);
 
         add_action('woocommerce_after_order_details', [
             $this,
@@ -210,23 +207,6 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         return true;
     }
 
-    public function checkout_scripts()
-    {
-        if (is_checkout()) {
-            $name = get_bloginfo('name');
-
-            $correlationID = $this->getCorrelationID();
-
-            WC_OpenPix::debug('get correlationID result ' . $correlationID);
-
-            wp_localize_script('openpix-checkout', 'wcOpenpixParams', [
-                'appID' => $this->appID,
-                'storeName' => $name,
-                'correlationID' => $correlationID,
-            ]);
-        }
-    }
-
     function validSignature($payload, $signature)
     {
         $publicKey = base64_decode(OpenPixConfig::$OPENPIX_PUBLIC_KEY_BASE64);
@@ -239,25 +219,6 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         );
 
         return $verify === 1 ? true : false;
-    }
-
-    public function getCorrelationID()
-    {
-        $correlationIDFromSession = WC()->session->get('correlationID');
-
-        WC_OpenPix::debug(
-            'correlationIDFromSession ' . $correlationIDFromSession
-        );
-
-        if (isset($correlationIDFromSession)) {
-            return $correlationIDFromSession;
-        }
-
-        $correlationID = WC_OpenPix::uuid_v4();
-
-        WC()->session->set('correlationID', $correlationID);
-
-        return $correlationID;
     }
 
     /**
