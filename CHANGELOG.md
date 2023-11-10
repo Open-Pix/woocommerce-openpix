@@ -1,3 +1,58 @@
+#### 2.10.6 (2023-11-10)
+
+##### Build System / Dependencies
+
+* **deps-dev:**
+  *  bump eslint-config-prettier from 8.10.0 to 9.0.0 (#1145) (95403e7e)
+  *  bump @testing-library/jest-dom and @types/testing-library__jest-dom (#1267) (65f344b3)
+  *  bump lint-staged from 13.2.3 to 15.0.2 (#1297) (ed14c7b7)
+  *  bump eslint and @types/eslint (#1344) (6eb61aa0)
+  *  bump @babel/preset-env and @types/babel__preset-env (#1378) (6d4d1b80)
+  *  bump @babel/plugin-transform-runtime (#1379) (eb6b0b8f)
+  *  bump @babel/preset-typescript from 7.23.2 to 7.23.3 (#1377) (e2325098)
+  *  bump @babel/plugin-proposal-export-default-from (#1380) (7c9d89a5)
+  *  bump @babel/plugin-transform-typescript (#1376) (5e17def3)
+  *  bump @types/dotenv-safe from 8.1.4 to 8.1.5 (#1369) (890a3816)
+  *  bump @types/react-dom from 18.2.14 to 18.2.15 (#1371) (e805795c)
+  *  bump @types/qrcode.react from 1.0.4 to 1.0.5 (#1366) (6120fbb8)
+  *  bump @types/rebass from 4.0.12 to 4.0.13 (#1370) (6c8aac75)
+  *  bump @types/dotenv-webpack from 7.0.6 to 7.0.7 (#1368) (5b9a9db4)
+  *  bump @types/jquery from 3.5.26 to 3.5.27 (#1367) (b4feda73)
+  *  bump @types/unused-files-webpack-plugin (#1365) (9c3fdb6e)
+  *  bump @types/react from 18.2.36 to 18.2.37 (#1364) (4fa5f852)
+  *  bump @types/hard-source-webpack-plugin (#1363) (7ead250c)
+  *  bump @types/koa-static from 4.0.3 to 4.0.4 (#1357) (f93e7aaf)
+  *  bump @types/webpack-plugin-serve from 1.4.4 to 1.4.5 (#1360) (f5c82e5c)
+  *  bump @types/styled-components from 5.1.29 to 5.1.30 (#1361) (333bcd67)
+  *  bump @types/isomorphic-fetch from 0.0.38 to 0.0.39 (#1362) (13c13504)
+  *  bump @types/styled-system from 5.1.21 to 5.1.22 (#1359) (b853adfb)
+  *  bump @types/uuid from 9.0.6 to 9.0.7 (#1358) (e7fbdd5f)
+  *  bump @types/koa from 2.13.10 to 2.13.11 (#1356) (4e09600e)
+  *  bump @types/core-js from 2.5.7 to 2.5.8 (#1355) (905045ef)
+  *  bump @types/jquery from 3.5.25 to 3.5.26 (#1354) (e2d4c69a)
+  *  bump @types/styled-system from 5.1.20 to 5.1.21 (#1353) (4494df4d)
+  *  bump @types/babel__core from 7.20.3 to 7.20.4 (#1352) (9e700a3a)
+  *  bump @types/react from 18.2.35 to 18.2.36 (#1351) (852f04e3)
+  *  bump @types/react from 18.2.34 to 18.2.35 (#1345) (34926756)
+* **change-log:**
+  *  v2.10.5 (#1350) (f3f8ccef)
+  *  v2.10.4 (#1347) (f7d8225e)
+  *  v2.10.3 (#1343) (b30c141a)
+
+##### New Features
+
+* **logs:**  tail logs (#1382) (83107b17)
+* **bump:**  bupm (#1381) (46910ae0)
+* **correlationID:**  remove checkout_scripts (#1374) (d565f327)
+* **process-payment:**  generate correlationID from order information (#1373) (2930367f)
+* **crediary:**  add better legacy order storage mode support (#1349) (2147c183)
+* **parcelado:**  add better legacy order storage mode support (#1348) (c3869080)
+
+##### Bug Fixes
+
+* **get-meta:**  use only one param (#1375) (1dc6fb76)
+* **pix-payment-method:**  add better support for legacy order storage mode (#1346) (634640ed)
+
 #### 2.10.5 (2023-11-06)
 
 ##### Build System / Dependencies
