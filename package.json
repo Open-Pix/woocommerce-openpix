@@ -141,6 +141,7 @@
     "release:major": "yarn es ./scripts/changelog --major",
     "release:minor": "yarn es ./scripts/changelog --minor",
     "release:patch": "yarn es ./scripts/changelog --patch",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "logs": "tail -f ../../uploads/wc-logs/woocommerce_openpix-*.log"
   }
 }
