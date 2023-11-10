@@ -101,8 +101,6 @@ class WC_OpenPix_Pix_Crediary_Gateway extends WC_Payment_Gateway
             $this,
             'afterOrderDetailHook',
         ]);
-
-        // $this->registerHooks();
     }
 
     public function can_refund_order($order)
@@ -826,45 +824,6 @@ class WC_OpenPix_Pix_Crediary_Gateway extends WC_Payment_Gateway
             $payload['customer'] = $customer;
         }
         return $payload;
-    }
-
-    public function ceHandlerWooCommerceNewOrder($order)
-    {
-        try {
-            if (is_numeric($order)) {
-                $order = wc_get_order($order);
-            }
-
-            $params = [
-                'timeout' => 60,
-                'headers' => [
-                    'Accept' => 'application/json',
-                    'Content-Type' => 'application/json',
-                    'Authorization' => $this->appID,
-                    'version' => WC_OpenPix::VERSION,
-                    'platform' => 'WOOCOMMERCE',
-                ],
-                'body' => json_encode(['raw' => json_decode($order, true)]),
-                'method' => 'POST',
-                'data_format' => 'body',
-            ];
-
-            wp_remote_post($this->getWebhookTrack(), $params);
-        } catch (\Exception $exception) {
-        }
-    }
-
-    public function registerHooks()
-    {
-        $actions = [
-            'woocommerce_reduce_order_stock',
-            'woocommerce_payment_complete',
-            'woocommerce_order_status_completed',
-            'woocommerce_checkout_order_created',
-        ];
-        foreach ($actions as $action) {
-            add_action($action, [$this, 'ceHandlerWooCommerceNewOrder']);
-        }
     }
 
     public function afterOrderDetailHook($order)
