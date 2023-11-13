@@ -1,3 +1,21 @@
+#### 2.10.7 (2023-11-13)
+
+##### Build System / Dependencies
+
+* **change-log:**  v2.10.6 (#1383) (5b51db52)
+
+##### Chores
+
+* **version:**
+  *  bump woocommerce (#1388) (4f78df67)
+  *  bump tested wordpress version (#1387) (acce36d7)
+
+##### Refactors
+
+* **crediary:**  remove giftback and dead code (#1386) (2cfed333)
+* **parcelado:**  remove dead code and giftback (#1385) (6c082ab1)
+* **pix:**  remove dead code with giftback (#1384) (80c52637)
+
 #### 2.10.6 (2023-11-10)
 
 ##### Build System / Dependencies
