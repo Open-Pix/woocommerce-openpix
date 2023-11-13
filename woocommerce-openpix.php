@@ -7,7 +7,7 @@
  * Author URI: https://openpix.com.br/
  * Version: 2.10.6
  * Text Domain: woocommerce-openpix
- * WC tested up to: 7.6.0
+ * WC tested up to: 8.2.2
  * @package WooCommerce_OpenPix
  */
 
