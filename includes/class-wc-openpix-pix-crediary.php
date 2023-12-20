@@ -46,7 +46,7 @@ class WC_OpenPix_Pix_Crediary_Gateway extends WC_Payment_Gateway
     public $appID;
     public $status_when_waiting;
     public $status_when_paid;
-    private WC_OpenPix_Customer $openpix_customer;
+    private $openpix_customer;
 
     private static $instance = null;
 
