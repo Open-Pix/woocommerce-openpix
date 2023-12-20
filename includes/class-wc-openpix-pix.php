@@ -48,7 +48,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
     public $status_when_waiting;
     public $status_when_paid;
     private $redirect_url_after_paid;
-    private WC_OpenPix_Customer $openpix_customer;
+    private $openpix_customer;
 
     private static $instance = null;
 
