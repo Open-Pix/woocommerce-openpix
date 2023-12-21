@@ -2,8 +2,8 @@
 Contributors: openpix
 Tags: woocommerce, openpix, payment
 Requires at least: 4.0
-Tested up to: 6.4.1
-Requires PHP: 5.6
+Tested up to: 6.4.2
+Requires PHP: 7.3
 Stable tag: 2.10.7
 License: GPLv2 or later
 License URI: <http://www.gnu.org/licenses/gpl-2.0.html>
@@ -56,7 +56,7 @@ Não, o plugin é 100% grátis, você só paga um percentual de **0,8% por Pix r
 
 - Ter instalado o WordPress 4.0 ou superior;
 - Ter instalado o plugin WooCommerce 3.0 ou superior;
-- Utilizar a versão 5.6 ou maior do PHP;
+- Utilizar a versão 7.3 ou maior do PHP;
 - Ter uma conta ativa na OpenPix
 
 **POSSO UTILIZAR O PLUGIN PIX JUNTO COM OUTROS GATEWAYS DE PAGAMENTO?**
@@ -88,6 +88,11 @@ Se precisar falar com nosso time, acesse o chat disponível em nosso site.
 5. Exemplo da Ordem de Pagamento Expirada
 
 == Changelog ==
+
+= 2.10.8 - 2023-12-21 =
+
+- Aumentar desempenho.
+- Suportar versões mais antigas do PHP.
 
 = 2.10.7 - 2023-11-13 =
 
