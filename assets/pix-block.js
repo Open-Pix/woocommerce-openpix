@@ -3,7 +3,7 @@
 	var label = window.wp.htmlEntities.decodeEntities(data.title)
 		|| window.wp.i18n.__('Checkout Pix', 'woocommerce-openpix');
 	
-	var content = (data) => {
+	var content = function (data) {
 		return window.wp.htmlEntities.decodeEntities(data.description || '');
 	};
 
@@ -12,7 +12,9 @@
 		label,
 		content: Object(window.wp.element.createElement)(content, null),
 		edit: Object(window.wp.element.createElement)(content, null),
-		canMakePayment: () => true,
+		canMakePayment: function () {
+			return true;
+		},
 		placeOrderButtonLabel: window.wp.i18n.__('Continue', 'woocommerce-openpix'),
 		ariaLabel: label,
 		supports: {
