@@ -3,7 +3,7 @@
 	var label = window.wp.htmlEntities.decodeEntities(data.title)
 		|| window.wp.i18n.__('Checkout Pix', 'woocommerce-openpix');
 	
-	var content = function (data) {
+	var content = function () {
 		return window.wp.htmlEntities.decodeEntities(data.description || '');
 	};
 
