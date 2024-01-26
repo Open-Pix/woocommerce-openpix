@@ -34,6 +34,12 @@ if (
                 __FILE__,
                 true
             );
+
+
+             \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility(
+                'cart_checkout_blocks',
+                __FILE__
+            );
         }
     });
 
