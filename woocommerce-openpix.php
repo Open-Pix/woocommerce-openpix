@@ -35,13 +35,15 @@ if (
                 true
             );
 
-
-             \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility(
+            \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility(
                 'cart_checkout_blocks',
-                __FILE__
+                __FILE__,
+                true
             );
         }
     });
+
+    // 
 
     // init plugin
     add_action('plugins_loaded', 'woocommerce_openpix_init', 0);
@@ -73,6 +75,7 @@ class WC_OpenPix
 
         add_filter('woocommerce_payment_gateways', [$this, 'add_gateway']);
         add_action('wp_enqueue_scripts', [$this, 'load_plugin_assets']);
+        add_action('woocommerce_blocks_loaded', [$this, 'add_gateway_blocks']);
     }
 
     public static function get_instance()
@@ -160,6 +163,22 @@ class WC_OpenPix
         $methods[] = WC_OpenPix_Pix_Crediary_Gateway::instance();
 
         return $methods;
+    }
+
+    public function add_gateway_blocks()
+    {
+        if(!class_exists('Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType')) {
+            return;
+        }
+
+        include_once dirname(__FILE__) . '/includes/class-wc-openpix-pix-block.php';
+
+        add_action(
+            'woocommerce_blocks_payment_method_type_registration',
+            function (Automattic\WooCommerce\Blocks\Payments\PaymentMethodRegistry $payment_method_registry) {
+                $payment_method_registry->register(new WC_OpenPix_Pix_Block);
+            }
+        );
     }
 
     public static function get_plugin_path()

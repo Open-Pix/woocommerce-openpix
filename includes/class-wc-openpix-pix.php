@@ -872,13 +872,11 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
     // @ TODO: why should prioritize the logged shopper?
     public function getTaxID($order)
     {
-        $openpix_customer_taxid = $_POST['openpix_customer_taxid'];
-
         $hasOpenpixCustomer =
-            isset($openpix_customer_taxid) && !empty($openpix_customer_taxid);
+            isset($_POST['openpix_customer_taxid']) && !empty($_POST['openpix_customer_taxid']);
 
         if ($hasOpenpixCustomer) {
-            return sanitize_text_field($openpix_customer_taxid);
+            return sanitize_text_field($_POST['openpix_customer_taxid']);
         }
 
         $order_persontype = $order->get_meta('_billing_persontype');
@@ -1344,6 +1342,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         if (!$canShowQrCode) {
             return;
         }
+
 
         $data = $this->getPluginSrc($order->get_id());
         ?>
