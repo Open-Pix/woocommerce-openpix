@@ -107,6 +107,42 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             $this,
             'afterOrderDetailHook',
         ]);
+
+        add_action('woocommerce_openpix_pix_email', [
+            $this,
+            'displayEmail',
+        ]);
+    }
+
+    public function displayEmail($order)
+    {
+        if ($order->get_payment_method() !== $this->id) return;
+
+        $orderData = $order->get_meta('openpix_transaction');
+
+        if (!$orderData || !is_array($orderData)) return;
+
+        $qrCodeImage = $orderData['qrCodeImage'];
+        $brCode = $orderData['brCode'];
+        ?>
+
+        <strong>Pague com Pix QR Code:</strong>
+
+        <br />
+        
+        <img src="<?=$qrCodeImage?>" width="256" />
+
+        <br />
+
+        <strong>Pague com Pix Copia e Cola:</strong>
+
+        <br />
+
+        <p style="overflow-wrap:anywhere">
+            <?=$brCode?>
+        </p>
+
+        <?php
     }
 
     public function can_refund_order($order)
@@ -1038,7 +1074,6 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         $order = wc_get_order($order_id);
 
         $correlationID = $this->generate_correlation_id($order);
-
         $url = OpenPixConfig::getApiUrl() . '/api/v1/charge';
 
         $cart_total = $this->get_order_total();
