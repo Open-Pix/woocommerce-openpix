@@ -1,3 +1,17 @@
+#### 2.10.9 (2024-02-22)
+
+##### New Features
+
+* **update:**  update the readme.txt (e5517bdd)
+* **pix:**  add email hook (#1397) (2febc373)
+
+##### Bug Fixes
+
+* **checkout:**
+  *  show gateway description (#1396) (acbe5ee8)
+  *  add checkout blocks compatibility for pix (#1395) (9ad16297)
+* **features:**  declare compability with checkout blocks (#1394) (5e9710be)
+
 #### 2.10.8 (2023-12-21)
 
 ##### Build System / Dependencies
