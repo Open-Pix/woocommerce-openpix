@@ -89,6 +89,11 @@ Se precisar falar com nosso time, acesse o chat disponível em nosso site.
 
 == Changelog ==
 
+= 2.10.9 - 2024-02-22 =
+
+- Adicionar action nos e-mails de pedido.
+- Mostrar qrcode pix no e-mail de pedido.
+
 = 2.10.8 - 2023-12-21 =
 
 - Aumentar desempenho.
