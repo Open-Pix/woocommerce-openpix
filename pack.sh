@@ -26,6 +26,7 @@ if [ $1 != "prod" ]
       includes/class-wc-openpix-pix.php \
       includes/class-wc-openpix-pix-parcelado.php \
       includes/class-wc-openpix-pix-crediary.php \
+      includes/class-wc-openpix-pix-block.php \
       includes/customer/class-wc-openpix-customer.php \
       includes/config/config.php \
       languages \
