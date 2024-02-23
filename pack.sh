@@ -12,6 +12,7 @@ if [ $1 != "prod" ]
     includes/class-wc-openpix-pix-crediary.php \
     includes/customer/class-wc-openpix-customer.php \
     includes/class-wc-openpix-prod.php \
+    includes/class-wc-openpix-pix-block.php \
     includes/config/config.php \
     includes/config/config-prod-beta.php \
     languages \
