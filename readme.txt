@@ -4,7 +4,7 @@ Tags: woocommerce, openpix, payment
 Requires at least: 4.0
 Tested up to: 6.4.2
 Requires PHP: 7.3
-Stable tag: 2.10.9
+Stable tag: 2.10.10
 License: GPLv2 or later
 License URI: <http://www.gnu.org/licenses/gpl-2.0.html>
 
@@ -88,6 +88,12 @@ Se precisar falar com nosso time, acesse o chat disponível em nosso site.
 5. Exemplo da Ordem de Pagamento Expirada
 
 == Changelog ==
+
+= 2.10.10 - 2024-03-15 =
+
+- Mostrar qrcode pix no e-mail de pedido.
+- Bloco de pagamento para o editor de bloco.
+
 
 = 2.10.9 - 2024-02-22 =
 
