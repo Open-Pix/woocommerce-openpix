@@ -1,3 +1,19 @@
+#### 2.10.10 (2024-03-15)
+
+##### New Features
+
+* **release:**  v2.10.9 (#1398) (979c0cd3)
+* **update:**  update the readme.txt (e5517bdd)
+* **pix:**  add email hook (#1397) (2febc373)
+
+##### Bug Fixes
+
+* **pack:**  add checkout blocks to pack script (#1399) (a536a55d)
+* **checkout:**
+  *  show gateway description (#1396) (acbe5ee8)
+  *  add checkout blocks compatibility for pix (#1395) (9ad16297)
+* **features:**  declare compability with checkout blocks (#1394) (5e9710be)
+
 #### 2.10.9 (2024-02-22)
 
 ##### New Features
