@@ -89,6 +89,11 @@ Se precisar falar com nosso time, acesse o chat disponível em nosso site.
 
 == Changelog ==
 
+= 2.11.- - 2024-11-13 =
+
+- Aumento no timeout de conexão com o pix.
+- Melhorias de performance.
+
 = 2.10.10 - 2024-03-15 =
 
 - Mostrar qrcode pix no e-mail de pedido.
