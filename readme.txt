@@ -2,7 +2,7 @@
 Contributors: openpix
 Tags: woocommerce, openpix, payment
 Requires at least: 4.0
-Tested up to: 6.4.2
+Tested up to: 9.4.0
 Requires PHP: 7.3
 Stable tag: 2.11.0
 License: GPLv2 or later
