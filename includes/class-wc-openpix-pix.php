@@ -1102,7 +1102,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         );
 
         $params = [
-            'timeout' => 60,
+            'timeout' => 120,
             'headers' => [
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
@@ -1114,6 +1114,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             'method' => 'POST',
             'data_format' => 'body',
         ];
+
         WC_OpenPix::debugJson('Charge post payload:', $payload);
 
         if (OpenPixConfig::getEnv() === 'development') {
