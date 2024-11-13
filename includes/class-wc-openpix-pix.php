@@ -1101,6 +1101,11 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             $order
         );
 
+        // update the correlationID before sending the request to ensure it's the same one used in the response
+        $order->update_meta_data('openpix_correlation_id', $correlationID); 
+
+        $order->save();
+
         $params = [
             'timeout' => 120,
             'headers' => [
