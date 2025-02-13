@@ -108,19 +108,20 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             'afterOrderDetailHook',
         ]);
 
-        add_action('woocommerce_openpix_pix_email', [
-            $this,
-            'displayEmail',
-        ]);
+        add_action('woocommerce_openpix_pix_email', [$this, 'displayEmail']);
     }
 
     public function displayEmail($order)
     {
-        if ($order->get_payment_method() !== $this->id) return;
+        if ($order->get_payment_method() !== $this->id) {
+            return;
+        }
 
         $orderData = $order->get_meta('openpix_transaction');
 
-        if (!$orderData || !is_array($orderData)) return;
+        if (!$orderData || !is_array($orderData)) {
+            return;
+        }
 
         $qrCodeImage = $orderData['qrCodeImage'];
         $brCode = $orderData['brCode'];
@@ -129,8 +130,8 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         <strong>Pague com Pix QR Code:</strong>
 
         <br />
-        
-        <img src="<?=$qrCodeImage?>" width="256" />
+
+        <img src="<?= $qrCodeImage ?>" width="256" />
 
         <br />
 
@@ -139,7 +140,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         <br />
 
         <p style="overflow-wrap:anywhere">
-            <?=$brCode?>
+            <?= $brCode ?>
         </p>
 
         <?php
@@ -584,11 +585,10 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
     public function handleWebhookEvents($data, $body)
     {
-        $event = $data['event'];
+        $event = $data['evento'] ?? $data['event'];
         // @todo: refactor this to follow event instead evento
-        $evento = $data['evento'];
 
-        if ($evento === 'teste_webhook') {
+        if ($event === 'teste_webhook') {
             $this->handleTestWebhook($data);
         }
 
@@ -909,7 +909,8 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
     public function getTaxID($order)
     {
         $hasOpenpixCustomer =
-            isset($_POST['openpix_customer_taxid']) && !empty($_POST['openpix_customer_taxid']);
+            isset($_POST['openpix_customer_taxid']) &&
+            !empty($_POST['openpix_customer_taxid']);
 
         if ($hasOpenpixCustomer) {
             return sanitize_text_field($_POST['openpix_customer_taxid']);
@@ -1102,7 +1103,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         );
 
         // update the correlationID before sending the request to ensure it's the same one used in the response
-        $order->update_meta_data('openpix_correlation_id', $correlationID); 
+        $order->update_meta_data('openpix_correlation_id', $correlationID);
 
         $order->save();
 
@@ -1383,7 +1384,6 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         if (!$canShowQrCode) {
             return;
         }
-
 
         $data = $this->getPluginSrc($order->get_id());
         ?>

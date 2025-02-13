@@ -8,6 +8,7 @@
  * Version: 2.11.0
  * Text Domain: woocommerce-openpix
  * WC tested up to: 8.2.2
+ * Requires Plugins: woocommerce
  * @package WooCommerce_OpenPix
  */
 
@@ -43,8 +44,6 @@ if (
         }
     });
 
-    // 
-
     // init plugin
     add_action('plugins_loaded', 'woocommerce_openpix_init', 0);
 }
@@ -76,6 +75,12 @@ class WC_OpenPix
         add_filter('woocommerce_payment_gateways', [$this, 'add_gateway']);
         add_action('wp_enqueue_scripts', [$this, 'load_plugin_assets']);
         add_action('woocommerce_blocks_loaded', [$this, 'add_gateway_blocks']);
+
+        add_action(
+            'woocommerce_before_checkout_form',
+            'userNoticeIncompatibilityWithCheckoutBlock'
+        );
+        add_action('admin_notices', 'adminNoticeIncompatibilityWithBlock');
     }
 
     public static function get_instance()
@@ -167,16 +172,23 @@ class WC_OpenPix
 
     public function add_gateway_blocks()
     {
-        if(!class_exists('Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType')) {
+        if (
+            !class_exists(
+                'Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType'
+            )
+        ) {
             return;
         }
 
-        include_once dirname(__FILE__) . '/includes/class-wc-openpix-pix-block.php';
+        include_once dirname(__FILE__) .
+            '/includes/class-wc-openpix-pix-block.php';
 
         add_action(
             'woocommerce_blocks_payment_method_type_registration',
-            function (Automattic\WooCommerce\Blocks\Payments\PaymentMethodRegistry $payment_method_registry) {
-                $payment_method_registry->register(new WC_OpenPix_Pix_Block);
+            function (
+                Automattic\WooCommerce\Blocks\Payments\PaymentMethodRegistry $payment_method_registry
+            ) {
+                $payment_method_registry->register(new WC_OpenPix_Pix_Block());
             }
         );
     }
@@ -265,4 +277,45 @@ class WC_OpenPix
         // add script and style to screen
         wp_enqueue_style('openpix_frontend_css');
     }
+}
+
+function checkCompabilityCheckoutBlock()
+{
+    $pluginId = wc_get_container()
+        ->get(\Automattic\WooCommerce\Utilities\PluginUtil::class)
+        ->get_wp_plugin_id(__FILE__);
+
+    return is_plugin_active($pluginId) &&
+        class_exists('Automattic\WooCommerce\Blocks\Package') &&
+        file_exists(
+            filename: __DIR__ .
+                '/assets/' .
+                WC_OpenPix_Pix_Block::PIX_BLOCK_SCRIPT_FILENAME
+        );
+}
+
+function userNoticeIncompatibilityWithCheckoutBlock()
+{
+    if (checkCompabilityCheckoutBlock()) {
+        return false;
+    }
+
+    //     echo <<<HTML
+    //     <div clas    s="woocommerce-info">
+    //         Atenção: O plugin "woocommerce-openpix" ainda não oferece suporte ao Checkout Blocks. Então estamos usando o modelo de checkout classico.
+    //     </div>
+    // HTML;
+}
+
+function adminNoticeIncompatibilityWithBlock()
+{
+    if (checkCompabilityCheckoutBlock()) {
+        return false;
+    }
+
+    echo <<<HTML
+    <div class="notice notice-warning">
+        <p><strong>woocommerce-openpix</strong> ainda não é compatível com o Checkout de Blocos do WooCommerce. Para evitar problemas, utilize o Checkout Classico.</p>
+    </div>
+HTML;
 }
