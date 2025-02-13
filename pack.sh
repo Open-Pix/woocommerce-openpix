@@ -6,6 +6,7 @@ cp includes/config/config-$1.php includes/config/config.php
 if [ $1 != "prod" ]
   then
     zip -r woocommerce-openpix-$1-$(date "+%Y-%m-%d:%H:%M").zip \
+    assets/pix-block.js \
     assets/thankyou.css \
     includes/class-wc-openpix-pix.php \
     includes/class-wc-openpix-pix-parcelado.php \
@@ -20,8 +21,9 @@ if [ $1 != "prod" ]
     woocommerce-openpix.php \
     readme.txt \
     LICENSE.txt
-  else 
+  else
       zip -r woocommerce-openpix-$1-$(date "+%Y-%m-%d:%H:%M").zip \
+      assets/pix-block.js \
       assets/thankyou.css \
       includes/class-wc-openpix-pix.php \
       includes/class-wc-openpix-pix-parcelado.php \
