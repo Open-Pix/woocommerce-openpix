@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Plugin Name: OpenPix for WooCommerce (dev)
+ * Plugin Name: OpenPix for WooCommerce
  * Description: Aceite pagamentos Pix em com atualização em tempo real, checkout transparente e atualização automática de status do pedido.
  * Author: OpenPix
  * Author URI: https://openpix.com.br/
