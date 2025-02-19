@@ -4,7 +4,7 @@ Tags: woocommerce, openpix, payment
 Requires at least: 4.0
 Tested up to: 9.4.0
 Requires PHP: 7.3
-Stable tag: 2.11.0
+Stable tag: 2.12.0
 License: GPLv2 or later
 License URI: <http://www.gnu.org/licenses/gpl-2.0.html>
 
@@ -89,7 +89,12 @@ Se precisar falar com nosso time, acesse o chat disponível em nosso site.
 
 == Changelog ==
 
-= 2.11.- - 2024-11-13 =
+= 2.12.0 - 2025-02-19 =
+
+- Suporte ao editor de blocos do WordPress.
+- Melhorias de performance.
+
+= 2.11.0 - 2024-11-13 =
 
 - Aumento no timeout de conexão com o pix.
 - Melhorias de performance.
