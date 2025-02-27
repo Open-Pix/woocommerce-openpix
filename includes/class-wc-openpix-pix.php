@@ -1107,6 +1107,9 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
         $order->save();
 
+        $url = add_query_arg('return_existing', 'true', $url);
+        WC_OpenPix::debugJson('Charge post URL:', $url);
+
         $params = [
             'timeout' => 120,
             'headers' => [
