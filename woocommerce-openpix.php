@@ -288,9 +288,7 @@ function checkCompabilityCheckoutBlock()
     return is_plugin_active($pluginId) &&
         class_exists('Automattic\WooCommerce\Blocks\Package') &&
         file_exists(
-            filename: __DIR__ .
-                '/assets/' .
-                WC_OpenPix_Pix_Block::PIX_BLOCK_SCRIPT_FILENAME
+            __DIR__ .  '/assets/' . WC_OpenPix_Pix_Block::PIX_BLOCK_SCRIPT_FILENAME
         );
 }
 
