@@ -883,12 +883,44 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
     public function formatPhone($phone)
     {
-        $phoneSafe = preg_replace('/^0|\D+/', '', $phone);
-        if (strlen($phoneSafe) > 11) {
-            return $phoneSafe;
+        if (!class_exists('libphonenumber\PhoneNumberUtil')) {
+            require_once __DIR__ . '/../vendor/autoload.php';
         }
 
-        return '55' . $phoneSafe;
+        $phoneUtil = \libphonenumber\PhoneNumberUtil::getInstance();
+        
+        // Remove all non-numeric characters
+        $cleanNumber = preg_replace('/\D+/', '', $phone);
+        
+        // Try first validation with original number
+        try {
+            $numberProto = $phoneUtil->parse($cleanNumber, 'BR');
+            if ($phoneUtil->isValidNumber($numberProto)) {
+                $formattedNumber = $phoneUtil->format($numberProto, \libphonenumber\PhoneNumberFormat::E164);
+                return ltrim($formattedNumber, '+');
+            }
+        } catch (\libphonenumber\NumberParseException $e) {
+            // Continue to try alternative format if this fails
+        }
+        
+        // If the first validation fails and number starts with 5555,
+        // try removing one instance of 55 and validate again
+        if (strpos($cleanNumber, '5555') === 0) {
+            $alternativeNumber = '55' . substr($cleanNumber, 4);
+            
+            try {
+                $numberProto = $phoneUtil->parse($alternativeNumber, 'BR');
+                if ($phoneUtil->isValidNumber($numberProto)) {
+                    $formattedNumber = $phoneUtil->format($numberProto, \libphonenumber\PhoneNumberFormat::E164);
+                    return ltrim($formattedNumber, '+');
+                }
+            } catch (\libphonenumber\NumberParseException $e) {
+                // If both attempts fail, return false
+                return false;
+            }
+        }
+        
+        return false;
     }
 
     public function getHasCustomer($order)
@@ -970,12 +1002,18 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                 ? sanitize_text_field($order_billing_cellphone)
                 : sanitize_text_field($order_billing_phone);
 
+        $formattedPhone = $this->formatPhone($phone);
+
         $customer = [
             'name' => $name,
             'email' => $email,
             'taxID' => $taxID,
-            'phone' => $this->formatPhone($phone),
         ];
+
+        // Only add phone if formatPhone returned a valid value
+        if ($formattedPhone !== false) {
+            $customer['phone'] = $formattedPhone;
+        }
 
         $address = $this->openpix_customer->getCustomerAddress($order);
 
