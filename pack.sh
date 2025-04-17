@@ -3,6 +3,9 @@
 rm **/*.po~ **/*.pot~
 cp includes/config/config-$1.php includes/config/config.php
 
+# Install Composer dependencies (optimized for production)
+composer install --no-dev --optimize-autoloader
+
 if [ $1 != "prod" ]
   then
     zip -r woocommerce-openpix-$1-$(date "+%Y-%m-%d:%H:%M").zip \
@@ -18,6 +21,7 @@ if [ $1 != "prod" ]
     includes/config/config-prod-beta.php \
     languages \
     templates \
+    vendor \
     woocommerce-openpix.php \
     readme.txt \
     LICENSE.txt
@@ -33,6 +37,7 @@ if [ $1 != "prod" ]
       includes/config/config.php \
       languages \
       templates \
+      vendor \
       woocommerce-openpix.php \
       readme.txt \
       LICENSE.txt
