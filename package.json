@@ -17,7 +17,7 @@
     "@pmmmwh/react-refresh-webpack-plugin": "0.5.11",
     "@prettier/plugin-php": "^0.21.0",
     "@testing-library/dom": "^9.3.3",
-    "@testing-library/jest-dom": "^6.1.4",
+    "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^14.1.0",
     "@testing-library/user-event": "^14.5.1",
     "@types/babel__core": "7.20.4",
@@ -29,6 +29,7 @@
     "@types/eslint-plugin-prettier": "^3.1.3",
     "@types/hard-source-webpack-plugin": "1.0.7",
     "@types/isomorphic-fetch": "^0.0.39",
+    "@types/jest": "^29.5.14",
     "@types/jquery": "3.5.27",
     "@types/koa": "2.13.11",
     "@types/koa-static": "4.0.4",
@@ -97,6 +98,7 @@
     "simple-git": "^3.20.0",
     "style-loader": "3.3.3",
     "terser-webpack-plugin": "5.3.9",
+    "ts-jest": "^29.3.2",
     "typescript": "^5.2.2",
     "unused-files-webpack-plugin": "3.4.0",
     "webpack": "5.89.0",
@@ -108,7 +110,7 @@
   "license": "MIT",
   "lint-staged": {
     "*.{js,ts,tsx}": [
-      "yarn prettier",
+      "pnpm prettier",
       "eslint --fix"
     ],
     "*.yml": [
@@ -124,12 +126,12 @@
       "prettier --write"
     ],
     "./includes/config/config.php": [
-      "yarn blockNotMergeable"
+      "pnpm blockNotMergeable"
     ]
   },
   "main": "index.js",
   "scripts": {
-    "blockNotMergeable": "yarn es ./scripts/blockNotMergeable",
+    "blockNotMergeable": "pnpm es ./scripts/blockNotMergeable",
     "config:local": "cp .env.local .env && cp includes/config/config-development.php includes/config/config.php",
     "config:prod": "cp .env.local .env && cp includes/config/config-prod.php includes/config/config.php",
     "config:staging": "cp .env.local .env && cp includes/config/config-staging.php includes/config/config.php",
@@ -138,11 +140,16 @@
     "pack:staging": "sh pack.sh staging",
     "prepare": "husky install",
     "prettier": "prettier --write",
-    "release:major": "yarn es ./scripts/changelog --major",
-    "release:minor": "yarn es ./scripts/changelog --minor",
-    "release:patch": "yarn es ./scripts/changelog --patch",
+    "release:major": "pnpm r ./scripts/changelog --major",
+    "release:minor": "pnpm r ./scripts/changelog --minor",
+    "release:patch": "pnpm r ./scripts/changelog --patch",
     "type-check": "tsc --noEmit",
-    "logs": "tail -f ../../uploads/wc-logs/woocommerce_openpix-*.log"
+    "logs": "tail -f ../../uploads/wc-logs/woocommerce_openpix-*.log",
+    "svn-release": "pnpm es ./scripts/svn-release",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "r": "pnpm es"
   },
   "dependencies": {
     "minimist": "^1.2.8"

@@ -3,12 +3,15 @@
 rm **/*.po~ **/*.pot~
 cp includes/config/config-$1.php includes/config/config.php
 
+# Get plugin version
+VERSION=$(grep -oP 'Version: \K[0-9.]+' woocommerce-openpix.php)
+
 # Install Composer dependencies (optimized for production)
 composer install --no-dev --optimize-autoloader
 
 if [ $1 != "prod" ]
   then
-    zip -r woocommerce-openpix-$1-$(date "+%Y-%m-%d:%H:%M").zip \
+    zip -r woocommerce-openpix-$1-v$VERSION-$(date "+%Y-%m-%d:%H:%M").zip \
     assets/pix-block.js \
     assets/thankyou.css \
     includes/class-wc-openpix-pix.php \
@@ -26,7 +29,7 @@ if [ $1 != "prod" ]
     readme.txt \
     LICENSE.txt
   else
-      zip -r woocommerce-openpix-$1-$(date "+%Y-%m-%d:%H:%M").zip \
+      zip -r woocommerce-openpix-$1-v$VERSION-$(date "+%Y-%m-%d:%H:%M").zip \
       assets/pix-block.js \
       assets/thankyou.css \
       includes/class-wc-openpix-pix.php \
