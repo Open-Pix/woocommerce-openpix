@@ -49,6 +49,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
     public $status_when_paid;
     private $redirect_url_after_paid;
     private $openpix_customer;
+    private $environment;
 
     private static $instance = null;
 
@@ -82,6 +83,11 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
         $this->order_button_text = $this->get_option('order_button_text');
         $this->appID = $this->get_option('appID');
+        $this->environment = $this->get_option('environment');
+
+        if ($this->checkConfigFiles()) {
+            $this->copyConfigFile($this->environment);
+        }
 
         $this->status_when_waiting = $this->get_option('status_when_waiting');
         $this->status_when_paid = $this->get_option('status_when_paid');
@@ -109,6 +115,24 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         ]);
 
         add_action('woocommerce_openpix_pix_email', [$this, 'displayEmail']);
+    }
+
+    private function checkConfigFiles() {
+        $plugin_dir = plugin_dir_path(dirname(__FILE__));
+        $sandbox_file = $plugin_dir . 'includes/config/config-sandbox-prod.php';
+        $production_file = $plugin_dir . 'includes/config/config-prod.php';
+        
+        if (!file_exists($sandbox_file) || !file_exists($production_file)) {
+            add_action('admin_notices', function() {
+                ?>
+                <div class="notice notice-error">
+                    <p><?php _e('OpenPix: Arquivos de configuração não encontrados.', 'woocommerce-openpix'); ?></p>
+                </div>
+                <?php
+            });
+            return false;
+        }
+        return true;
     }
 
     public function displayEmail($order)
@@ -240,6 +264,42 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         }
 
         return true;
+    }
+
+    public function process_admin_options()
+    {
+        $old_environment = $this->get_option('environment');
+        $saved = parent::process_admin_options();
+
+        WC_OpenPix::debug('process_admin_options');
+        if ($saved) {
+            $new_environment = $this->get_option('environment');
+            
+            // if modify the environment, copy the config file
+            if ($old_environment !== $new_environment) {
+                WC_OpenPix::debug(
+                    'Environment changed from ' . $old_environment . ' to ' . $new_environment
+                );
+                $this->copyConfigFile($new_environment);
+            }
+        }
+        
+        return $saved;
+        // return parent::process_admin_options();
+    }
+
+    private function copyConfigFile($environment) 
+    {
+        $plugin_dir = plugin_dir_path(dirname(__FILE__));
+        $source_file = $plugin_dir . 'includes/config/config-' . $environment . '.php';
+        $target_file = $plugin_dir . 'includes/config/config.php';
+    
+        if (!file_exists($source_file)) {
+            WC_OpenPix::debug('copyConfigFile: ' . $source_file . ' not found');
+            return false;
+        }
+    
+        return copy($source_file, $target_file);
     }
 
     function validSignature($payload, $signature)
@@ -729,6 +789,16 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                         ) .
                         '</a>'
                 ),
+            ],
+            'environment' => [
+                'title' => __('Ambiente', 'woocommerce-openpix'),
+                'type' => 'select',
+                'description' => __('Selecione o ambiente de integração', 'woocommerce-openpix'),
+                'default' => 'prod',
+                'options' => [
+                    'sandbox-prod' => 'Sandbox',
+                    'prod' => 'Production'
+                ],
             ],
             'oneclick_section' => [
                 'title' => __(
