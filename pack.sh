@@ -38,6 +38,8 @@ if [ $1 != "prod" ]
       includes/class-wc-openpix-pix-block.php \
       includes/customer/class-wc-openpix-customer.php \
       includes/config/config.php \
+      includes/config/config-prod.php \
+      includes/config/config-sandbox-prod.php \
       languages \
       templates \
       vendor \
