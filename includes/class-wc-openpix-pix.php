@@ -1483,36 +1483,4 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
     {
         return $this->appID;
     }
-
-    /**
-     * Force environment change programmatically
-     * 
-     * @param string $environment The environment to set EnvironmentEnum::PRODUCTION or EnvironmentEnum::SANDBOX_PRODUCTION
-     * @return bool True if environment was changed successfully
-     */
-    public function setEnvironment(string $environment): bool
-    {
-        $validEnvironments = [EnvironmentEnum::SANDBOX_PRODUCTION, EnvironmentEnum::PRODUCTION];
-        
-        if (!in_array($environment, $validEnvironments)) {
-            WC_OpenPix::debug('Invalid environment: ' . $environment);
-            return false;
-        }
-        
-        $oldEnvironment = $this->get_option('environment');
-        
-        if ($oldEnvironment !== $environment) {
-            $this->update_option('environment', $environment);
-            $this->environment = $environment;
-            OpenPixConfig::initialize($environment);
-            
-            WC_OpenPix::debug(
-                'Environment changed from ' . $oldEnvironment . ' to ' . $environment
-            );
-            
-            return true;
-        }
-        
-        return false;
-    }
 }
