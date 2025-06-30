@@ -4,7 +4,7 @@ if (!defined('ABSPATH')) {
     exit();
 }
 
-require_once 'config/config.php';
+require_once plugin_dir_path(__FILE__) . 'config/autoload.php';
 
 add_action('admin_footer', 'embedWebhookConfigButton');
 
@@ -83,11 +83,9 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
         $this->order_button_text = $this->get_option('order_button_text');
         $this->appID = $this->get_option('appID');
-        $this->environment = $this->get_option('environment');
+        $this->environment = $this->get_option('environment') ?? EnvironmentEnum::PRODUCTION;
 
-        if ($this->checkConfigFiles()) {
-            $this->copyConfigFile($this->environment);
-        }
+        OpenPixConfig::initialize($this->environment);
 
         $this->status_when_waiting = $this->get_option('status_when_waiting');
         $this->status_when_paid = $this->get_option('status_when_paid');
@@ -115,24 +113,6 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         ]);
 
         add_action('woocommerce_openpix_pix_email', [$this, 'displayEmail']);
-    }
-
-    private function checkConfigFiles() {
-        $plugin_dir = plugin_dir_path(dirname(__FILE__));
-        $sandbox_file = $plugin_dir . 'includes/config/config-sandbox-prod.php';
-        $production_file = $plugin_dir . 'includes/config/config-prod.php';
-        
-        if (!file_exists($sandbox_file) || !file_exists($production_file)) {
-            add_action('admin_notices', function() {
-                ?>
-                <div class="notice notice-error">
-                    <p><?php _e('OpenPix: Arquivos de configuração não encontrados.', 'woocommerce-openpix'); ?></p>
-                </div>
-                <?php
-            });
-            return false;
-        }
-        return true;
     }
 
     public function displayEmail($order)
@@ -275,36 +255,22 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         if ($saved) {
             $new_environment = $this->get_option('environment');
             
-            // if modify the environment, copy the config file
+            // Always update the environment option to ensure consistency
             if ($old_environment !== $new_environment) {
                 WC_OpenPix::debug(
                     'Environment changed from ' . $old_environment . ' to ' . $new_environment
                 );
-                $this->copyConfigFile($new_environment);
+                $this->update_option('environment', $new_environment);
+                OpenPixConfig::initialize($new_environment);
             }
         }
         
         return $saved;
-        // return parent::process_admin_options();
-    }
-
-    private function copyConfigFile($environment) 
-    {
-        $plugin_dir = plugin_dir_path(dirname(__FILE__));
-        $source_file = $plugin_dir . 'includes/config/config-' . $environment . '.php';
-        $target_file = $plugin_dir . 'includes/config/config.php';
-    
-        if (!file_exists($source_file)) {
-            WC_OpenPix::debug('copyConfigFile: ' . $source_file . ' not found');
-            return false;
-        }
-    
-        return copy($source_file, $target_file);
     }
 
     function validSignature($payload, $signature)
     {
-        $publicKey = base64_decode(OpenPixConfig::$OPENPIX_PUBLIC_KEY_BASE64);
+        $publicKey = base64_decode(OpenPixConfig::getPublicKeyBase64());
 
         $verify = openssl_verify(
             $payload,
@@ -478,6 +444,14 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
     {
         $this->update_option('appID', $data['appID']);
         $this->update_option('webhook_status', 'Configured');
+        
+        // Update environment if provided in the webhook data
+        // I don't know if it makes sense to keep this
+        // @todo: remove this after testing
+        // if (isset($data['environment'])) {
+        //     $this->update_option('environment', $data['environment']);
+        //     OpenPixConfig::initialize($data['environment']);
+        // }
     }
 
     public function handleTestWebhook($data)
@@ -755,7 +729,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
         $registerLabel = sprintf(
             __('Open your account now %s', 'woocommerce-openpix'),
-            '<a target="_blank" href="https://app.openpix.com/register">https://app.openpix.com/register</a>'
+            '<a target="_blank" href="https://app.woovi.com/register">https://app.woovi.com/register</a>'
         );
 
         $documentationLabel = sprintf(
@@ -763,7 +737,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                 'OpenPix integration %s with Woocommerce',
                 'woocommerce-openpix'
             ),
-            '<a target="_blank" href="https://developers.openpix.com.br/docs/ecommerce/woocommerce/woocommerce-plugin#instale-o-plugin-openpix-na-sua-inst%C3%A2ncia-woocommerce-utilizando-one-click">documentation</a>'
+            '<a target="_blank" href="https://developers.woovi.com/docs/ecommerce/woocommerce/woocommerce-plugin#instale-o-plugin-openpix-na-sua-inst%C3%A2ncia-woocommerce-utilizando-one-click">documentation</a>'
         );
 
         $this->form_fields = [
@@ -782,7 +756,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
                         'Follow documentation to get your OpenPix AppID here %s.',
                         'woocommerce-openpix'
                     ),
-                    '<a target="_blank" href="https://developers.openpix.com.br/docs/apis/api-getting-started/">' .
+                    '<a target="_blank" href="https://developers.woovi.com/docs/apis/api-getting-started/">' .
                         __(
                             'OpenPix API Getting Started',
                             'woocommerce-openpix'
@@ -1338,7 +1312,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             '/home/applications/woocommerce/add/oneclick?website=' .
             $webhookUrl;
 
-        // Remove current App ID
+        // Remove current App ID and reset environment
         $openpixSettings = get_option(
             'woocommerce_woocommerce_openpix_pix_settings'
         );
@@ -1348,6 +1322,8 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         }
 
         $openpixSettings['appID'] = '';
+        $openpixSettings['environment'] = 'prod'; // Reset to production by default
+        $openpixSettings['webhook_status'] = 'Not Configured';
 
         update_option(
             'woocommerce_woocommerce_openpix_pix_settings',
