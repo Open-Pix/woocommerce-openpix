@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # remove backup files
 rm **/*.po~ **/*.pot~
-cp includes/config/config-$1.php includes/config/config.php
+# cp includes/config/config-$1.php includes/config/config.php
 
 # Get plugin version
 VERSION=$(grep -oP 'Version: \K[0-9.]+' woocommerce-openpix.php)
@@ -21,7 +21,12 @@ if [ $1 != "prod" ]
     includes/class-wc-openpix-prod.php \
     includes/class-wc-openpix-pix-block.php \
     includes/config/config.php \
-    includes/config/config-prod-beta.php \
+    includes/config/autoload.php \
+    includes/config/EnvironmentEnum.php \
+    includes/config/ConfigFactory.php \
+    includes/config/ConfigStrategyInterface.php \
+    includes/config/ProductionConfigStrategy.php \
+    includes/config/SandboxProdConfigStrategy.php \
     languages \
     templates \
     vendor \
@@ -38,8 +43,12 @@ if [ $1 != "prod" ]
       includes/class-wc-openpix-pix-block.php \
       includes/customer/class-wc-openpix-customer.php \
       includes/config/config.php \
-      includes/config/config-prod.php \
-      includes/config/config-sandbox-prod.php \
+      includes/config/autoload.php \
+      includes/config/EnvironmentEnum.php \
+      includes/config/ConfigFactory.php \
+      includes/config/ConfigStrategyInterface.php \
+      includes/config/ProductionConfigStrategy.php \
+      includes/config/SandboxProdConfigStrategy.php \
       languages \
       templates \
       vendor \

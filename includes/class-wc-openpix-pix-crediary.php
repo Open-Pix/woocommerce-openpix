@@ -4,7 +4,7 @@ if (!defined('ABSPATH')) {
     exit();
 }
 
-require_once 'config/config.php';
+require_once plugin_dir_path(__FILE__) . 'config/autoload.php';
 
 add_action('admin_footer', 'embedPixCrediaryOneclickConfigButton');
 
@@ -970,7 +970,7 @@ class WC_OpenPix_Pix_Crediary_Gateway extends WC_Payment_Gateway
 
     function validSignature($payload, $signature)
     {
-        $publicKey = base64_decode(OpenPixConfig::$OPENPIX_PUBLIC_KEY_BASE64);
+        $publicKey = base64_decode(OpenPixConfig::getPublicKeyBase64());
 
         $verify = openssl_verify(
             $payload,
