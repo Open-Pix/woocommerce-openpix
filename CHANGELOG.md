@@ -1,3 +1,45 @@
+#### 2.13.2 (2025-06-30)
+
+##### Build System / Dependencies
+
+* **change-log:**
+  *  v2.13.1 (#1420) (263b4b59)
+  *  v2.13.0 (#1419) (aacbdf73)
+  *  v2.12.2 (#1416) (6ddd7101)
+  *  v2.12.1 (#1414) (b1a94f6a)
+  *  v2.12.0 (#1409) (02be24e6)
+  *  v2.11.0 (#1404) (920b012e)
+  *  v2.10.10 (#1400) (3a2c5a8b)
+
+##### New Features
+
+*  add support sandbox (#1418) (2c75ceba)
+*  add svn script release (#1417) (f84a7307)
+* **update:**
+  *  update tested up to (#1405) (9b453d69)
+  *  update the readme.txt (e5517bdd)
+* **correlationID:**  save correlationID before of all (#1403) (4bf599a9)
+* **timeout:**
+  *  update timeout of request (#1402) (658cd1d4)
+  *  update timeout of request (f37f7bf7)
+* **release:**  v2.10.9 (#1398) (979c0cd3)
+* **pix:**  add email hook (#1397) (2febc373)
+
+##### Bug Fixes
+
+*  improve config strategy and use plugin_dir_path (#1421) (72704452)
+*  remove invalid phone number in customer create api (#1415) (fe8de940)
+*  remove named arguments php8 (#1413) (5dbf61ce)
+* **pack:**  add checkout blocks to pack script (#1399) (a536a55d)
+* **checkout:**
+  *  show gateway description (#1396) (acbe5ee8)
+  *  add checkout blocks compatibility for pix (#1395) (9ad16297)
+* **features:**  declare compability with checkout blocks (#1394) (5e9710be)
+
+##### Other Changes
+
+* //github.com/Open-Pix/woocommerce-openpix (1d8dd637)
+
 #### 2.13.1 (2025-05-07)
 
 ##### Build System / Dependencies
