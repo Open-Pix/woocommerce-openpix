@@ -1,3 +1,9 @@
+#### 2.13.3 (2025-11-13)
+
+##### Bug Fixes
+
+*  remove phone validation that was blocking checkout for valid phone numbers (SEU_COMMIT_HASH)
+
 #### 2.13.2 (2025-06-30)
 
 ##### Build System / Dependencies

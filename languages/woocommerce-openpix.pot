@@ -101,10 +101,6 @@ msgstr ""
 msgid "Invalid Cell Phone"
 msgstr ""
 
-#: includes/class-wc-openpix-pix.php:725
-msgid "Invalid Phone"
-msgstr ""
-
 #: includes/class-wc-openpix-installment.php:356
 msgid "Missing OpenPix payment information"
 msgstr ""

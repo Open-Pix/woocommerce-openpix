@@ -101,10 +101,6 @@ msgstr "Aniversário Inválido"
 msgid "Invalid Cell Phone"
 msgstr "Celular Inválido"
 
-#: includes/class-wc-openpix-pix.php:725
-msgid "Invalid Phone"
-msgstr "Telefone Inválido"
-
 #: includes/class-wc-openpix-installment.php:356
 msgid "Missing OpenPix payment information"
 msgstr "Sem informação de pagamento OpenPix."
