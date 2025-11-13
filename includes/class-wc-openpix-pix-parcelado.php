@@ -537,16 +537,6 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
             }
         }
 
-        $phone = sanitize_text_field($order_billing_phone);
-
-        if ($phone) {
-            $phoneSafe = preg_replace('/^0|\D+/', '', $phone);
-
-            if (strlen($phoneSafe) != 11 && strlen($phoneSafe) != 10) {
-                return __('Invalid Phone', 'woocommerce-openpix');
-            }
-        }
-
         return null;
     }
 
