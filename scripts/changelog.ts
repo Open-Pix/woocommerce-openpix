@@ -30,13 +30,15 @@ dotenvSafe.config({
 const owner = 'Open-Pix';
 const repo = 'woocommerce-openpix';
 
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+
 const createPullRequest = async (branchName, tag) => {
-  if (!process.env.GITHUB_TOKEN) {
+  if (!GITHUB_TOKEN) {
     return;
   }
 
   const octokit = new Octokit({
-    auth: process.env.GITHUB_TOKEN,
+    auth: GITHUB_TOKEN,
   });
 
   const now = moment().format('YYYY-MM-DD');

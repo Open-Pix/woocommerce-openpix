@@ -1,9 +1,20 @@
 #!/usr/bin/env node
+
+import path from 'path';
+
+import dotenvSafe from 'dotenv-safe';
 import git from 'simple-git';
 
 const octonode = require('octonode');
 const log = require('npmlog');
 const changelog = require('generate-changelog');
+
+const root = path.join.bind(this, __dirname, '../');
+
+dotenvSafe.config({
+  path: root('.env'),
+  sample: root('.env.example'),
+});
 
 // Use current version of the package by default
 const versionTag =
@@ -33,8 +44,9 @@ if (validArgs.indexOf(args[0]) === -1) {
 
 const username = process.env.CIRCLE_PROJECT_USERNAME || 'Open-Pix';
 const reponame = process.env.CIRCLE_PROJECT_REPONAME || 'woocommerce-openpix';
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN || process.env.GITHUB_API_TOKEN;
 
-const octo = octonode.client(process.env.GITHUB_API_TOKEN);
+const octo = octonode.client(GITHUB_TOKEN);
 const repo = octo.repo(`${username}/${reponame}`);
 
 function getReleaseByTag(tagName) {
