@@ -44,7 +44,7 @@ if (validArgs.indexOf(args[0]) === -1) {
 
 const username = process.env.CIRCLE_PROJECT_USERNAME || 'Open-Pix';
 const reponame = process.env.CIRCLE_PROJECT_REPONAME || 'woocommerce-openpix';
-const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN || process.env.GITHUB_API_TOKEN;
 
 const octo = octonode.client(GITHUB_TOKEN);
 const repo = octo.repo(`${username}/${reponame}`);
