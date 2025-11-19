@@ -96,10 +96,6 @@ msgstr "Invalid AppID"
 msgid "Invalid Birthdate"
 msgstr "Invalid Birthdate"
 
-#: includes/class-wc-openpix-pix.php:715
-msgid "Invalid Cell Phone"
-msgstr "Invalid Cell Phone"
-
 #: includes/class-wc-openpix-installment.php:356
 msgid "Missing OpenPix payment information"
 msgstr "Missing OpenPix payment information"
