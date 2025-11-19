@@ -1109,16 +1109,6 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         $order_billing_phone = $order_data['billing']['phone'];
         $order_billing_cellphone = $order->get_meta('_billing_cellphone');
 
-        $cellphone = sanitize_text_field($order_billing_cellphone);
-
-        if ($cellphone) {
-            $phoneSafe = preg_replace('/^0|\D+/', '', $cellphone);
-
-            if (strlen($phoneSafe) != 11 && strlen($phoneSafe) != 10) {
-                return __('Invalid Cell Phone', 'woocommerce-openpix');
-            }
-        }
-
         return null;
     }
 

@@ -1,8 +1,14 @@
+#### 2.13.4 (2025-11-19)
+
+##### Bug Fixes
+
+*  remove billing_cellphone validation that was blocking checkout for valid phone numbers
+
 #### 2.13.3 (2025-11-13)
 
 ##### Bug Fixes
 
-*  remove phone validation that was blocking checkout for valid phone numbers (SEU_COMMIT_HASH)
+*  remove billing_phone validation that was blocking checkout for valid phone numbers
 
 #### 2.13.2 (2025-06-30)
 
