@@ -131,7 +131,9 @@ const run = async () => {
     'woocommerce-openpix.php',
     'readme.txt',
   ]);
-  await git().commit(`build(change-log): ${tag}`, [], '-n');
+  await git().commit(`build(change-log): ${tag}`, [], {
+    '--no-verify': true,
+  });
   await git().addAnnotatedTag(`${tag}`, `build(tag): ${tag}`);
   await git().push(['--follow-tags', '-u', 'origin', branchName]);
 
