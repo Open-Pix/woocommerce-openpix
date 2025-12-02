@@ -71,3 +71,6 @@ woocommerce-openpix*.zip
 assets/js/woo-openpix*
 
 openpix-for-woocommerce
+
+# Local webhook test payload
+scripts/dispatchWebhookPayload.json
