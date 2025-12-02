@@ -83,7 +83,8 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
         $this->order_button_text = $this->get_option('order_button_text');
         $this->appID = $this->get_option('appID');
-        $this->environment = $this->get_option('environment') ?? EnvironmentEnum::PRODUCTION;
+        $this->environment =
+            $this->get_option('environment') ?? EnvironmentEnum::PRODUCTION;
 
         OpenPixConfig::initialize($this->environment);
 
@@ -254,17 +255,20 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
         WC_OpenPix::debug('process_admin_options');
         if ($saved) {
             $new_environment = $this->get_option('environment');
-            
+
             // Always update the environment option to ensure consistency
             if ($old_environment !== $new_environment) {
                 WC_OpenPix::debug(
-                    'Environment changed from ' . $old_environment . ' to ' . $new_environment
+                    'Environment changed from ' .
+                        $old_environment .
+                        ' to ' .
+                        $new_environment
                 );
                 $this->update_option('environment', $new_environment);
                 OpenPixConfig::initialize($new_environment);
             }
         }
-        
+
         return $saved;
     }
 
@@ -444,7 +448,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
     {
         $this->update_option('appID', $data['appID']);
         $this->update_option('webhook_status', 'Configured');
-        
+
         // Update environment if provided in the webhook data
         // I don't know if it makes sense to keep this
         // @todo: remove this after testing
@@ -767,11 +771,14 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
             'environment' => [
                 'title' => __('Ambiente', 'woocommerce-openpix'),
                 'type' => 'select',
-                'description' => __('Selecione o ambiente de integração', 'woocommerce-openpix'),
+                'description' => __(
+                    'Selecione o ambiente de integração',
+                    'woocommerce-openpix'
+                ),
                 'default' => 'prod',
                 'options' => [
                     'sandbox-prod' => 'Sandbox',
-                    'prod' => 'Production'
+                    'prod' => 'Production',
                 ],
             ],
             'oneclick_section' => [
@@ -927,44 +934,7 @@ class WC_OpenPix_Pix_Gateway extends WC_Payment_Gateway
 
     public function formatPhone($phone)
     {
-        if (!class_exists('libphonenumber\PhoneNumberUtil')) {
-            require_once __DIR__ . '/../vendor/autoload.php';
-        }
-
-        $phoneUtil = \libphonenumber\PhoneNumberUtil::getInstance();
-        
-        // Remove all non-numeric characters
-        $cleanNumber = preg_replace('/\D+/', '', $phone);
-        
-        // Try first validation with original number
-        try {
-            $numberProto = $phoneUtil->parse($cleanNumber, 'BR');
-            if ($phoneUtil->isValidNumber($numberProto)) {
-                $formattedNumber = $phoneUtil->format($numberProto, \libphonenumber\PhoneNumberFormat::E164);
-                return ltrim($formattedNumber, '+');
-            }
-        } catch (\libphonenumber\NumberParseException $e) {
-            // Continue to try alternative format if this fails
-        }
-        
-        // If the first validation fails and number starts with 5555,
-        // try removing one instance of 55 and validate again
-        if (strpos($cleanNumber, '5555') === 0) {
-            $alternativeNumber = '55' . substr($cleanNumber, 4);
-            
-            try {
-                $numberProto = $phoneUtil->parse($alternativeNumber, 'BR');
-                if ($phoneUtil->isValidNumber($numberProto)) {
-                    $formattedNumber = $phoneUtil->format($numberProto, \libphonenumber\PhoneNumberFormat::E164);
-                    return ltrim($formattedNumber, '+');
-                }
-            } catch (\libphonenumber\NumberParseException $e) {
-                // If both attempts fail, return false
-                return false;
-            }
-        }
-        
-        return false;
+        return preg_replace('/\D+/', '', $phone);
     }
 
     public function getHasCustomer($order)
