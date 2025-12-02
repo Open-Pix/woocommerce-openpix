@@ -1,3 +1,21 @@
+#### 2.13.4 (2025-12-02)
+
+##### Build System / Dependencies
+
+* **change-log:**  v2.13.3 (#1427) (180d5569)
+
+##### New Features
+
+*  tag release workflow (#1433) (e34b951e)
+* **boleto:**  add new payment support boleto (#1431) (7deb3634)
+
+##### Bug Fixes
+
+*  improve changelog script to update readme.txt (#1432) (8f9fd9a7)
+*  publish tag (#1430) (91de68b5)
+*  update changelog yml (#1429) (cad40aed)
+*  imrpove svn release and changelog script (#1428) (db34ee8e)
+
 #### 2.13.3 (2025-11-19)
 
 ##### Build System / Dependencies
