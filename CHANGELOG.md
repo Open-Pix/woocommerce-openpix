@@ -1,3 +1,9 @@
+#### 2.13.4 (2026-01-27)
+
+##### Bug Fixes
+
+*  add contributors own of plugin (#1434) (ea7c8952)
+
 #### 2.13.3 (2025-11-19)
 
 ##### Build System / Dependencies
