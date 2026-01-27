@@ -1,5 +1,5 @@
 === Pix para Woocommerce – OpenPix ===
-Contributors: openpix
+Contributors: sibeliusseraphini
 Tags: woocommerce, openpix, payment
 Requires at least: 4.0
 Tested up to: 6.8
