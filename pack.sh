@@ -17,9 +17,11 @@ if [ $1 != "prod" ]
     includes/class-wc-openpix-pix.php \
     includes/class-wc-openpix-pix-parcelado.php \
     includes/class-wc-openpix-pix-crediary.php \
+    includes/class-wc-openpix-boleto.php \
     includes/customer/class-wc-openpix-customer.php \
     includes/class-wc-openpix-prod.php \
     includes/class-wc-openpix-pix-block.php \
+    includes/class-wc-openpix-boleto-block.php \
     includes/config/config.php \
     includes/config/autoload.php \
     includes/config/EnvironmentEnum.php \
@@ -40,7 +42,9 @@ if [ $1 != "prod" ]
       includes/class-wc-openpix-pix.php \
       includes/class-wc-openpix-pix-parcelado.php \
       includes/class-wc-openpix-pix-crediary.php \
+      includes/class-wc-openpix-boleto.php \
       includes/class-wc-openpix-pix-block.php \
+      includes/class-wc-openpix-boleto-block.php \
       includes/customer/class-wc-openpix-customer.php \
       includes/config/config.php \
       includes/config/autoload.php \
