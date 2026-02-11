@@ -10,8 +10,7 @@ add_action('admin_footer', 'embedWooviParceladoOneclickConfigButton');
 
 function embedWooviParceladoOneclickConfigButton()
 {
-    $nonce = wp_create_nonce('openpix_parcelado_prepare_oneclick_nonce');
-    ?>
+    $nonce = wp_create_nonce('openpix_parcelado_prepare_oneclick_nonce'); ?>
 
 	<script type="text/javascript" >
 	jQuery(document).ready(function($) {
@@ -51,6 +50,8 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
     public $status_when_waiting;
     public $status_when_paid;
     private $openpix_customer;
+    private $environment;
+    private $config;
 
     private static $instance = null;
 
@@ -68,13 +69,26 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
         $this->openpix_customer = new WC_OpenPix_Customer();
 
         $this->id = 'woocommerce_openpix_pix_parcelado';
-        $this->method_title = __('OpenPix Parcelado', 'openpix-for-woocommerce');
+        $this->method_title = __(
+            'OpenPix Parcelado',
+            'openpix-for-woocommerce'
+        );
         $this->method_description = __(
             'OpenPix Parcelado is an innovative payment method that allows your customers to pay a 50% down payment for the Pix and divide the remainder of the purchase up to 4x on the card. The process is completely online, fast and easy, with a native anti-fraud system for total security.',
             'openpix-for-woocommerce'
         );
         $this->has_fields = true; // direct payment
         $this->supports = ['products', 'refunds'];
+
+        // Initialize config from WP options before init_form_fields (which needs config)
+        $raw_settings = get_option(
+            'woocommerce_' . $this->id . '_settings',
+            []
+        );
+        $this->environment = isset($raw_settings['environment'])
+            ? $raw_settings['environment']
+            : EnvironmentEnum::PRODUCTION;
+        $this->config = ConfigFactory::createStrategy($this->environment);
 
         $this->init_form_fields();
         $this->init_settings();
@@ -119,7 +133,7 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
         $chargeCorrelationID = $order->get_meta('openpix_correlation_id');
 
         $url =
-            OpenPixConfig::getApiUrl() .
+            $this->config->getApiUrl() .
             "/api/v1/charge/$chargeCorrelationID/refund";
 
         $total_cents = $this->get_openpix_amount($amount);
@@ -146,7 +160,7 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
 
         WC_OpenPix::debugJson('Charge refund payload:', $payload);
 
-        if (OpenPixConfig::getEnv() === 'development') {
+        if ($this->config->getEnv() === 'development') {
             $response = wp_remote_post($url, $params);
         } else {
             $response = wp_safe_remote_post($url, $params);
@@ -170,7 +184,10 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
         $code = $response['response']['code'];
 
         if ($code === 400) {
-            wc_add_notice(__('Invalid AppID', 'openpix-for-woocommerce'), 'error');
+            wc_add_notice(
+                __('Invalid AppID', 'openpix-for-woocommerce'),
+                'error'
+            );
 
             WC_OpenPix::debugJson("Error refunding charge $code:", $response);
 
@@ -225,7 +242,7 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
 
     public function init_form_fields()
     {
-        $webhookUrl = OpenPixConfig::getWebhookUrl(
+        $webhookUrl = $this->config->getWebhookUrl(
             'WC_OpenPix_Pix_Parcelado_Gateway'
         );
 
@@ -250,7 +267,10 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
 
         $documentationLabel = sprintf(
             /* translators: %s: documentation link */
-            __('See more about OpenPix Parcelado %s', 'openpix-for-woocommerce'),
+            __(
+                'See more about OpenPix Parcelado %s',
+                'openpix-for-woocommerce'
+            ),
             '<a target="_blank" href="https://developers.openpix.com.br/docs/category/woocommerce">here</a>'
         );
 
@@ -263,7 +283,10 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
                 'description' => "<p>$webhookLabel</p><p>$registerLabel</p><p>$documentationLabel</p>",
             ],
             'api_section' => [
-                'title' => __('OpenPix Integration API', 'openpix-for-woocommerce'),
+                'title' => __(
+                    'OpenPix Integration API',
+                    'openpix-for-woocommerce'
+                ),
                 'type' => 'title',
                 'description' => sprintf(
                     /* translators: %s: link to API documentation */
@@ -279,6 +302,19 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
                         '</a>'
                 ),
             ],
+            'environment' => [
+                'title' => __('Ambiente', 'openpix-for-woocommerce'),
+                'type' => 'select',
+                'description' => __(
+                    'Selecione o ambiente de integração',
+                    'openpix-for-woocommerce'
+                ),
+                'default' => 'prod',
+                'options' => [
+                    'sandbox-prod' => 'Sandbox',
+                    'prod' => 'Production',
+                ],
+            ],
             'oneclick_section' => [
                 'title' => __(
                     'Authenticate on the platform using 1 click',
@@ -288,7 +324,10 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
             ],
             'oneclick_button' => [
                 'type' => 'button',
-                'title' => __('One Click Configuration', 'openpix-for-woocommerce'),
+                'title' => __(
+                    'One Click Configuration',
+                    'openpix-for-woocommerce'
+                ),
                 'class' => 'button-primary',
                 'description' => sprintf(
                     __(
@@ -359,7 +398,10 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
                 'description' => __('Status ', 'openpix-for-woocommerce'),
             ],
             'status_section' => [
-                'title' => __('Configure order status', 'openpix-for-woocommerce'),
+                'title' => __(
+                    'Configure order status',
+                    'openpix-for-woocommerce'
+                ),
                 'type' => 'title',
             ],
             'status_when_waiting' => [
@@ -428,7 +470,9 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
     public function getHasCustomer($order)
     {
         // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce is verified in process_payment
-        $hasOpenpixCustomer = isset($_POST['openpix_customer_taxid']) && !empty($_POST['openpix_customer_taxid']);
+        $hasOpenpixCustomer =
+            isset($_POST['openpix_customer_taxid']) &&
+            !empty($_POST['openpix_customer_taxid']);
 
         if ($hasOpenpixCustomer) {
             return true;
@@ -444,7 +488,9 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
     public function getTaxID($order)
     {
         // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce is verified in process_payment
-        $openpix_customer_taxid = isset($_POST['openpix_customer_taxid']) ? sanitize_text_field(wp_unslash($_POST['openpix_customer_taxid'])) : '';
+        $openpix_customer_taxid = isset($_POST['openpix_customer_taxid'])
+            ? sanitize_text_field(wp_unslash($_POST['openpix_customer_taxid']))
+            : '';
 
         $hasOpenpixCustomer = !empty($openpix_customer_taxid);
 
@@ -566,7 +612,7 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
 
         $correlationID = $this->generate_correlation_id($order);
 
-        $url = OpenPixConfig::getApiUrl() . '/api/v1/charge';
+        $url = $this->config->getApiUrl() . '/api/v1/charge';
 
         $cart_total = $this->get_order_total();
         $total_cents = $this->get_openpix_amount($cart_total);
@@ -578,8 +624,8 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
             wc_add_notice(
                 sprintf(
                     /* translators: %s: validation error message */
-                    __( 'Order with Error: %s', 'openpix-for-woocommerce' ),
-                    esc_html( $validationError )
+                    __('Order with Error: %s', 'openpix-for-woocommerce'),
+                    esc_html($validationError)
                 )
             );
             return [
@@ -610,7 +656,7 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
 
         WC_OpenPix::debugJson('Charge post payload:', $payload);
 
-        if (OpenPixConfig::getEnv() === 'development') {
+        if ($this->config->getEnv() === 'development') {
             $response = wp_remote_post($url, $params);
         } else {
             $response = wp_safe_remote_post($url, $params);
@@ -634,7 +680,10 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
         WC_OpenPix::debugJson('Charge post response:', $response['body']);
 
         if ($response['response']['code'] === 401) {
-            wc_add_notice(__('Invalid AppID', 'openpix-for-woocommerce'), 'error');
+            wc_add_notice(
+                __('Invalid AppID', 'openpix-for-woocommerce'),
+                'error'
+            );
 
             WC_OpenPix::debugJson('Error creating pix:', $response);
 
@@ -693,9 +742,12 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
         $order->add_order_note(
             sprintf(
                 /* translators: %1$s: payment link URL, %2$s: payment link URL */
-                __( 'OpenPix: Payment link: <a href="%1$s">%2$s</a>', 'openpix-for-woocommerce' ),
-                esc_url( $data['charge']['paymentLinkUrl'] ),
-                esc_html( $data['charge']['paymentLinkUrl'] )
+                __(
+                    'OpenPix: Payment link: <a href="%1$s">%2$s</a>',
+                    'openpix-for-woocommerce'
+                ),
+                esc_url($data['charge']['paymentLinkUrl']),
+                esc_html($data['charge']['paymentLinkUrl'])
             )
         );
 
@@ -710,21 +762,36 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
     public static function openpix_parcelado_prepare_oneclick()
     {
         // Security: Verify nonce
-        if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'openpix_parcelado_prepare_oneclick_nonce')) {
-            wp_send_json_error(__('Security check failed.', 'openpix-for-woocommerce'), 403);
+        if (
+            !isset($_POST['nonce']) ||
+            !wp_verify_nonce(
+                sanitize_text_field(wp_unslash($_POST['nonce'])),
+                'openpix_parcelado_prepare_oneclick_nonce'
+            )
+        ) {
+            wp_send_json_error(
+                __('Security check failed.', 'openpix-for-woocommerce'),
+                403
+            );
             wp_die();
         }
 
         // Security: Verify user capability
         if (!current_user_can('manage_woocommerce')) {
-            wp_send_json_error(__('You do not have permission to perform this action.', 'openpix-for-woocommerce'), 403);
+            wp_send_json_error(
+                __(
+                    'You do not have permission to perform this action.',
+                    'openpix-for-woocommerce'
+                ),
+                403
+            );
             wp_die();
         }
 
-        $webhookUrl = OpenPixConfig::getWebhookUrl(
+        $webhookUrl = self::instance()->config->getWebhookUrl(
             'WC_OpenPix_Pix_Parcelado_Gateway'
         );
-        $platformUrl = OpenPixConfig::getPlatformUrl();
+        $platformUrl = self::instance()->config->getPlatformUrl();
         $platformNewIntegrationUrl =
             $platformUrl .
             '/home/applications/woocommerce-pix-credit-card/add/oneclick?website=' .
@@ -786,10 +853,10 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
             true
         );
 
-        $environment = OpenPixConfig::getEnv();
+        $environment = $this->config->getEnv();
 
         $queryString = "appID={$this->appID}&correlationID={$correlationID}&node=openpix-order";
-        $pluginUrl = OpenPixConfig::getPluginUrl();
+        $pluginUrl = $this->config->getPluginUrl();
 
         return [
             'orderData' => $data,
@@ -852,13 +919,10 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
         $data = $this->getPluginSrc($order->get_id());
         ?>
         <div id="openpix-order"></div>
-        <?php
-        wp_print_script_tag(
-            array(
-                'src'   => esc_url( $data['src'] ),
-                'async' => true,
-            )
-        );
+        <?php wp_print_script_tag([
+            'src' => esc_url($data['src']),
+            'async' => true,
+        ]);
     }
 
     /**
@@ -990,7 +1054,7 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
 
     function validSignature($payload, $signature)
     {
-        $publicKey = base64_decode(OpenPixConfig::getPublicKeyBase64());
+        $publicKey = base64_decode($this->config->getPublicKeyBase64());
 
         $verify = openssl_verify(
             $payload,
@@ -1017,7 +1081,10 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
         if ($alreadyHasAppID) {
             header('HTTP/1.1 400 Bad Request');
             $response = [
-                'message' => __('App ID already configured', 'openpix-for-woocommerce'),
+                'message' => __(
+                    'App ID already configured',
+                    'openpix-for-woocommerce'
+                ),
             ];
             echo wp_json_encode($response);
             exit();
@@ -1026,7 +1093,10 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
         if (!$hasAppID) {
             header('HTTP/1.1 400 Bad Request');
             $response = [
-                'message' => __('App ID is required', 'openpix-for-woocommerce'),
+                'message' => __(
+                    'App ID is required',
+                    'openpix-for-woocommerce'
+                ),
             ];
             $this->update_option('webhook_status', 'Not Configured');
             echo wp_json_encode($response);
@@ -1171,7 +1241,10 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
 
                     $order->update_status(
                         $this->status_when_paid,
-                        __('OpenPix: Transaction paid', 'openpix-for-woocommerce')
+                        __(
+                            'OpenPix: Transaction paid',
+                            'openpix-for-woocommerce'
+                        )
                     );
 
                     $order->payment_complete();
@@ -1230,7 +1303,11 @@ class WC_OpenPix_Pix_Parcelado_Gateway extends WC_Payment_Gateway
     public function validateWebhook($data, $body)
     {
         // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Signature is used for cryptographic verification only
-        $signature = isset($_SERVER['HTTP_X_WEBHOOK_SIGNATURE']) ? sanitize_text_field(wp_unslash($_SERVER['HTTP_X_WEBHOOK_SIGNATURE'])) : null;
+        $signature = isset($_SERVER['HTTP_X_WEBHOOK_SIGNATURE'])
+            ? sanitize_text_field(
+                wp_unslash($_SERVER['HTTP_X_WEBHOOK_SIGNATURE'])
+            )
+            : null;
 
         if (!$signature || !$this->validSignature($body, $signature)) {
             header('HTTP/1.2 400 Bad Request');
