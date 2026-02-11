@@ -1,5 +1,9 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 ## Enums
 require_once __DIR__ . '/EnvironmentEnum.php';
 

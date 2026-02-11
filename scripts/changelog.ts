@@ -155,6 +155,7 @@ const createPullRequest = async (
   tag: string,
 ): Promise<void> => {
   if (!GITHUB_TOKEN) {
+    console.log('createPullRequest return GITHUB_TOKEN')
     return;
   }
   const octokit = new Octokit({ auth: GITHUB_TOKEN });
@@ -168,14 +169,134 @@ const createPullRequest = async (
     latestReleases && latestReleases.data && latestReleases.data.length
       ? latestReleases.data[0].tag_name
       : 'main';
+  
+  const title = `Deploy Production - ${tag} - ${now}`
   await octokit.pulls.create({
     owner,
     repo,
-    title: `Deploy Production - ${tag} - ${now}`,
+    title,
     head: branchName,
     base: 'main',
     body: `https://github.com/${owner}/${repo}/compare/${latestReleaseTag}...main`,
   });
+
+  console.log(title)
+};
+
+type ReleaseExistsArgs = {
+  tag: string;
+};
+
+const releaseExists = async (args: ReleaseExistsArgs): Promise<boolean> => {
+  if (!GITHUB_TOKEN) {
+    return false;
+  }
+
+  const octokit: Octokit = new Octokit({ auth: GITHUB_TOKEN });
+
+  try {
+    await octokit.repos.getReleaseByTag({
+      owner,
+      repo,
+      tag: args.tag,
+    });
+    return true;
+  } catch (error: unknown) {
+    const status: number | undefined =
+      error && typeof error === 'object' && 'status' in error
+        ? (error as { status?: number }).status
+        : undefined;
+    if (status === 404) {
+      return false;
+    }
+    throw error;
+  }
+};
+
+type DeleteExistingTagArgs = {
+  tag: string;
+};
+
+type DeleteExistingTagSuccess = {
+  success: true;
+};
+
+type DeleteExistingTagError = {
+  success: false;
+  error: string;
+};
+
+type DeleteExistingTagResult =
+  | DeleteExistingTagSuccess
+  | DeleteExistingTagError;
+
+const deleteExistingTag = async (
+  args: DeleteExistingTagArgs,
+): Promise<DeleteExistingTagResult> => {
+  try {
+    const tags: { all: string[] } = await git().tags({ match: args.tag });
+    if (tags.all.includes(args.tag)) {
+      await git().tag(['-d', args.tag]);
+    }
+
+    const remoteTags: string = await git().listRemote(['--tags', 'origin']);
+    if (remoteTags.includes(`refs/tags/${args.tag}`)) {
+      await git().push(['--delete', 'origin', args.tag]);
+    }
+
+    return { success: true };
+  } catch (error) {
+    const message: string =
+      error instanceof Error
+        ? error.message
+        : 'Unable to delete existing tag';
+    return { success: false, error: message };
+  }
+};
+
+type EnsureTagAvailableArgs = {
+  tag: string;
+};
+
+type EnsureTagAvailableSuccess = {
+  success: true;
+};
+
+type EnsureTagAvailableError = {
+  success: false;
+  error: string;
+};
+
+type EnsureTagAvailableResult =
+  | EnsureTagAvailableSuccess
+  | EnsureTagAvailableError;
+
+const ensureTagAvailable = async (
+  args: EnsureTagAvailableArgs,
+): Promise<EnsureTagAvailableResult> => {
+  try {
+    if (await releaseExists({ tag: args.tag })) {
+      return {
+        success: false,
+        error: `Tag ${args.tag} already published on GitHub.`,
+      };
+    }
+
+    const deleteResult: DeleteExistingTagResult = await deleteExistingTag({
+      tag: args.tag,
+    });
+    if (!deleteResult.success) {
+      return deleteResult;
+    }
+
+    return { success: true };
+  } catch (error) {
+    const message: string =
+      error instanceof Error
+        ? error.message
+        : 'Unable to ensure tag availability';
+    return { success: false, error: message };
+  }
 };
 
 const updatePhp = async (
@@ -186,7 +307,7 @@ const updatePhp = async (
   const headerSedExp: string = `sed -i ${blankParamForMac} s/"Version: ${latestVersion}"/"Version: ${newVersion}"/g woocommerce-openpix.php`;
   const constSedExp: string = `sed -i ${blankParamForMac} s/"VERSION = '${latestVersion}'"/"VERSION = '${newVersion}'"/g woocommerce-openpix.php`;
   const readmeSedExp: string = `sed -i ${blankParamForMac} s/"Stable tag: ${latestVersion}"/"Stable tag: ${newVersion}"/g readme.txt`;
-  const pluginReadmeSedExp: string = `sed -i ${blankParamForMac} s/"Stable tag: ${latestVersion}"/"Stable tag: ${newVersion}"/g ../plugins/openpix-for-woocommerce/readme.txt`;
+  const pluginReadmeSedExp: string = `sed -i ${blankParamForMac} s/"Stable tag: ${latestVersion}"/"Stable tag: ${newVersion}"/g openpix-for-woocommerce/trunk/readme.txt`;
   await exec(headerSedExp);
   await exec(constSedExp);
   await exec(readmeSedExp);
@@ -232,9 +353,16 @@ const run = async (): Promise<void> => {
   if (!readmeSectionResult.success) {
     throw new Error(readmeSectionResult.error);
   }
+  const tag: string = `v${semverResult}`;
+  const ensureTagResult: EnsureTagAvailableResult = await ensureTagAvailable({
+    tag,
+  });
+  if (!ensureTagResult.success) {
+    throw new Error(ensureTagResult.error);
+  }
   const readmePaths: string[] = [
     root('readme.txt'),
-    root('../plugins/openpix-for-woocommerce/readme.txt'),
+    root('openpix-for-woocommerce', 'trunk', 'readme.txt'),
   ];
   readmePaths.forEach((readmePath: string): void => {
     const updateResult: UpdateReadmeResult = updateReadmeFile({
@@ -248,7 +376,6 @@ const run = async (): Promise<void> => {
   });
   fs.writeFileSync('./CHANGELOG.md', newChangelogContent);
   await exec(`npm version --no-git-tag-version ${semverResult}`);
-  const tag: string = `v${semverResult}`;
   const today: Date = new Date();
   const branchName: string = `feature-production/${today.getFullYear()}${today.getMonth() + 1}${today.getDate()}${today.getUTCHours()}${today.getUTCMinutes()}`;
   await updatePhp(latestVersion, semverResult);
@@ -258,7 +385,6 @@ const run = async (): Promise<void> => {
     'CHANGELOG.md',
     'woocommerce-openpix.php',
     'readme.txt',
-    '../plugins/openpix-for-woocommerce/readme.txt',
   ]);
   await git().commit(`build(change-log): ${tag}`, [], {
     '--no-verify': true,

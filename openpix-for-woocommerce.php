@@ -2,14 +2,17 @@
 
 /**
  * Plugin Name: OpenPix for WooCommerce
- * Description: Aceite pagamentos Pix em com atualização em tempo real, checkout transparente e atualização automática de status do pedido.
+ * Description: Accept Pix payments with real-time updates, seamless checkout, and automatic order status updates.
  * Author: OpenPix
  * Author URI: https://openpix.com.br/
- * Version: 2.13.4
- * Text Domain: woocommerce-openpix
+ * Version: 2.13.5
+ * Text Domain: openpix-for-woocommerce
  * WC tested up to: 8.2.2
  * Requires Plugins: woocommerce
- * @package WooCommerce_OpenPix
+ * License: GPLv2 or later
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
+ *
+ * @package OpenPix_For_WooCommerce
  */
 
 if (!defined('ABSPATH')) {
@@ -18,11 +21,13 @@ if (!defined('ABSPATH')) {
 
 /**
  * Check if WooCommerce is active
- **/
+ */
 if (
+    // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Using WordPress core filter.
     in_array(
         'woocommerce/woocommerce.php',
-        apply_filters('active_plugins', get_option('active_plugins'))
+        apply_filters( 'active_plugins', get_option( 'active_plugins' ) ),
+        true
     )
 ) {
     // declare compatibility with HPOS before all
@@ -55,7 +60,7 @@ function woocommerce_openpix_init()
 
 class WC_OpenPix
 {
-    const VERSION = '2.13.4';
+    const VERSION = '2.13.5';
 
     protected static $instance = null;
 
@@ -78,9 +83,9 @@ class WC_OpenPix
 
         add_action(
             'woocommerce_before_checkout_form',
-            'userNoticeIncompatibilityWithCheckoutBlock'
+            'wc_openpix_user_notice_incompatibility_with_checkout_block'
         );
-        add_action('admin_notices', 'adminNoticeIncompatibilityWithBlock');
+        add_action( 'admin_notices', 'wc_openpix_admin_notice_incompatibility_with_block' );
     }
 
     public static function get_instance()
@@ -123,7 +128,7 @@ class WC_OpenPix
                 )
             ) .
             '">' .
-            __('Settings Pix', 'woocommerce-openpix') .
+            __('Settings Pix', 'openpix-for-woocommerce') .
             '</a>';
 
         $plugin_links[] =
@@ -134,7 +139,7 @@ class WC_OpenPix
                 )
             ) .
             '">' .
-            __('Settings Parcelado', 'woocommerce-openpix') .
+            __('Settings Parcelado', 'openpix-for-woocommerce') .
             '</a>';
 
         $plugin_links[] =
@@ -145,7 +150,7 @@ class WC_OpenPix
                 )
             ) .
             '">' .
-            __('Settings Pix Crediary', 'woocommerce-openpix') .
+            __('Settings Pix Crediary', 'openpix-for-woocommerce') .
             '</a>';
 
         $plugin_links[] =
@@ -156,17 +161,17 @@ class WC_OpenPix
                 )
             ) .
             '">' .
-            __('Settings Boleto', 'woocommerce-openpix') .
+            __('Settings Boleto', 'openpix-for-woocommerce') .
             '</a>';
 
         $plugin_links[] =
             '<a  target="_blank" href="https://developers.openpix.com.br/docs/ecommerce/woocommerce/woocommerce-plugin">' .
-            __('Documentation', 'woocommerce-openpix') .
+            __('Documentation', 'openpix-for-woocommerce') .
             '</a>';
 
         $plugin_links[] =
             '<a  target="_blank" href="https://app.openpix.com/register/?src=wordpress"> ' .
-            __('Sign up', 'woocommerce-openpix') .
+            __('Sign up', 'openpix-for-woocommerce') .
             '</a>';
 
         return array_merge($plugin_links, $links);
@@ -238,7 +243,7 @@ class WC_OpenPix
             'source' => 'woocommerce_openpix',
         ];
 
-        $jsonEncodedObject = json_encode(
+        $jsonEncodedObject = wp_json_encode(
             $objectToBeEncoded,
             JSON_UNESCAPED_UNICODE |
                 JSON_UNESCAPED_SLASHES |
@@ -255,25 +260,25 @@ class WC_OpenPix
             '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
 
             // 32 bits for "time_low"
-            mt_rand(0, 0xffff),
-            mt_rand(0, 0xffff),
+            wp_rand(0, 0xffff),
+            wp_rand(0, 0xffff),
 
             // 16 bits for "time_mid"
-            mt_rand(0, 0xffff),
+            wp_rand(0, 0xffff),
 
             // 16 bits for "time_hi_and_version",
             // four most significant bits holds version number 4
-            mt_rand(0, 0x0fff) | 0x4000,
+            wp_rand(0, 0x0fff) | 0x4000,
 
             // 16 bits, 8 bits for "clk_seq_hi_res",
             // 8 bits for "clk_seq_low",
             // two most significant bits holds zero and one for variant DCE1.1
-            mt_rand(0, 0x3fff) | 0x8000,
+            wp_rand(0, 0x3fff) | 0x8000,
 
             // 48 bits for "node"
-            mt_rand(0, 0xffff),
-            mt_rand(0, 0xffff),
-            mt_rand(0, 0xffff)
+            wp_rand(0, 0xffff),
+            wp_rand(0, 0xffff),
+            wp_rand(0, 0xffff)
         );
     }
 
@@ -298,14 +303,18 @@ class WC_OpenPix
     }
 }
 
-function checkCompabilityCheckoutBlock()
-{
-    $pluginId = wc_get_container()
-        ->get(\Automattic\WooCommerce\Utilities\PluginUtil::class)
-        ->get_wp_plugin_id(__FILE__);
+/**
+ * Check compatibility with WooCommerce Checkout Blocks.
+ *
+ * @return bool True if compatible, false otherwise.
+ */
+function wc_openpix_check_compatibility_checkout_block() {
+    $plugin_id = wc_get_container()
+        ->get( \Automattic\WooCommerce\Utilities\PluginUtil::class )
+        ->get_wp_plugin_id( __FILE__ );
 
-    return is_plugin_active($pluginId) &&
-        class_exists('Automattic\WooCommerce\Blocks\Package') &&
+    return is_plugin_active( $plugin_id ) &&
+        class_exists( 'Automattic\WooCommerce\Blocks\Package' ) &&
         file_exists(
             __DIR__ .
                 '/assets/' .
@@ -313,28 +322,30 @@ function checkCompabilityCheckoutBlock()
         );
 }
 
-function userNoticeIncompatibilityWithCheckoutBlock()
-{
-    if (checkCompabilityCheckoutBlock()) {
+/**
+ * Display user notice for checkout block incompatibility.
+ *
+ * @return false|void
+ */
+function wc_openpix_user_notice_incompatibility_with_checkout_block() {
+    if ( wc_openpix_check_compatibility_checkout_block() ) {
         return false;
     }
-
-    //     echo <<<HTML
-    //     <div clas    s="woocommerce-info">
-    //         Atenção: O plugin "woocommerce-openpix" ainda não oferece suporte ao Checkout Blocks. Então estamos usando o modelo de checkout classico.
-    //     </div>
-    // HTML;
 }
 
-function adminNoticeIncompatibilityWithBlock()
-{
-    if (checkCompabilityCheckoutBlock()) {
+/**
+ * Display admin notice for checkout block incompatibility.
+ *
+ * @return false|void
+ */
+function wc_openpix_admin_notice_incompatibility_with_block() {
+    if ( wc_openpix_check_compatibility_checkout_block() ) {
         return false;
     }
 
-    echo <<<HTML
+    ?>
     <div class="notice notice-warning">
-        <p><strong>woocommerce-openpix</strong> ainda não é compatível com o Checkout de Blocos do WooCommerce. Para evitar problemas, utilize o Checkout Classico.</p>
+        <p><strong>OpenPix</strong> <?php esc_html_e( 'is not yet compatible with WooCommerce Checkout Blocks. To avoid issues, please use the Classic Checkout.', 'openpix-for-woocommerce' ); ?></p>
     </div>
-HTML;
+    <?php
 }

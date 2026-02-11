@@ -1,0 +1,67 @@
+# Development files
+.env
+.env.*
+.git
+.gitignore
+.gitattributes
+.github
+.editorconfig
+.phpcs.xml
+.phpcs.xml.dist
+phpcs.xml
+phpcs.xml.dist
+phpunit.xml
+phpunit.xml.dist
+
+# Package managers
+node_modules
+vendor
+composer.json
+composer.lock
+package.json
+package-lock.json
+yarn.lock
+
+# Scripts
+scripts
+*.sh
+
+# Tests
+tests
+test
+
+# Build files
+Gruntfile.js
+Gulpfile.js
+webpack.config.js
+
+# IDE
+.idea
+.vscode
+*.sublime-project
+*.sublime-workspace
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Documentation (development)
+CHANGELOG.md
+CONTRIBUTING.md
+CODE_OF_CONDUCT.md
+
+# CI/CD
+.travis.yml
+.circleci
+.gitlab-ci.yml
+
+# Other
+*.log
+*.map
+*.sql
+*.tar.gz
+*.zip
+
+# Plugin Check reports
+*.json
+!assets/*.json

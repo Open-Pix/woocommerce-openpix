@@ -1,12 +1,18 @@
 <?php
 
+/**
+ * @deprecated Use ConfigFactory::createStrategy() per gateway instance instead.
+ * This static singleton causes global state conflicts when multiple gateways
+ * use different environments. Kept for backward compatibility only.
+ */
 class OpenPixConfig
 {
     private static ?ConfigStrategyInterface $strategy = null;
     private static string $environment = EnvironmentEnum::PRODUCTION;
 
-    public static function initialize(string $environment = EnvironmentEnum::PRODUCTION): void
-    {
+    public static function initialize(
+        string $environment = EnvironmentEnum::PRODUCTION
+    ): void {
         self::$environment = $environment;
         self::$strategy = ConfigFactory::createStrategy($environment);
     }

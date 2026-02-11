@@ -1,12 +1,27 @@
 {
-    "name": "openpix/woocommerce-openpix",
-    "description": "Woocommerce OpenPix Plugin",
+    "name": "openpix/openpix-for-woocommerce",
+    "description": "OpenPix for WooCommerce Plugin",
     "type": "wordpress-plugin",
     "require-dev": {
         "phpunit/phpunit": "^9.5",
-        "yoast/phpunit-polyfills": "^1.0"
+        "yoast/phpunit-polyfills": "^1.0",
+        "squizlabs/php_codesniffer": "*",
+        "wp-coding-standards/wpcs": "*",
+        "dealerdirect/phpcodesniffer-composer-installer": "*"
     },
     "require": {
         "giggsey/libphonenumber-for-php": "^8.13"
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    },
+    "scripts": {
+        "lint": "phpcs --standard=WordPress --extensions=php --ignore=vendor,openpix-for-woocommerce,node_modules,scripts,tests --report=summary .",
+        "lint:security": "phpcs --standard=WordPress --extensions=php --ignore=vendor,openpix-for-woocommerce,node_modules,scripts,tests --sniffs=WordPress.Security.EscapeOutput,WordPress.Security.NonceVerification,WordPress.Security.SafeRedirect,WordPress.Security.ValidatedSanitizedInput,WordPress.WP.AlternativeFunctions,WordPress.PHP.DevelopmentFunctions,WordPress.DB.DirectDatabaseQuery -s .",
+        "lint:i18n": "phpcs --standard=WordPress --extensions=php --ignore=vendor,openpix-for-woocommerce,node_modules,scripts,tests --sniffs=WordPress.WP.I18n -s .",
+        "lint:fix": "phpcbf --standard=WordPress --extensions=php --ignore=vendor,openpix-for-woocommerce,node_modules,scripts,tests .",
+        "test": "phpunit"
     }
 }
