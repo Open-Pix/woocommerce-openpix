@@ -4,7 +4,7 @@ Tags: woocommerce, openpix, payment, pix
 Requires at least: 4.0
 Tested up to: 6.9
 Requires PHP: 7.3
-Stable tag: 2.13.5
+Stable tag: 2.13.6
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -88,6 +88,12 @@ If you need to talk to our team, access the chat available on our website.
 5. Example of Expired Payment Order
 
 == Changelog ==
+
+= 2.13.6 - 2026-02-11 =
+
+- **change-log:**  v2.13.4 (#1435) (bfb1f696)
+- rename plugin to openpix-for-woocommerce and add security improvements (#1436) (adab3071)
+- more fix (#1437) (5daeadd2)
 
 = 2.13.5 - 2026-02-01 =
 

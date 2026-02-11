@@ -1,3 +1,31 @@
+#### 2.13.6 (2026-02-11)
+
+##### Build System / Dependencies
+
+* **change-log:**  v2.13.4 (#1435) (bfb1f696)
+
+##### New Features
+
+*  rename plugin to openpix-for-woocommerce and add security improvements (#1436) (adab3071)
+
+##### Bug Fixes
+
+*  more fix (#1437) (5daeadd2)
+
+#### 2.13.6 (2026-02-11)
+
+##### Build System / Dependencies
+
+* **change-log:**  v2.13.4 (#1435) (bfb1f696)
+
+##### New Features
+
+*  rename plugin to openpix-for-woocommerce and add security improvements (#1436) (adab3071)
+
+##### Bug Fixes
+
+*  more fix (#1437) (5daeadd2)
+
 #### 2.13.4 (2026-01-27)
 
 ##### Build System / Dependencies
