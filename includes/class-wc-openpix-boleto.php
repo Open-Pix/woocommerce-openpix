@@ -8,8 +8,7 @@ require_once plugin_dir_path(__FILE__) . 'config/autoload.php';
 if (!function_exists('embedBoletoWebhookConfigButton')) {
     function embedBoletoWebhookConfigButton()
     {
-        $nonce = wp_create_nonce('openpix_prepare_oneclick_nonce');
-        ?>
+        $nonce = wp_create_nonce('openpix_prepare_oneclick_nonce'); ?>
 
         <script type="text/javascript" >
         jQuery(document).ready(function($) {
@@ -46,6 +45,7 @@ class WC_OpenPix_Boleto_Gateway extends WC_Payment_Gateway
     private $redirect_url_after_paid;
     private $openpix_customer;
     private $environment;
+    private $config;
 
     private static $instance = null;
 
@@ -71,6 +71,16 @@ class WC_OpenPix_Boleto_Gateway extends WC_Payment_Gateway
         $this->has_fields = true;
         $this->supports = ['products', 'refunds'];
 
+        // Initialize config from WP options before init_form_fields (which needs config)
+        $raw_settings = get_option(
+            'woocommerce_' . $this->id . '_settings',
+            []
+        );
+        $this->environment = isset($raw_settings['environment'])
+            ? $raw_settings['environment']
+            : EnvironmentEnum::PRODUCTION;
+        $this->config = ConfigFactory::createStrategy($this->environment);
+
         $this->init_form_fields();
         $this->init_settings();
 
@@ -79,13 +89,6 @@ class WC_OpenPix_Boleto_Gateway extends WC_Payment_Gateway
 
         $this->order_button_text = $this->get_option('order_button_text');
         $this->appID = $this->get_option('appID');
-        $this->environment =
-            $this->get_option('environment') ?? EnvironmentEnum::PRODUCTION;
-
-        // Ensure OpenPixConfig is initialized
-        if (class_exists('OpenPixConfig')) {
-            OpenPixConfig::initialize($this->environment);
-        }
 
         $this->status_when_waiting = $this->get_option('status_when_waiting');
         $this->status_when_paid = $this->get_option('status_when_paid');
@@ -129,7 +132,7 @@ class WC_OpenPix_Boleto_Gateway extends WC_Payment_Gateway
 
     public function init_form_fields()
     {
-        $webhookUrl = get_site_url() . '/?wc-api=wc_openpix_boleto_gateway';
+        $webhookUrl = $this->config->getWebhookUrl('WC_OpenPix_Boleto_Gateway');
 
         $webhookLabel = sprintf(
             /* translators: %s: webhook URL link */
@@ -163,12 +166,18 @@ class WC_OpenPix_Boleto_Gateway extends WC_Payment_Gateway
             'enabled' => [
                 'title' => __('Enable/Disable', 'openpix-for-woocommerce'),
                 'type' => 'checkbox',
-                'label' => __('Enable OpenPix Boleto', 'openpix-for-woocommerce'),
+                'label' => __(
+                    'Enable OpenPix Boleto',
+                    'openpix-for-woocommerce'
+                ),
                 'default' => 'no',
                 'description' => "<p>$webhookLabel</p><p>$registerLabel</p><p>$documentationLabel</p>",
             ],
             'api_section' => [
-                'title' => __('OpenPix Integration API', 'openpix-for-woocommerce'),
+                'title' => __(
+                    'OpenPix Integration API',
+                    'openpix-for-woocommerce'
+                ),
                 'type' => 'title',
                 'description' => sprintf(
                     /* translators: %s: link to API documentation */
@@ -206,7 +215,10 @@ class WC_OpenPix_Boleto_Gateway extends WC_Payment_Gateway
             ],
             'oneclick_button' => [
                 'type' => 'button',
-                'title' => __('One Click Configuration', 'openpix-for-woocommerce'),
+                'title' => __(
+                    'One Click Configuration',
+                    'openpix-for-woocommerce'
+                ),
                 'class' => 'button-primary',
                 'description' => sprintf(
                     __(
@@ -305,7 +317,10 @@ class WC_OpenPix_Boleto_Gateway extends WC_Payment_Gateway
                 'default' => 'wc-processing',
             ],
             'redirect_url_after_paid' => [
-                'title' => __('Redirect URL after paid', 'openpix-for-woocommerce'),
+                'title' => __(
+                    'Redirect URL after paid',
+                    'openpix-for-woocommerce'
+                ),
                 'type' => 'text',
                 'description' => __(
                     'Redirect URL after paid',
@@ -326,9 +341,7 @@ class WC_OpenPix_Boleto_Gateway extends WC_Payment_Gateway
 
             if ($old_environment !== $new_environment) {
                 $this->update_option('environment', $new_environment);
-                if (class_exists('OpenPixConfig')) {
-                    OpenPixConfig::initialize($new_environment);
-                }
+                $this->config = ConfigFactory::createStrategy($new_environment);
             }
         }
 
@@ -364,7 +377,9 @@ class WC_OpenPix_Boleto_Gateway extends WC_Payment_Gateway
         }
 
         $correlationID = $this->generate_correlation_id($order);
-        $url = OpenPixConfig::getApiUrl() . '/api/v1/charge';
+        $url = $this->config->getApiUrl() . '/api/v1/charge';
+
+        WC_OpenPix::debugJson('Boleto API URL:', $url);
 
         $cart_total = $this->get_order_total();
         $total_cents = $this->get_openpix_amount($cart_total);
@@ -411,7 +426,7 @@ class WC_OpenPix_Boleto_Gateway extends WC_Payment_Gateway
             'data_format' => 'body',
         ];
 
-        if (OpenPixConfig::getEnv() === 'development') {
+        if ($this->config->getEnv() === 'development') {
             $response = wp_remote_post($url, $params);
         } else {
             $response = wp_safe_remote_post($url, $params);
@@ -471,7 +486,10 @@ class WC_OpenPix_Boleto_Gateway extends WC_Payment_Gateway
 
         $order->update_status(
             $this->status_when_waiting,
-            __('Boleto generated. Waiting for payment.', 'openpix-for-woocommerce')
+            __(
+                'Boleto generated. Waiting for payment.',
+                'openpix-for-woocommerce'
+            )
         );
 
         WC()->cart->empty_cart();
@@ -549,7 +567,9 @@ class WC_OpenPix_Boleto_Gateway extends WC_Payment_Gateway
         // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce is verified by WooCommerce
         if (isset($_POST['openpix_customer_taxid'])) {
             // phpcs:ignore WordPress.Security.NonceVerification.Missing
-            $taxID = sanitize_text_field(wp_unslash($_POST['openpix_customer_taxid']));
+            $taxID = sanitize_text_field(
+                wp_unslash($_POST['openpix_customer_taxid'])
+            );
         } else {
             // Try to get from raw input (for Blocks)
             $raw_input = file_get_contents('php://input');
@@ -609,8 +629,8 @@ class WC_OpenPix_Boleto_Gateway extends WC_Payment_Gateway
         }
 
         $correlationID = $order->get_meta('openpix_correlation_id');
-        $environment = OpenPixConfig::getEnv();
-        $pluginUrl = OpenPixConfig::getPluginUrl();
+        $environment = $this->config->getEnv();
+        $pluginUrl = $this->config->getPluginUrl();
         $queryString = "appID={$this->appID}&correlationID={$correlationID}&node=openpix-order";
         $src = "$pluginUrl?$queryString";
 
@@ -657,7 +677,11 @@ class WC_OpenPix_Boleto_Gateway extends WC_Payment_Gateway
     public function validateWebhook($data, $body)
     {
         // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Signature is used for cryptographic verification only
-        $signature = isset($_SERVER['HTTP_X_WEBHOOK_SIGNATURE']) ? sanitize_text_field(wp_unslash($_SERVER['HTTP_X_WEBHOOK_SIGNATURE'])) : null;
+        $signature = isset($_SERVER['HTTP_X_WEBHOOK_SIGNATURE'])
+            ? sanitize_text_field(
+                wp_unslash($_SERVER['HTTP_X_WEBHOOK_SIGNATURE'])
+            )
+            : null;
 
         if (!$signature || !$this->validSignature($body, $signature)) {
             WC_OpenPix::debug('Boleto Webhook: Invalid Signature');
@@ -693,7 +717,7 @@ class WC_OpenPix_Boleto_Gateway extends WC_Payment_Gateway
 
     public function validSignature($payload, $signature)
     {
-        $publicKey = base64_decode(OpenPixConfig::getPublicKeyBase64());
+        $publicKey = base64_decode($this->config->getPublicKeyBase64());
 
         $verify = openssl_verify(
             $payload,
