@@ -31,4 +31,4 @@ jobs:
           node-version: '24'
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
-      - run: pnpm pnpm es ./scripts/svn-release.ts
+      - run: pnpm es ./scripts/svn-release.ts

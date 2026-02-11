@@ -11,6 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: pnpm/action-setup@v4
         with:
           version: latest
@@ -30,6 +32,5 @@ jobs:
         with:
           node-version: '24'
           cache: 'pnpm'
-          fetch-depth: 0
       - run: pnpm install --frozen-lockfile
       - run: pnpm publish:tag
