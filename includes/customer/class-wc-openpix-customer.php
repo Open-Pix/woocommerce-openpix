@@ -1,5 +1,9 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 use JetBrains\PhpStorm\NoReturn;
 
 define('__ROOT__', dirname(dirname(__FILE__)));

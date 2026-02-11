@@ -10,6 +10,7 @@ add_action('admin_footer', 'embedPixCrediaryOneclickConfigButton');
 
 function embedPixCrediaryOneclickConfigButton()
 {
+    $nonce = wp_create_nonce('openpix_crediary_prepare_oneclick_nonce');
     ?>
 
     <script type="text/javascript">
@@ -18,9 +19,14 @@ function embedPixCrediaryOneclickConfigButton()
             jQuery("#woocommerce_woocommerce_openpix_pix_crediary_oneclick_button").click(() => {
                 var data = {
                     action: 'openpix_crediary_prepare_oneclick',
+                    nonce: '<?php echo esc_js($nonce); ?>'
                 };
 
                 jQuery.post(ajaxurl, data, function(response) {
+                    if (response.success === false) {
+                        alert(response.data || 'Error: Unauthorized request');
+                        return;
+                    }
                     var redirect_url = response.redirect_url || "";
 
                     if (redirect_url) {
@@ -64,10 +70,10 @@ class WC_OpenPix_Pix_Crediary_Gateway extends WC_Payment_Gateway
         $this->openpix_customer = new WC_OpenPix_Customer();
 
         $this->id = 'woocommerce_openpix_pix_crediary';
-        $this->method_title = __('OpenPix Crediary', 'woocommerce-openpix');
+        $this->method_title = __('OpenPix Crediary', 'openpix-for-woocommerce');
         $this->method_description = __(
             'Discover Pix Crediary, an innovative system for managing your own credits charged through Pix. Agility, simplicity and security come together to create an innovative sales experience.',
-            'woocommerce-openpix'
+            'openpix-for-woocommerce'
         );
         $this->has_fields = true; // direct payment
         $this->supports = ['products', 'refunds'];
@@ -135,7 +141,7 @@ class WC_OpenPix_Pix_Crediary_Gateway extends WC_Payment_Gateway
                 'version' => WC_OpenPix::VERSION,
                 'platform' => 'WOOCOMMERCE',
             ],
-            'body' => json_encode($payload),
+            'body' => wp_json_encode($payload),
             'method' => 'POST',
             'data_format' => 'body',
         ];
@@ -150,7 +156,7 @@ class WC_OpenPix_Pix_Crediary_Gateway extends WC_Payment_Gateway
 
         if (is_wp_error($response)) {
             wc_add_notice(
-                __('Error refunding charge', 'woocommerce-openpix'),
+                __('Error refunding charge', 'openpix-for-woocommerce'),
                 'error'
             );
 
@@ -166,7 +172,7 @@ class WC_OpenPix_Pix_Crediary_Gateway extends WC_Payment_Gateway
         $code = $response['response']['code'];
 
         if ($code === 400) {
-            wc_add_notice(__('Invalid AppID', 'woocommerce-openpix'), 'error');
+            wc_add_notice(__('Invalid AppID', 'openpix-for-woocommerce'), 'error');
 
             WC_OpenPix::debugJson("Error refunding charge $code:", $response);
 
@@ -185,7 +191,7 @@ class WC_OpenPix_Pix_Crediary_Gateway extends WC_Payment_Gateway
             $errorMessage = $this->getErrorFromResponse($response);
 
             wc_add_notice(
-                __('Error refunding charge', 'woocommerce-openpix'),
+                __('Error refunding charge', 'openpix-for-woocommerce'),
                 'error'
             );
 
@@ -226,9 +232,10 @@ class WC_OpenPix_Pix_Crediary_Gateway extends WC_Payment_Gateway
         );
 
         $webhookLabel = sprintf(
+            /* translators: %s: webhook URL link */
             __(
                 'Use this Webhook URL to be registered at OpenPix: %s',
-                'woocommerce-openpix'
+                'openpix-for-woocommerce'
             ),
             '<a target="_blank" href="' .
                 $webhookUrl .
@@ -238,35 +245,38 @@ class WC_OpenPix_Pix_Crediary_Gateway extends WC_Payment_Gateway
         );
 
         $registerLabel = sprintf(
-            __('Open your account now %s', 'woocommerce-openpix'),
+            /* translators: %s: registration link */
+            __('Open your account now %s', 'openpix-for-woocommerce'),
             '<a target="_blank" href="https://app.openpix.com/register">https://app.openpix.com/register</a>'
         );
 
         $documentationLabel = sprintf(
-            __('See more about Pix Crediary %s', 'woocommerce-openpix'),
+            /* translators: %s: documentation link */
+            __('See more about Pix Crediary %s', 'openpix-for-woocommerce'),
             '<a target="_blank" href="https://developers.openpix.com.br/docs/category/woocommerce">here</a>'
         );
 
         $this->form_fields = [
             'enabled' => [
-                'title' => __('Enable/Disable', 'woocommerce-openpix'),
+                'title' => __('Enable/Disable', 'openpix-for-woocommerce'),
                 'type' => 'checkbox',
-                'label' => __('Enable OpenPix', 'woocommerce-openpix'),
+                'label' => __('Enable OpenPix', 'openpix-for-woocommerce'),
                 'default' => 'no',
                 'description' => "<p>$webhookLabel</p><p>$registerLabel</p><p>$documentationLabel</p>",
             ],
             'api_section' => [
-                'title' => __('OpenPix Integration API', 'woocommerce-openpix'),
+                'title' => __('OpenPix Integration API', 'openpix-for-woocommerce'),
                 'type' => 'title',
                 'description' => sprintf(
+                    /* translators: %s: link to API documentation */
                     __(
                         'Follow documentation to get your OpenPix AppID here %s.',
-                        'woocommerce-openpix'
+                        'openpix-for-woocommerce'
                     ),
                     '<a target="_blank" href="https://developers.openpix.com.br/docs/apis/api-getting-started/">' .
                         __(
                             'OpenPix API Getting Started',
-                            'woocommerce-openpix'
+                            'openpix-for-woocommerce'
                         ) .
                         '</a>'
                 ),
@@ -274,81 +284,81 @@ class WC_OpenPix_Pix_Crediary_Gateway extends WC_Payment_Gateway
             'oneclick_section' => [
                 'title' => __(
                     'Authenticate on the platform',
-                    'woocommerce-openpix'
+                    'openpix-for-woocommerce'
                 ),
                 'type' => 'title',
             ],
             // 'oneclick_button' => [
             //     'type' => 'button',
-            //     'title' => __('One Click Configuration', 'woocommerce-openpix'),
+            //     'title' => __('One Click Configuration', 'openpix-for-woocommerce'),
             //     'class' => 'button-primary',
             //     'description' => sprintf(
             //         __(
             //             'By pressing this button, you will be redirected to our platform where we will quickly configure a new integration.',
-            //             'woocommerce-openpix'
+            //             'openpix-for-woocommerce'
             //         )
             //     ),
             // ],
             'appID' => [
-                'title' => __('AppID OpenPix', 'woocommerce-openpix'),
+                'title' => __('AppID OpenPix', 'openpix-for-woocommerce'),
                 'type' => 'text',
                 'description' => 'AppID OpenPix',
                 'default' => '',
             ],
             'label_section' => [
-                'title' => __('Configure labels', 'woocommerce-openpix'),
+                'title' => __('Configure labels', 'openpix-for-woocommerce'),
                 'type' => 'title',
             ],
             'title' => [
-                'title' => __('Title', 'woocommerce-openpix'),
+                'title' => __('Title', 'openpix-for-woocommerce'),
                 'type' => 'text',
                 'description' => __(
                     'This controls the title which the user sees during checkout.',
-                    'woocommerce-openpix'
+                    'openpix-for-woocommerce'
                 ),
                 'desc_tip' => true,
-                'default' => __('Pay with Pix Crediary', 'woocommerce-openpix'),
+                'default' => __('Pay with Pix Crediary', 'openpix-for-woocommerce'),
             ],
             'description' => [
-                'title' => __('Description', 'woocommerce-openpix'),
+                'title' => __('Description', 'openpix-for-woocommerce'),
                 'type' => 'text',
                 'description' => __(
                     'This controls the description which the user sees during checkout.',
-                    'woocommerce-openpix'
+                    'openpix-for-woocommerce'
                 ),
                 'desc_tip' => true,
-                'default' => __('Pay with Pix Crediary', 'woocommerce-openpix'),
+                'default' => __('Pay with Pix Crediary', 'openpix-for-woocommerce'),
             ],
             'order_button_text' => [
-                'title' => __('Order Button Text', 'woocommerce-openpix'),
+                'title' => __('Order Button Text', 'openpix-for-woocommerce'),
                 'type' => 'text',
                 'description' => __(
                     'This controls the order button payment label.',
-                    'woocommerce-openpix'
+                    'openpix-for-woocommerce'
                 ),
                 'desc_tip' => true,
-                'default' => __('Pay with Pix Crediary', 'woocommerce-openpix'),
+                'default' => __('Pay with Pix Crediary', 'openpix-for-woocommerce'),
             ],
             'webhook_section' => [
                 'title' => __(
                     'Configure Webhook integration',
-                    'woocommerce-openpix'
+                    'openpix-for-woocommerce'
                 ),
                 'type' => 'title',
             ],
             'webhook_status' => [
                 'type' => 'text',
-                'title' => __('Webhook Status', 'woocommerce-openpix'),
-                'description' => __('Status ', 'woocommerce-openpix'),
+                'title' => __('Webhook Status', 'openpix-for-woocommerce'),
+                'description' => __('Status ', 'openpix-for-woocommerce'),
             ],
             'status_section' => [
-                'title' => __('Configure order status', 'woocommerce-openpix'),
+                'title' => __('Configure order status', 'openpix-for-woocommerce'),
                 'type' => 'title',
             ],
             'status_when_waiting' => [
                 'title' => __(
                     'Change status after issuing the pix to',
-                    'woocommerce-openpix'
+                    'openpix-for-woocommerce'
                 ),
                 'type' => 'select',
                 'options' => $this->get_available_status(),
@@ -357,7 +367,7 @@ class WC_OpenPix_Pix_Crediary_Gateway extends WC_Payment_Gateway
             'status_when_paid' => [
                 'title' => __(
                     'Order status after pix charge is paid',
-                    'woocommerce-openpix'
+                    'openpix-for-woocommerce'
                 ),
                 'type' => 'select',
                 'options' => $this->get_available_status(),
@@ -368,7 +378,7 @@ class WC_OpenPix_Pix_Crediary_Gateway extends WC_Payment_Gateway
         if (!$this->get_option('oneclick_button')) {
             $this->update_option(
                 'oneclick_button',
-                __('Configure now with one click', 'woocommerce-openpix')
+                __('Configure now with one click', 'openpix-for-woocommerce')
             );
         }
     }
@@ -410,7 +420,8 @@ class WC_OpenPix_Pix_Crediary_Gateway extends WC_Payment_Gateway
 
     public function getHasCustomer($order)
     {
-        $hasOpenpixCustomer = isset($_POST['openpix_customer_taxid']);
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce is verified in process_payment
+        $hasOpenpixCustomer = isset($_POST['openpix_customer_taxid']) && !empty($_POST['openpix_customer_taxid']);
 
         if ($hasOpenpixCustomer) {
             return true;
@@ -425,13 +436,13 @@ class WC_OpenPix_Pix_Crediary_Gateway extends WC_Payment_Gateway
     // @ TODO: why should prioritize the logged shopper?
     public function getTaxID($order)
     {
-        $openpix_customer_taxid = $_POST['openpix_customer_taxid'];
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce is verified in process_payment
+        $openpix_customer_taxid = isset($_POST['openpix_customer_taxid']) ? sanitize_text_field(wp_unslash($_POST['openpix_customer_taxid'])) : '';
 
-        $hasOpenpixCustomer =
-            isset($openpix_customer_taxid) && !empty($openpix_customer_taxid);
+        $hasOpenpixCustomer = !empty($openpix_customer_taxid);
 
         if ($hasOpenpixCustomer) {
-            return sanitize_text_field($openpix_customer_taxid);
+            return $openpix_customer_taxid;
         }
 
         $order_persontype = $order->get_meta('_billing_persontype');
@@ -511,7 +522,7 @@ class WC_OpenPix_Pix_Crediary_Gateway extends WC_Payment_Gateway
             $parts = explode('/', $birthdate);
 
             if (!isset($parts[2])) {
-                return __('Invalid Birthdate', 'woocommerce-openpix');
+                return __('Invalid Birthdate', 'openpix-for-woocommerce');
             }
         }
 
@@ -558,9 +569,10 @@ class WC_OpenPix_Pix_Crediary_Gateway extends WC_Payment_Gateway
 
         if ($validationError) {
             wc_add_notice(
-                __(
-                    'Order with Error: ' . $validationError,
-                    'woocommerce-openpix'
+                sprintf(
+                    /* translators: %s: validation error message */
+                    __( 'Order with Error: %s', 'openpix-for-woocommerce' ),
+                    esc_html( $validationError )
                 )
             );
             return [
@@ -584,7 +596,7 @@ class WC_OpenPix_Pix_Crediary_Gateway extends WC_Payment_Gateway
                 'version' => WC_OpenPix::VERSION,
                 'platform' => 'WOOCOMMERCE',
             ],
-            'body' => json_encode($payload),
+            'body' => wp_json_encode($payload),
             'method' => 'POST',
             'data_format' => 'body',
         ];
@@ -599,7 +611,7 @@ class WC_OpenPix_Pix_Crediary_Gateway extends WC_Payment_Gateway
 
         if (is_wp_error($response)) {
             wc_add_notice(
-                __('Error creating Pix, try again', 'woocommerce-openpix'),
+                __('Error creating Pix, try again', 'openpix-for-woocommerce'),
                 'error'
             );
 
@@ -615,7 +627,7 @@ class WC_OpenPix_Pix_Crediary_Gateway extends WC_Payment_Gateway
         WC_OpenPix::debugJson('Charge post response:', $response['body']);
 
         if ($response['response']['code'] === 401) {
-            wc_add_notice(__('Invalid AppID', 'woocommerce-openpix'), 'error');
+            wc_add_notice(__('Invalid AppID', 'openpix-for-woocommerce'), 'error');
 
             WC_OpenPix::debugJson('Error creating pix:', $response);
 
@@ -630,7 +642,7 @@ class WC_OpenPix_Pix_Crediary_Gateway extends WC_Payment_Gateway
             $errorMessage = $this->getErrorFromResponse($response);
 
             wc_add_notice(
-                __('Error creating Pix, try again', 'woocommerce-openpix'),
+                __('Error creating Pix, try again', 'openpix-for-woocommerce'),
                 'error'
             );
 
@@ -667,14 +679,16 @@ class WC_OpenPix_Pix_Crediary_Gateway extends WC_Payment_Gateway
             $this->status_when_waiting,
             __(
                 'OpenPix: The Pix was emitted but not paied yet.',
-                'woocommerce-openpix'
+                'openpix-for-woocommerce'
             )
         );
 
         $order->add_order_note(
-            __(
-                "OpenPix: Payment link: <a href='{$data['charge']['paymentLinkUrl']}'>{$data['charge']['paymentLinkUrl']}</a>",
-                'woocommerce-openpix'
+            sprintf(
+                /* translators: %1$s: payment link URL, %2$s: payment link URL */
+                __( 'OpenPix: Payment link: <a href="%1$s">%2$s</a>', 'openpix-for-woocommerce' ),
+                esc_url( $data['charge']['paymentLinkUrl'] ),
+                esc_html( $data['charge']['paymentLinkUrl'] )
             )
         );
 
@@ -688,6 +702,18 @@ class WC_OpenPix_Pix_Crediary_Gateway extends WC_Payment_Gateway
 
     public static function openpix_crediary_prepare_oneclick()
     {
+        // Security: Verify nonce
+        if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'openpix_crediary_prepare_oneclick_nonce')) {
+            wp_send_json_error(__('Security check failed.', 'openpix-for-woocommerce'), 403);
+            wp_die();
+        }
+
+        // Security: Verify user capability
+        if (!current_user_can('manage_woocommerce')) {
+            wp_send_json_error(__('You do not have permission to perform this action.', 'openpix-for-woocommerce'), 403);
+            wp_die();
+        }
+
         $webhookUrl = OpenPixConfig::getWebhookUrl(
             'WC_OpenPix_Pix_Crediary_Gateway'
         );
@@ -784,7 +810,7 @@ class WC_OpenPix_Pix_Crediary_Gateway extends WC_Payment_Gateway
 
         $additionalInformation = [
             [
-                'key' => __('Order'),
+                'key' => __('Order', 'openpix-for-woocommerce'),
                 'value' => $order_id,
             ],
         ];
@@ -818,8 +844,13 @@ class WC_OpenPix_Pix_Crediary_Gateway extends WC_Payment_Gateway
         $data = $this->getPluginSrc($order->get_id());
         ?>
         <div id="openpix-order"></div>
-        <script src="<?= $data['src'] ?>" async></script>
-<?php
+        <?php
+        wp_print_script_tag(
+            array(
+                'src'   => esc_url( $data['src'] ),
+                'async' => true,
+            )
+        );
     }
 
     /**
@@ -880,6 +911,7 @@ class WC_OpenPix_Pix_Crediary_Gateway extends WC_Payment_Gateway
             return false;
         }
 
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct query needed for efficient order lookup by meta value
         $order_id = $wpdb->get_var(
             $wpdb->prepare(
                 "SELECT DISTINCT ID FROM $wpdb->posts as posts LEFT JOIN $wpdb->postmeta as meta ON posts.ID = meta.post_id WHERE meta.meta_value = %s AND meta.meta_key = %s",
@@ -977,19 +1009,19 @@ class WC_OpenPix_Pix_Crediary_Gateway extends WC_Payment_Gateway
         if ($alreadyHasAppID) {
             header('HTTP/1.1 400 Bad Request');
             $response = [
-                'message' => __('App ID already configured', 'openpix'),
+                'message' => __('App ID already configured', 'openpix-for-woocommerce'),
             ];
-            echo json_encode($response);
+            echo wp_json_encode($response);
             exit();
         }
 
         if (!$hasAppID) {
             header('HTTP/1.1 400 Bad Request');
             $response = [
-                'message' => __('App ID is required', 'openpix'),
+                'message' => __('App ID is required', 'openpix-for-woocommerce'),
             ];
             $this->update_option('webhook_status', 'Not Configured');
-            echo json_encode($response);
+            echo wp_json_encode($response);
             exit();
         }
 
@@ -999,7 +1031,7 @@ class WC_OpenPix_Pix_Crediary_Gateway extends WC_Payment_Gateway
         $response = [
             'message' => 'success',
         ];
-        echo json_encode($response);
+        echo wp_json_encode($response);
         exit();
     }
 
@@ -1016,7 +1048,7 @@ class WC_OpenPix_Pix_Crediary_Gateway extends WC_Payment_Gateway
         $response = [
             'message' => 'success',
         ];
-        echo json_encode($response);
+        echo wp_json_encode($response);
         exit();
     }
 
@@ -1040,7 +1072,7 @@ class WC_OpenPix_Pix_Crediary_Gateway extends WC_Payment_Gateway
                 'correlationId' => $correlationID,
                 'status' => $status,
             ];
-            echo json_encode($response);
+            echo wp_json_encode($response);
             exit();
         }
 
@@ -1056,7 +1088,7 @@ class WC_OpenPix_Pix_Crediary_Gateway extends WC_Payment_Gateway
                 'correlationId' => $correlationID,
                 'status' => $status,
             ];
-            echo json_encode($response);
+            echo wp_json_encode($response);
             exit();
         }
 
@@ -1083,7 +1115,7 @@ class WC_OpenPix_Pix_Crediary_Gateway extends WC_Payment_Gateway
                 'status' => $status,
             ];
 
-            echo json_encode($response);
+            echo wp_json_encode($response);
             exit();
         }
 
@@ -1101,7 +1133,7 @@ class WC_OpenPix_Pix_Crediary_Gateway extends WC_Payment_Gateway
                 'status' => $status,
             ];
 
-            echo json_encode($response);
+            echo wp_json_encode($response);
             exit();
         }
 
@@ -1122,7 +1154,7 @@ class WC_OpenPix_Pix_Crediary_Gateway extends WC_Payment_Gateway
                 'status' => $status,
             ];
 
-            echo json_encode($response);
+            echo wp_json_encode($response);
             exit();
         }
 
@@ -1147,7 +1179,7 @@ class WC_OpenPix_Pix_Crediary_Gateway extends WC_Payment_Gateway
 
                     $order->update_status(
                         $this->status_when_paid,
-                        __('OpenPix: Transaction paid', 'woocommerce-openpix')
+                        __('OpenPix: Transaction paid', 'openpix-for-woocommerce')
                     );
 
                     $order->payment_complete();
@@ -1175,7 +1207,7 @@ class WC_OpenPix_Pix_Crediary_Gateway extends WC_Payment_Gateway
             'status' => $status,
         ];
 
-        echo json_encode($response);
+        echo wp_json_encode($response);
         exit();
     }
 
@@ -1205,14 +1237,15 @@ class WC_OpenPix_Pix_Crediary_Gateway extends WC_Payment_Gateway
 
     public function validateWebhook($data, $body)
     {
-        $signature = $_SERVER['HTTP_X_WEBHOOK_SIGNATURE'] ?? null;
+        // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Signature is used for cryptographic verification only
+        $signature = isset($_SERVER['HTTP_X_WEBHOOK_SIGNATURE']) ? sanitize_text_field(wp_unslash($_SERVER['HTTP_X_WEBHOOK_SIGNATURE'])) : null;
 
         if (!$signature || !$this->validSignature($body, $signature)) {
             header('HTTP/1.2 400 Bad Request');
             $response = [
                 'error' => 'Invalid Webhook signature',
             ];
-            echo json_encode($response);
+            echo wp_json_encode($response);
             exit();
         }
 
@@ -1221,7 +1254,7 @@ class WC_OpenPix_Pix_Crediary_Gateway extends WC_Payment_Gateway
             $response = [
                 'error' => 'Invalid Webhook Payload',
             ];
-            echo json_encode($response);
+            echo wp_json_encode($response);
             exit();
         }
 
@@ -1231,7 +1264,7 @@ class WC_OpenPix_Pix_Crediary_Gateway extends WC_Payment_Gateway
             $response = [
                 'message' => 'Pix Detached',
             ];
-            echo json_encode($response);
+            echo wp_json_encode($response);
             exit();
         }
     }

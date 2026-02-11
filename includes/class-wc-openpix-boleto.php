@@ -5,22 +5,28 @@ if (!defined('ABSPATH')) {
 }
 require_once plugin_dir_path(__FILE__) . 'config/autoload.php';
 
-if (!function_exists('embedWebhookConfigButton')) {
-    function embedWebhookConfigButton()
+if (!function_exists('embedBoletoWebhookConfigButton')) {
+    function embedBoletoWebhookConfigButton()
     {
+        $nonce = wp_create_nonce('openpix_prepare_oneclick_nonce');
         ?>
-    
+
         <script type="text/javascript" >
         jQuery(document).ready(function($) {
-    
+
             jQuery("#woocommerce_woocommerce_openpix_boleto_oneclick_button").click(() => {
                 var data = {
                     action: 'openpix_prepare_oneclick',
+                    nonce: '<?php echo esc_js($nonce); ?>'
                 };
-    
+
                 jQuery.post(ajaxurl,data,function(response) {
+                    if (response.success === false) {
+                        alert(response.data || 'Error: Unauthorized request');
+                        return;
+                    }
                     var redirect_url = response.redirect_url || "";
-    
+
                     if (redirect_url) {
                         window.open(redirect_url, "_blank");
                     }
@@ -30,7 +36,7 @@ if (!function_exists('embedWebhookConfigButton')) {
         </script> <?php
     }
 }
-add_action('admin_footer', 'embedWebhookConfigButton');
+add_action('admin_footer', 'embedBoletoWebhookConfigButton');
 
 class WC_OpenPix_Boleto_Gateway extends WC_Payment_Gateway
 {
@@ -57,10 +63,10 @@ class WC_OpenPix_Boleto_Gateway extends WC_Payment_Gateway
         $this->openpix_customer = new WC_OpenPix_Customer();
 
         $this->id = 'woocommerce_openpix_boleto';
-        $this->method_title = __('OpenPix Boleto', 'woocommerce-openpix');
+        $this->method_title = __('OpenPix Boleto', 'openpix-for-woocommerce');
         $this->method_description = __(
             'Accept Boleto payments with real-time updates.',
-            'woocommerce-openpix'
+            'openpix-for-woocommerce'
         );
         $this->has_fields = true;
         $this->supports = ['products', 'refunds'];
@@ -126,9 +132,10 @@ class WC_OpenPix_Boleto_Gateway extends WC_Payment_Gateway
         $webhookUrl = get_site_url() . '/?wc-api=wc_openpix_boleto_gateway';
 
         $webhookLabel = sprintf(
+            /* translators: %s: webhook URL link */
             __(
                 'Use this Webhook URL to be registered at OpenPix: %s',
-                'woocommerce-openpix'
+                'openpix-for-woocommerce'
             ),
             '<a target="_blank" href="' .
                 $webhookUrl .
@@ -138,48 +145,51 @@ class WC_OpenPix_Boleto_Gateway extends WC_Payment_Gateway
         );
 
         $registerLabel = sprintf(
-            __('Open your account now %s', 'woocommerce-openpix'),
+            /* translators: %s: registration link */
+            __('Open your account now %s', 'openpix-for-woocommerce'),
             '<a target="_blank" href="https://app.woovi.com/register">https://app.woovi.com/register</a>'
         );
 
         $documentationLabel = sprintf(
+            /* translators: %s: documentation link */
             __(
                 'OpenPix integration %s with Woocommerce',
-                'woocommerce-openpix'
+                'openpix-for-woocommerce'
             ),
             '<a target="_blank" href="https://developers.woovi.com/docs/ecommerce/woocommerce/woocommerce-plugin#instale-o-plugin-openpix-na-sua-inst%C3%A2ncia-woocommerce-utilizando-one-click">documentation</a>'
         );
 
         $this->form_fields = [
             'enabled' => [
-                'title' => __('Enable/Disable', 'woocommerce-openpix'),
+                'title' => __('Enable/Disable', 'openpix-for-woocommerce'),
                 'type' => 'checkbox',
-                'label' => __('Enable OpenPix Boleto', 'woocommerce-openpix'),
+                'label' => __('Enable OpenPix Boleto', 'openpix-for-woocommerce'),
                 'default' => 'no',
                 'description' => "<p>$webhookLabel</p><p>$registerLabel</p><p>$documentationLabel</p>",
             ],
             'api_section' => [
-                'title' => __('OpenPix Integration API', 'woocommerce-openpix'),
+                'title' => __('OpenPix Integration API', 'openpix-for-woocommerce'),
                 'type' => 'title',
                 'description' => sprintf(
+                    /* translators: %s: link to API documentation */
                     __(
                         'Follow documentation to get your OpenPix AppID here %s.',
-                        'woocommerce-openpix'
+                        'openpix-for-woocommerce'
                     ),
                     '<a target="_blank" href="https://developers.woovi.com/docs/apis/api-getting-started/">' .
                         __(
                             'OpenPix API Getting Started',
-                            'woocommerce-openpix'
+                            'openpix-for-woocommerce'
                         ) .
                         '</a>'
                 ),
             ],
             'environment' => [
-                'title' => __('Ambiente', 'woocommerce-openpix'),
+                'title' => __('Ambiente', 'openpix-for-woocommerce'),
                 'type' => 'select',
                 'description' => __(
                     'Selecione o ambiente de integração',
-                    'woocommerce-openpix'
+                    'openpix-for-woocommerce'
                 ),
                 'default' => 'prod',
                 'options' => [
@@ -190,96 +200,96 @@ class WC_OpenPix_Boleto_Gateway extends WC_Payment_Gateway
             'oneclick_section' => [
                 'title' => __(
                     'Authenticate on the platform using 1 click',
-                    'woocommerce-openpix'
+                    'openpix-for-woocommerce'
                 ),
                 'type' => 'title',
             ],
             'oneclick_button' => [
                 'type' => 'button',
-                'title' => __('One Click Configuration', 'woocommerce-openpix'),
+                'title' => __('One Click Configuration', 'openpix-for-woocommerce'),
                 'class' => 'button-primary',
                 'description' => sprintf(
                     __(
                         'By pressing this button, you will be redirected to our platform where we will quickly configure a new integration.',
-                        'woocommerce-openpix'
+                        'openpix-for-woocommerce'
                     )
                 ),
             ],
             'appID' => [
-                'title' => __('AppID OpenPix', 'woocommerce-openpix'),
+                'title' => __('AppID OpenPix', 'openpix-for-woocommerce'),
                 'type' => 'text',
                 'description' => 'AppID OpenPix',
                 'default' => '',
             ],
             'title' => [
-                'title' => __('Title', 'woocommerce-openpix'),
+                'title' => __('Title', 'openpix-for-woocommerce'),
                 'type' => 'text',
                 'description' => __(
                     'This controls the title which the user sees during checkout.',
-                    'woocommerce-openpix'
+                    'openpix-for-woocommerce'
                 ),
-                'default' => __('OpenPix Boleto', 'woocommerce-openpix'),
+                'default' => __('OpenPix Boleto', 'openpix-for-woocommerce'),
                 'desc_tip' => true,
             ],
             'description' => [
-                'title' => __('Description', 'woocommerce-openpix'),
+                'title' => __('Description', 'openpix-for-woocommerce'),
                 'type' => 'textarea',
                 'description' => __(
                     'This controls the description which the user sees during checkout.',
-                    'woocommerce-openpix'
+                    'openpix-for-woocommerce'
                 ),
                 'default' => __(
                     'Pay with OpenPix Boleto',
-                    'woocommerce-openpix'
+                    'openpix-for-woocommerce'
                 ),
             ],
             'order_button_text' => [
-                'title' => __('Order Button Text', 'woocommerce-openpix'),
+                'title' => __('Order Button Text', 'openpix-for-woocommerce'),
                 'type' => 'text',
                 'description' => __(
                     'This controls the text which the user sees during checkout.',
-                    'woocommerce-openpix'
+                    'openpix-for-woocommerce'
                 ),
-                'default' => __('Place Order', 'woocommerce-openpix'),
+                'default' => __('Place Order', 'openpix-for-woocommerce'),
                 'desc_tip' => true,
             ],
             'days_after_due_date' => [
-                'title' => __('Days After Due Date', 'woocommerce-openpix'),
+                'title' => __('Days After Due Date', 'openpix-for-woocommerce'),
                 'type' => 'number',
                 'description' => __(
                     'Number of days after expiration that the boleto can still be paid.',
-                    'woocommerce-openpix'
+                    'openpix-for-woocommerce'
                 ),
                 'default' => 0,
             ],
             'interest_value' => [
                 'title' => __(
                     'Interest (Juros) in Basis Points',
-                    'woocommerce-openpix'
+                    'openpix-for-woocommerce'
                 ),
                 'type' => 'number',
                 'description' => __(
                     'Interest value in basis points (e.g., 100 = 1%).',
-                    'woocommerce-openpix'
+                    'openpix-for-woocommerce'
                 ),
                 'default' => 0,
             ],
             'fines_value' => [
                 'title' => __(
                     'Fines (Multa) in Basis Points',
-                    'woocommerce-openpix'
+                    'openpix-for-woocommerce'
                 ),
                 'type' => 'number',
                 'description' => __(
                     'Fines value in basis points (e.g., 200 = 2%).',
-                    'woocommerce-openpix'
+                    'openpix-for-woocommerce'
                 ),
                 'default' => 0,
             ],
             'status_when_waiting' => [
                 'title' => __(
                     'Change status after issuing the boleto to',
-                    'woocommerce-openpix'
+                    'openpix-for-woocommerce'
                 ),
                 'type' => 'select',
                 'options' => wc_get_order_statuses(),
@@ -288,18 +298,18 @@ class WC_OpenPix_Boleto_Gateway extends WC_Payment_Gateway
             'status_when_paid' => [
                 'title' => __(
                     'Order status after boleto charge is paid',
-                    'woocommerce-openpix'
+                    'openpix-for-woocommerce'
                 ),
                 'type' => 'select',
                 'options' => wc_get_order_statuses(),
                 'default' => 'wc-processing',
             ],
             'redirect_url_after_paid' => [
-                'title' => __('Redirect URL after paid', 'woocommerce-openpix'),
+                'title' => __('Redirect URL after paid', 'openpix-for-woocommerce'),
                 'type' => 'text',
                 'description' => __(
                     'Redirect URL after paid',
-                    'woocommerce-openpix'
+                    'openpix-for-woocommerce'
                 ),
                 'default' => '',
             ],
@@ -346,7 +356,7 @@ class WC_OpenPix_Boleto_Gateway extends WC_Payment_Gateway
             wc_add_notice(
                 __(
                     'Address is required for Boleto payment. Please check your billing address.',
-                    'woocommerce-openpix'
+                    'openpix-for-woocommerce'
                 ),
                 'error'
             );
@@ -396,7 +406,7 @@ class WC_OpenPix_Boleto_Gateway extends WC_Payment_Gateway
                 'version' => WC_OpenPix::VERSION,
                 'platform' => 'WOOCOMMERCE',
             ],
-            'body' => json_encode($payload),
+            'body' => wp_json_encode($payload),
             'method' => 'POST',
             'data_format' => 'body',
         ];
@@ -412,6 +422,7 @@ class WC_OpenPix_Boleto_Gateway extends WC_Payment_Gateway
                 'error' => $response->get_error_message(),
                 'payload' => $payload,
             ]);
+            // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Exception message is sanitized by WooCommerce
             throw new \Exception($response->get_error_message());
         }
 
@@ -425,9 +436,10 @@ class WC_OpenPix_Boleto_Gateway extends WC_Payment_Gateway
 
             $errorMessage = $body['error'] ?? 'Unknown error';
             if (isset($body['errors']) && is_array($body['errors'])) {
-                $errorMessage .= ' ' . json_encode($body['errors']);
+                $errorMessage .= ' ' . wp_json_encode($body['errors']);
             }
 
+            // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Exception message is sanitized by WooCommerce
             throw new \Exception($errorMessage);
         }
 
@@ -459,7 +471,7 @@ class WC_OpenPix_Boleto_Gateway extends WC_Payment_Gateway
 
         $order->update_status(
             $this->status_when_waiting,
-            __('Boleto generated. Waiting for payment.', 'woocommerce-openpix')
+            __('Boleto generated. Waiting for payment.', 'openpix-for-woocommerce')
         );
 
         WC()->cart->empty_cart();
@@ -534,8 +546,10 @@ class WC_OpenPix_Boleto_Gateway extends WC_Payment_Gateway
         $phone = $order_data['billing']['phone'];
 
         $taxID = '';
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce is verified by WooCommerce
         if (isset($_POST['openpix_customer_taxid'])) {
-            $taxID = sanitize_text_field($_POST['openpix_customer_taxid']);
+            // phpcs:ignore WordPress.Security.NonceVerification.Missing
+            $taxID = sanitize_text_field(wp_unslash($_POST['openpix_customer_taxid']));
         } else {
             // Try to get from raw input (for Blocks)
             $raw_input = file_get_contents('php://input');
@@ -633,7 +647,7 @@ class WC_OpenPix_Boleto_Gateway extends WC_Payment_Gateway
         $data = json_decode($body, true);
 
         WC_OpenPix::debug('Boleto Webhook received');
-        WC_OpenPix::debug(print_r($data, true));
+        WC_OpenPix::debugJson('Boleto Webhook data', $data);
 
         $this->validateWebhook($data, $body);
 
@@ -642,7 +656,8 @@ class WC_OpenPix_Boleto_Gateway extends WC_Payment_Gateway
 
     public function validateWebhook($data, $body)
     {
-        $signature = $_SERVER['HTTP_X_WEBHOOK_SIGNATURE'] ?? null;
+        // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Signature is used for cryptographic verification only
+        $signature = isset($_SERVER['HTTP_X_WEBHOOK_SIGNATURE']) ? sanitize_text_field(wp_unslash($_SERVER['HTTP_X_WEBHOOK_SIGNATURE'])) : null;
 
         if (!$signature || !$this->validSignature($body, $signature)) {
             WC_OpenPix::debug('Boleto Webhook: Invalid Signature');
@@ -650,7 +665,7 @@ class WC_OpenPix_Boleto_Gateway extends WC_Payment_Gateway
             $response = [
                 'error' => 'Invalid Webhook signature',
             ];
-            echo json_encode($response);
+            echo wp_json_encode($response);
             exit();
         }
 
@@ -660,7 +675,7 @@ class WC_OpenPix_Boleto_Gateway extends WC_Payment_Gateway
             $response = [
                 'error' => 'Invalid Webhook Payload',
             ];
-            echo json_encode($response);
+            echo wp_json_encode($response);
             exit();
         }
 
@@ -671,7 +686,7 @@ class WC_OpenPix_Boleto_Gateway extends WC_Payment_Gateway
             $response = [
                 'message' => 'Pix Detached',
             ];
-            echo json_encode($response);
+            echo wp_json_encode($response);
             exit();
         }
     }
@@ -758,13 +773,13 @@ class WC_OpenPix_Boleto_Gateway extends WC_Payment_Gateway
                 'correlationId' => $correlationID,
                 'status' => $status,
             ];
-            echo json_encode($response);
+            echo wp_json_encode($response);
             exit();
         }
 
         $order->update_status(
             'cancelled',
-            __('OpenPix: Boleto expired.', 'woocommerce-openpix')
+            __('OpenPix: Boleto expired.', 'openpix-for-woocommerce')
         );
 
         header('HTTP/1.1 200 OK');
@@ -772,7 +787,7 @@ class WC_OpenPix_Boleto_Gateway extends WC_Payment_Gateway
             'message' => 'success',
             'order_id' => $order->get_id(),
         ];
-        echo json_encode($response);
+        echo wp_json_encode($response);
         exit();
     }
 
@@ -782,7 +797,7 @@ class WC_OpenPix_Boleto_Gateway extends WC_Payment_Gateway
         $response = [
             'message' => 'success',
         ];
-        echo json_encode($response);
+        echo wp_json_encode($response);
         exit();
     }
 
@@ -815,7 +830,7 @@ class WC_OpenPix_Boleto_Gateway extends WC_Payment_Gateway
                 'correlationId' => $correlationID,
                 'status' => $status,
             ];
-            echo json_encode($response);
+            echo wp_json_encode($response);
             exit();
         }
 
@@ -832,7 +847,7 @@ class WC_OpenPix_Boleto_Gateway extends WC_Payment_Gateway
                 'correlationId' => $correlationID,
                 'status' => $status,
             ];
-            echo json_encode($response);
+            echo wp_json_encode($response);
             exit();
         }
 
@@ -848,7 +863,7 @@ class WC_OpenPix_Boleto_Gateway extends WC_Payment_Gateway
                 'correlationId' => $correlationID,
                 'status' => $status,
             ];
-            echo json_encode($response);
+            echo wp_json_encode($response);
             exit();
         }
 
@@ -864,7 +879,7 @@ class WC_OpenPix_Boleto_Gateway extends WC_Payment_Gateway
                 'correlationId' => $correlationID,
                 'status' => $status,
             ];
-            echo json_encode($response);
+            echo wp_json_encode($response);
             exit();
         }
 
@@ -883,7 +898,7 @@ class WC_OpenPix_Boleto_Gateway extends WC_Payment_Gateway
         ) {
             WC_OpenPix::debug('Boleto Webhook: Order already paid');
             header('HTTP/1.1 200 OK');
-            echo json_encode([
+            echo wp_json_encode([
                 'message' => 'success',
                 'info' => 'Order already paid',
             ]);
@@ -894,7 +909,7 @@ class WC_OpenPix_Boleto_Gateway extends WC_Payment_Gateway
             WC_OpenPix::debug('Boleto Webhook: Marking order as paid');
             $order->update_status(
                 $this->status_when_paid,
-                __('OpenPix: Boleto paid', 'woocommerce-openpix')
+                __('OpenPix: Boleto paid', 'openpix-for-woocommerce')
             );
 
             $order->payment_complete();
@@ -914,7 +929,7 @@ class WC_OpenPix_Boleto_Gateway extends WC_Payment_Gateway
             'status' => $status,
         ];
 
-        echo json_encode($response);
+        echo wp_json_encode($response);
         exit();
     }
 
