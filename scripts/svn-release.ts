@@ -37,8 +37,8 @@ const SVN_USERNAME = process.env.SVN_USERNAME;
 const SVN_PASSWORD = process.env.SVN_PASSWORD;
 const SVN_REPO_URL = process.env.SVN_REPO_URL;
 
-export const findLatestProdZip = async () => {
-  const files = await fs.promises.readdir('..');
+export const findLatestProdZip = async (searchDir: string) => {
+  const files = await fs.promises.readdir(searchDir);
   const prodZips = files.filter(
     (file) =>
       file.startsWith('woocommerce-openpix-prod') && file.endsWith('.zip'),
@@ -50,10 +50,8 @@ export const findLatestProdZip = async () => {
 
   // Sort by modification time to get the latest
   const latestZip = prodZips.sort((a, b) => {
-    const dir = (file: string) => path.resolve(process.cwd(), '..', file);
-
-    const statA = fs.statSync(dir(a));
-    const statB = fs.statSync(dir(b));
+    const statA = fs.statSync(path.join(searchDir, a));
+    const statB = fs.statSync(path.join(searchDir, b));
     return statB.mtime.getTime() - statA.mtime.getTime();
   })[0];
 
@@ -85,7 +83,8 @@ export const run = async () => {
     // Clone the SVN repository
     console.log('Cloning SVN repository...');
 
-    const svnDirectory = 'openpix-for-woocommerce';
+    const pluginRoot = path.resolve(__dirname, '..');
+    const svnDirectory = path.resolve(pluginRoot, '..', 'openpix-for-woocommerce');
 
     if (!fs.existsSync(svnDirectory)) {
       await exec(
@@ -101,7 +100,7 @@ export const run = async () => {
     process.chdir(svnDirectory);
 
     // Get the latest version from package.json
-    const packageJson = JSON.parse(fs.readFileSync('../package.json', 'utf8'));
+    const packageJson = JSON.parse(fs.readFileSync(path.join(pluginRoot, 'package.json'), 'utf8'));
     const newVersion = packageJson.version;
     const tagDirectory = path.posix.join('tags', newVersion);
     const trunkDirectory = 'trunk';
@@ -124,12 +123,12 @@ export const run = async () => {
 
     // Find the latest production zip file
     console.log('Finding latest production zip file...');
-    const latestZip = await findLatestProdZip();
+    const latestZip = await findLatestProdZip(pluginRoot);
     console.log(`Found zip file: ${latestZip}`);
 
     // Extract to tag directory
     console.log('Extracting to tag directory...');
-    await exec(`unzip -o ../${latestZip} -d ${tagDirectory}`);
+    await exec(`unzip -o ${path.join(pluginRoot, latestZip)} -d ${tagDirectory}`);
 
     console.log('Cleaning trunk directory...');
     const trunkEntries = await fs.promises.readdir(trunkDirectory);
@@ -192,7 +191,7 @@ export const run = async () => {
     }
 
     // Clean up
-    process.chdir('..');
+    process.chdir(pluginRoot);
     // await exec('rm -rf openpix-for-woocommerce temp *.zip');
 
     console.log('SVN release completed successfully!');
