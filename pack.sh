@@ -4,7 +4,7 @@ rm **/*.po~ **/*.pot~
 # cp includes/config/config-$1.php includes/config/config.php
 
 # Get plugin version
-VERSION=$(grep -oP 'Version: \K[0-9.]+' woocommerce-openpix.php)
+VERSION=$(grep -oP 'Version: \K[0-9.]+' openpix-for-woocommerce.php)
 
 # Install Composer dependencies (optimized for production)
 composer install --no-dev --optimize-autoloader
@@ -32,7 +32,7 @@ if [ $1 != "prod" ]
     languages \
     templates \
     vendor \
-    woocommerce-openpix.php \
+    openpix-for-woocommerce.php \
     readme.txt \
     LICENSE.txt
   else
@@ -56,7 +56,7 @@ if [ $1 != "prod" ]
       languages \
       templates \
       vendor \
-      woocommerce-openpix.php \
+      openpix-for-woocommerce.php \
       readme.txt \
       LICENSE.txt
   fi
