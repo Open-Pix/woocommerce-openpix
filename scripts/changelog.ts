@@ -304,14 +304,12 @@ const updatePhp = async (
   newVersion: string,
 ): Promise<void> => {
   const blankParamForMac: string = process.platform === 'darwin' ? "''" : '';
-  const headerSedExp: string = `sed -i ${blankParamForMac} s/"Version: ${latestVersion}"/"Version: ${newVersion}"/g woocommerce-openpix.php`;
-  const constSedExp: string = `sed -i ${blankParamForMac} s/"VERSION = '${latestVersion}'"/"VERSION = '${newVersion}'"/g woocommerce-openpix.php`;
+  const headerSedExp: string = `sed -i ${blankParamForMac} s/"Version: ${latestVersion}"/"Version: ${newVersion}"/g openpix-for-woocommerce.php`;
+  const constSedExp: string = `sed -i ${blankParamForMac} s/"VERSION = '${latestVersion}'"/"VERSION = '${newVersion}'"/g openpix-for-woocommerce.php`;
   const readmeSedExp: string = `sed -i ${blankParamForMac} s/"Stable tag: ${latestVersion}"/"Stable tag: ${newVersion}"/g readme.txt`;
-  const pluginReadmeSedExp: string = `sed -i ${blankParamForMac} s/"Stable tag: ${latestVersion}"/"Stable tag: ${newVersion}"/g openpix-for-woocommerce/trunk/readme.txt`;
   await exec(headerSedExp);
   await exec(constSedExp);
   await exec(readmeSedExp);
-  await exec(pluginReadmeSedExp);
 };
 
 const run = async (): Promise<void> => {
@@ -362,7 +360,6 @@ const run = async (): Promise<void> => {
   }
   const readmePaths: string[] = [
     root('readme.txt'),
-    root('openpix-for-woocommerce', 'trunk', 'readme.txt'),
   ];
   readmePaths.forEach((readmePath: string): void => {
     const updateResult: UpdateReadmeResult = updateReadmeFile({
@@ -375,17 +372,22 @@ const run = async (): Promise<void> => {
     }
   });
   fs.writeFileSync('./CHANGELOG.md', newChangelogContent);
-  await exec(`npm version --no-git-tag-version ${semverResult}`);
+  
   const today: Date = new Date();
   const branchName: string = `feature-production/${today.getFullYear()}${today.getMonth() + 1}${today.getDate()}${today.getUTCHours()}${today.getUTCMinutes()}`;
+
+  console.log(branchName)
   await updatePhp(latestVersion, semverResult);
+
   await git().checkout(['-B', branchName]);
+
   await git().add([
     'package.json',
     'CHANGELOG.md',
-    'woocommerce-openpix.php',
+    'openpix-for-woocommerce.php',
     'readme.txt',
   ]);
+
   await git().commit(`build(change-log): ${tag}`, [], {
     '--no-verify': true,
   });
