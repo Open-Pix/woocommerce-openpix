@@ -4,7 +4,7 @@ Tags: woocommerce, openpix, payment, pix
 Requires at least: 4.0
 Tested up to: 6.9
 Requires PHP: 7.3
-Stable tag: 2.13.6
+Stable tag: 2.13.7
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -88,6 +88,13 @@ If you need to talk to our team, access the chat available on our website.
 5. Example of Expired Payment Order
 
 == Changelog ==
+
+= 2.13.7 - 2026-02-18 =
+
+- **change-log:**  v2.13.6 (#1438) (4d3793aa)
+- set Pix as default payment method in checkout (#1440) (e2ccc9e4)
+- add boleto-block.js and remove obsolete prod class from pack.sh (#1441) (2652e451)
+- update pack.sh and svn-release.ts to match renamed plugin file (#1439) (89bd2f32)
 
 = 2.13.6 - 2026-02-11 =
 
