@@ -26,7 +26,7 @@ if (
     // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Using WordPress core filter.
     in_array(
         'woocommerce/woocommerce.php',
-        apply_filters( 'active_plugins', get_option( 'active_plugins' ) ),
+        apply_filters('active_plugins', get_option('active_plugins')),
         true
     )
 ) {
@@ -81,11 +81,20 @@ class WC_OpenPix
         add_action('wp_enqueue_scripts', [$this, 'load_plugin_assets']);
         add_action('woocommerce_blocks_loaded', [$this, 'add_gateway_blocks']);
 
+        add_filter(
+            'option_woocommerce_gateway_order',
+            [$this, 'set_default_gateway_order'],
+            1
+        );
+
         add_action(
             'woocommerce_before_checkout_form',
             'wc_openpix_user_notice_incompatibility_with_checkout_block'
         );
-        add_action( 'admin_notices', 'wc_openpix_admin_notice_incompatibility_with_block' );
+        add_action(
+            'admin_notices',
+            'wc_openpix_admin_notice_incompatibility_with_block'
+        );
     }
 
     public static function get_instance()
@@ -217,6 +226,18 @@ class WC_OpenPix
         );
     }
 
+    public function set_default_gateway_order($gateway_order)
+    {
+        if (!is_array($gateway_order)) {
+            $gateway_order = [];
+        }
+
+        $gateway_order['woocommerce_openpix_pix'] = 0;
+        $gateway_order['woocommerce_openpix_boleto'] = 1;
+
+        return $gateway_order;
+    }
+
     public static function get_plugin_path()
     {
         return plugin_dir_path(__FILE__);
@@ -308,13 +329,14 @@ class WC_OpenPix
  *
  * @return bool True if compatible, false otherwise.
  */
-function wc_openpix_check_compatibility_checkout_block() {
+function wc_openpix_check_compatibility_checkout_block()
+{
     $plugin_id = wc_get_container()
-        ->get( \Automattic\WooCommerce\Utilities\PluginUtil::class )
-        ->get_wp_plugin_id( __FILE__ );
+        ->get(\Automattic\WooCommerce\Utilities\PluginUtil::class)
+        ->get_wp_plugin_id(__FILE__);
 
-    return is_plugin_active( $plugin_id ) &&
-        class_exists( 'Automattic\WooCommerce\Blocks\Package' ) &&
+    return is_plugin_active($plugin_id) &&
+        class_exists('Automattic\WooCommerce\Blocks\Package') &&
         file_exists(
             __DIR__ .
                 '/assets/' .
@@ -327,8 +349,9 @@ function wc_openpix_check_compatibility_checkout_block() {
  *
  * @return false|void
  */
-function wc_openpix_user_notice_incompatibility_with_checkout_block() {
-    if ( wc_openpix_check_compatibility_checkout_block() ) {
+function wc_openpix_user_notice_incompatibility_with_checkout_block()
+{
+    if (wc_openpix_check_compatibility_checkout_block()) {
         return false;
     }
 }
@@ -338,14 +361,16 @@ function wc_openpix_user_notice_incompatibility_with_checkout_block() {
  *
  * @return false|void
  */
-function wc_openpix_admin_notice_incompatibility_with_block() {
-    if ( wc_openpix_check_compatibility_checkout_block() ) {
+function wc_openpix_admin_notice_incompatibility_with_block()
+{
+    if (wc_openpix_check_compatibility_checkout_block()) {
         return false;
-    }
-
-    ?>
+    } ?>
     <div class="notice notice-warning">
-        <p><strong>OpenPix</strong> <?php esc_html_e( 'is not yet compatible with WooCommerce Checkout Blocks. To avoid issues, please use the Classic Checkout.', 'openpix-for-woocommerce' ); ?></p>
+        <p><strong>OpenPix</strong> <?php esc_html_e(
+            'is not yet compatible with WooCommerce Checkout Blocks. To avoid issues, please use the Classic Checkout.',
+            'openpix-for-woocommerce'
+        ); ?></p>
     </div>
     <?php
 }
