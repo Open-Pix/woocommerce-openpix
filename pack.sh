@@ -13,13 +13,13 @@ if [ $1 != "prod" ]
   then
     zip -r woocommerce-openpix-$1-v$VERSION-$(date "+%Y-%m-%d:%H:%M").zip \
     assets/pix-block.js \
+    assets/boleto-block.js \
     assets/thankyou.css \
     includes/class-wc-openpix-pix.php \
     includes/class-wc-openpix-pix-parcelado.php \
     includes/class-wc-openpix-pix-crediary.php \
     includes/class-wc-openpix-boleto.php \
     includes/customer/class-wc-openpix-customer.php \
-    includes/class-wc-openpix-prod.php \
     includes/class-wc-openpix-pix-block.php \
     includes/class-wc-openpix-boleto-block.php \
     includes/config/config.php \
@@ -38,6 +38,7 @@ if [ $1 != "prod" ]
   else
       zip -r woocommerce-openpix-$1-v$VERSION-$(date "+%Y-%m-%d:%H:%M").zip \
       assets/pix-block.js \
+      assets/boleto-block.js \
       assets/thankyou.css \
       includes/class-wc-openpix-pix.php \
       includes/class-wc-openpix-pix-parcelado.php \
