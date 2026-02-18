@@ -5,7 +5,7 @@
  * Description: Accept Pix payments with real-time updates, seamless checkout, and automatic order status updates.
  * Author: OpenPix
  * Author URI: https://openpix.com.br/
- * Version: 2.13.6
+ * Version: 2.13.7
  * Text Domain: openpix-for-woocommerce
  * WC tested up to: 8.2.2
  * Requires Plugins: woocommerce
@@ -60,7 +60,7 @@ function woocommerce_openpix_init()
 
 class WC_OpenPix
 {
-    const VERSION = '2.13.6';
+    const VERSION = '2.13.7';
 
     protected static $instance = null;
 

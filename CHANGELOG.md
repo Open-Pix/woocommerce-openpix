@@ -1,3 +1,18 @@
+#### 2.13.7 (2026-02-18)
+
+##### Build System / Dependencies
+
+* **change-log:**  v2.13.6 (#1438) (4d3793aa)
+
+##### New Features
+
+*  set Pix as default payment method in checkout (#1440) (e2ccc9e4)
+
+##### Bug Fixes
+
+*  add boleto-block.js and remove obsolete prod class from pack.sh (#1441) (2652e451)
+*  update pack.sh and svn-release.ts to match renamed plugin file (#1439) (89bd2f32)
+
 #### 2.13.6 (2026-02-11)
 
 ##### Build System / Dependencies
