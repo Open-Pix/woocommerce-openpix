@@ -1,4 +1,5 @@
 ## OpenPix for WooCommerce
+<!-- test: merge permission check -->
 
 ## Installment Plugin
 
