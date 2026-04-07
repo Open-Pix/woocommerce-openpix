@@ -48,6 +48,7 @@ class WC_OpenPix_Boleto_Gateway extends WC_Payment_Gateway
     private $config;
 
     private static $instance = null;
+    private static $hooks_registered = false;
 
     public static function instance()
     {
@@ -97,32 +98,36 @@ class WC_OpenPix_Boleto_Gateway extends WC_Payment_Gateway
             'redirect_url_after_paid'
         );
 
-        add_action('woocommerce_update_options_payment_gateways_' . $this->id, [
-            $this,
-            'process_admin_options',
-        ]);
+        if (!self::$hooks_registered) {
+            self::$hooks_registered = true;
 
-        add_action('woocommerce_thankyou_' . $this->id, [
-            $this,
-            'thankyou_page',
-        ]);
+            add_action('woocommerce_update_options_payment_gateways_' . $this->id, [
+                $this,
+                'process_admin_options',
+            ]);
 
-        add_action('woocommerce_receipt_' . $this->id, [
-            $this,
-            'thankyou_page',
-        ]);
+            add_action('woocommerce_thankyou_' . $this->id, [
+                $this,
+                'thankyou_page',
+            ]);
 
-        add_action('woocommerce_view_order', [$this, 'thankyou_page']);
+            add_action('woocommerce_receipt_' . $this->id, [
+                $this,
+                'thankyou_page',
+            ]);
 
-        add_action('woocommerce_after_order_details', [
-            $this,
-            'afterOrderDetailHook',
-        ]);
+            add_action('woocommerce_view_order', [$this, 'thankyou_page']);
 
-        add_action('woocommerce_api_wc_openpix_boleto_gateway', [
-            $this,
-            'ipn_handler',
-        ]);
+            add_action('woocommerce_after_order_details', [
+                $this,
+                'afterOrderDetailHook',
+            ]);
+
+            add_action('woocommerce_api_wc_openpix_boleto_gateway', [
+                $this,
+                'ipn_handler',
+            ]);
+        }
     }
 
     public function ipn_handler()

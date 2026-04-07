@@ -20,16 +20,17 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * Check if WooCommerce is active
+ * Check if WooCommerce is active (supports single-site and multisite)
  */
-if (
-    // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Using WordPress core filter.
-    in_array(
-        'woocommerce/woocommerce.php',
-        apply_filters('active_plugins', get_option('active_plugins')),
-        true
-    )
-) {
+$wc_openpix_active_plugins = apply_filters('active_plugins', get_option('active_plugins'));
+$wc_openpix_is_wc_active = in_array('woocommerce/woocommerce.php', $wc_openpix_active_plugins, true);
+
+if (!$wc_openpix_is_wc_active && is_multisite()) {
+    $wc_openpix_network_plugins = get_site_option('active_sitewide_plugins', []);
+    $wc_openpix_is_wc_active = isset($wc_openpix_network_plugins['woocommerce/woocommerce.php']);
+}
+
+if ($wc_openpix_is_wc_active) {
     // declare compatibility with HPOS before all
     add_action('before_woocommerce_init', function () {
         if (
@@ -188,12 +189,10 @@ class WC_OpenPix
 
     public function add_gateway($methods)
     {
-        // $methods[] = 'WC_OpenPix_Pix_Prod_Gateway';
-        $methods[] = WC_OpenPix_Pix_Gateway::instance();
-        // $methods[] = 'WC_OpenPix_Pix_Gateway';
-        $methods[] = WC_OpenPix_Pix_Parcelado_Gateway::instance();
-        $methods[] = WC_OpenPix_Pix_Crediary_Gateway::instance();
-        $methods[] = WC_OpenPix_Boleto_Gateway::instance();
+        $methods[] = 'WC_OpenPix_Pix_Gateway';
+        $methods[] = 'WC_OpenPix_Pix_Parcelado_Gateway';
+        $methods[] = 'WC_OpenPix_Pix_Crediary_Gateway';
+        $methods[] = 'WC_OpenPix_Boleto_Gateway';
 
         return $methods;
     }
@@ -232,8 +231,12 @@ class WC_OpenPix
             $gateway_order = [];
         }
 
-        $gateway_order['woocommerce_openpix_pix'] = 0;
-        $gateway_order['woocommerce_openpix_boleto'] = 1;
+        if (!isset($gateway_order['woocommerce_openpix_pix'])) {
+            $gateway_order['woocommerce_openpix_pix'] = 0;
+        }
+        if (!isset($gateway_order['woocommerce_openpix_boleto'])) {
+            $gateway_order['woocommerce_openpix_boleto'] = 1;
+        }
 
         return $gateway_order;
     }
@@ -331,17 +334,26 @@ class WC_OpenPix
  */
 function wc_openpix_check_compatibility_checkout_block()
 {
-    $plugin_id = wc_get_container()
-        ->get(\Automattic\WooCommerce\Utilities\PluginUtil::class)
-        ->get_wp_plugin_id(__FILE__);
+    if (!function_exists('wc_get_container')) {
+        return false;
+    }
+
+    try {
+        $plugin_id = wc_get_container()
+            ->get(\Automattic\WooCommerce\Utilities\PluginUtil::class)
+            ->get_wp_plugin_id(__FILE__);
+    } catch (\Exception $e) {
+        return false;
+    }
+
+    $has_block_class = class_exists('WC_OpenPix_Pix_Block');
+    $block_script = $has_block_class
+        ? WC_OpenPix_Pix_Block::PIX_BLOCK_SCRIPT_FILENAME
+        : 'pix-block.js';
 
     return is_plugin_active($plugin_id) &&
         class_exists('Automattic\WooCommerce\Blocks\Package') &&
-        file_exists(
-            __DIR__ .
-                '/assets/' .
-                WC_OpenPix_Pix_Block::PIX_BLOCK_SCRIPT_FILENAME
-        );
+        file_exists(__DIR__ . '/assets/' . $block_script);
 }
 
 /**
