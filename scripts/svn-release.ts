@@ -5,7 +5,8 @@ import util from 'util';
 
 import dotenvSafe from 'dotenv-safe';
 
-const exec = util.promisify(execCb);
+const execRaw = util.promisify(execCb);
+const exec = (cmd: string) => execRaw(cmd, { maxBuffer: 50 * 1024 * 1024 });
 const svnDefaultArgs: string[] = [
   '--config-option',
   'servers:global:http-compression=yes',
