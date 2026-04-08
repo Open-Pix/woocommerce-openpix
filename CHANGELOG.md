@@ -1,3 +1,20 @@
+#### 2.13.8 (2026-04-08)
+
+##### Build System / Dependencies
+
+* **change-log:**
+  *  v2.13.6 (#1446) (12f5b686)
+  *  v2.13.7 (#1442) (f2b44627)
+
+##### New Features
+
+*  add release skill (#1443) (37df65ce)
+
+##### Bug Fixes
+
+*  sync package.json version to 2.13.7 (c11f713b)
+*  resolve plugin conflict with Pagar.me in WooCommerce checkout (#1444) (7c9291b4)
+
 #### 2.13.6 (2026-04-08)
 
 ##### Build System / Dependencies
